@@ -1,0 +1,102 @@
+{
+  "en": {
+    "languageName": "English",
+    "roleLogin": {
+      "brand": "FleetCav",
+      "title": "Select your role",
+      "intro": "Choose a user type first. Admin, dispatcher, and driver views require only a password for this POC; viewer access opens a simplified fleet view without a password.",
+      "currentSelection": "Current selection",
+      "noUserTypeSelected": "No user type selected",
+      "passwordRequired": "Password required",
+      "viewerNoPassword": "Viewer access does not require a password",
+      "pickRolePrompt": "Pick one of the role cards to unlock the next step",
+      "password": "Password",
+      "passwordPlaceholder": "Enter {role} password",
+      "openingView": "Opening view...",
+      "selectUserType": "Select a user type",
+      "continueAs": "Continue as {role}",
+      "userType": "User type",
+      "chooseDashboard": "Choose your dashboard",
+      "routeBasedPoc": "Route-based POC",
+      "selected": "Selected",
+      "selectRole": "Select role",
+      "errors": {
+        "selectUserType": "Select a user type before continuing.",
+        "enterPassword": "Enter the {role} password to continue.",
+        "sessionFailed": "We could not start this role session. Try selecting the user type again."
+      },
+      "roles": {
+        "admin_user": {
+          "label": "Admin",
+          "description": "Review fleet performance, timing, deliveries, and dispatcher reports.",
+          "metric": "Full access"
+        },
+        "dispatcher_user": {
+          "label": "Dispatcher",
+          "description": "Create routes, assign drivers, and monitor live fleet operations.",
+          "metric": "Live board"
+        },
+        "driver_user": {
+          "label": "Driver",
+          "description": "See the assigned route, vehicle, cargo, map, and emergency actions.",
+          "metric": "Assigned trip"
+        },
+        "viewer_user": {
+          "label": "Viewer",
+          "description": "Open a dispatcher-approved fleet view with route, cargo, and delivery timing.",
+          "metric": "No password"
+        }
+      }
+    }
+  },
+  "es": {
+    "languageName": "Espanol",
+    "roleLogin": {
+      "brand": "FleetCav",
+      "title": "Selecciona tu rol",
+      "intro": "Elige primero un tipo de usuario. Las vistas de administrador, despachador y conductor solo requieren una contrasena para este POC; el acceso de visor abre una vista simplificada de la flota sin contrasena.",
+      "currentSelection": "Seleccion actual",
+      "noUserTypeSelected": "No hay tipo de usuario seleccionado",
+      "passwordRequired": "Contrasena requerida",
+      "viewerNoPassword": "El acceso de visor no requiere contrasena",
+      "pickRolePrompt": "Elige una tarjeta de rol para desbloquear el siguiente paso",
+      "password": "Contrasena",
+      "passwordPlaceholder": "Ingresa la contrasena de {role}",
+      "openingView": "Abriendo vista...",
+      "selectUserType": "Selecciona un tipo de usuario",
+      "continueAs": "Continuar como {role}",
+      "userType": "Tipo de usuario",
+      "chooseDashboard": "Elige tu panel",
+      "routeBasedPoc": "POC basado en rutas",
+      "selected": "Seleccionado",
+      "selectRole": "Seleccionar rol",
+      "errors": {
+        "selectUserType": "Selecciona un tipo de usuario antes de continuar.",
+        "enterPassword": "Ingresa la contrasena de {role} para continuar.",
+        "sessionFailed": "No pudimos iniciar esta sesion de rol. Intenta seleccionar el tipo de usuario nuevamente."
+      },
+      "roles": {
+        "admin_user": {
+          "label": "Administrador",
+          "description": "Revisa el rendimiento de la flota, tiempos, entregas y reportes del despachador.",
+          "metric": "Acceso total"
+        },
+        "dispatcher_user": {
+          "label": "Despachador",
+          "description": "Crea rutas, asigna conductores y monitorea las operaciones de la flota en vivo.",
+          "metric": "Tablero en vivo"
+        },
+        "driver_user": {
+          "label": "Conductor",
+          "description": "Consulta la ruta asignada, vehiculo, carga, mapa y acciones de emergencia.",
+          "metric": "Viaje asignado"
+        },
+        "viewer_user": {
+          "label": "Visor",
+          "description": "Abre una vista de flota aprobada por el despachador con ruta, carga y tiempos de entrega.",
+          "metric": "Sin contrasena"
+        }
+      }
+    }
+  }
+}
