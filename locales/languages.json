@@ -47,6 +47,290 @@
           "metric": "No password"
         }
       }
+    },
+    "roleDashboard": {
+      "roles": {
+        "admin": "Admin",
+        "dispatcher": "Dispatcher",
+        "driver": "Driver",
+        "viewer": "Viewer"
+      },
+      "descriptions": {
+        "adminHome": "Fleet performance and delivery intelligence",
+        "dispatcherHome": "Route setup and active fleet coordination",
+        "dispatcherRequests": "Operational request modules",
+        "dispatcherRequestModule": "Operational request module",
+        "driverHome": "Assigned route, cargo, vehicle, and alerts",
+        "viewerHome": "Dispatcher-approved fleet visibility"
+      },
+      "nav": {
+        "overview": "Overview",
+        "dispatcherTracking": "Dispatcher tracking",
+        "switchUser": "Switch user",
+        "home": "Home",
+        "tracking": "Tracking",
+        "requests": "Requests",
+        "fleets": "Fleets",
+        "data": "Data",
+        "route": "Route",
+        "defaultFleet": "Default fleet"
+      },
+      "status": {
+        "onRoute": "On Route",
+        "waiting": "Waiting",
+        "inactive": "Inactive"
+      },
+      "units": {
+        "kilograms": "kg"
+      },
+      "overviews": {
+        "common": {
+          "openRoute": "Open route",
+          "map": "Map"
+        },
+        "admin": {
+          "activeRoutes": "Active routes",
+          "openTracking": "Open tracking",
+          "deliveries": "Deliveries",
+          "openDispatch": "Open dispatch",
+          "cargoWeight": "Cargo weight",
+          "openViewer": "Open viewer",
+          "fuelCost": "Fuel cost",
+          "review": "Review",
+          "approveRoute": "Approve route",
+          "rejectRoute": "Reject"
+        },
+        "dispatcher": {
+          "routeBuilder": "Route builder",
+          "ready": "Ready",
+          "startRequest": "Start request",
+          "drivers": "Drivers",
+          "assign": "Assign",
+          "reports": "Reports",
+          "emailSheet": "Email / Sheet",
+          "prepare": "Prepare"
+        },
+        "driver": {
+          "distance": "Distance",
+          "routeTime": "Route time",
+          "stops": "Stops",
+          "openEta": "Open ETA",
+          "openStops": "Open stops",
+          "emergencyStopAlert": "Emergency stop alert"
+        },
+        "viewer": {
+          "fleetId": "Fleet ID",
+          "deliveryTime": "Delivery time",
+          "cargo": "Cargo",
+          "openFleet": "Open fleet"
+        }
+      },
+      "dispatcherRequests": {
+        "eyebrow": "Operational modules",
+        "title": "Create and manage dispatcher requests",
+        "intro": "This skeleton follows the POC scope from the stack instructions: trucks, cargos, repair, drivers, and reports stay grouped under dispatcher operations.",
+        "moduleEyebrow": "Dispatcher request",
+        "moduleIntro": "This is the first route-ready view for the {module} module. Detailed forms and backend actions can plug into this surface after the UI skeleton is approved.",
+        "status": "Status",
+        "access": "Access",
+        "accessValue": "Dispatcher",
+        "back": "Back",
+        "allModules": "All modules",
+        "return": "Return",
+        "modules": {
+          "trucks": {
+            "label": "Trucks",
+            "status": "Assign vehicles",
+            "action": "Open trucks"
+          },
+          "cargos": {
+            "label": "Cargos",
+            "status": "Review load",
+            "action": "Open cargos"
+          },
+          "repair": {
+            "label": "Repair",
+            "status": "Vehicle service",
+            "action": "Open repair"
+          },
+          "drivers": {
+            "label": "Drivers",
+            "status": "Manage drivers",
+            "action": "Open drivers"
+          },
+          "reports": {
+            "label": "Reports",
+            "status": "Export ready",
+            "action": "Open reports"
+          }
+        }
+      },
+      "dispatcherData": {
+        "eyebrow": "Supabase data manager",
+        "title": "Create and maintain fleet records",
+        "intro": "These forms write to the Postgres tables you created in Supabase: fleets, drivers, shipments, shipment stops, and cargo photos.",
+        "forms": {
+          "fleet": "Fleet",
+          "driver": "Driver",
+          "shipment": "Shipment",
+          "shipmentStop": "Shipment stop",
+          "cargoPhoto": "Cargo photo"
+        },
+        "fields": {
+          "fleetId": "Fleet ID",
+          "label": "Label",
+          "routeName": "Route name",
+          "fullName": "Full name",
+          "shipmentId": "Shipment ID",
+          "fleet": "Fleet",
+          "driver": "Driver",
+          "status": "Status",
+          "vehicle": "Vehicle",
+          "weightKg": "Weight kg",
+          "fuelGallons": "Fuel gallons",
+          "fuelCostUsd": "Fuel cost USD",
+          "distanceKm": "Distance km",
+          "deliveriesToday": "Deliveries today",
+          "etaText": "ETA text",
+          "timeLeft": "Time left",
+          "cargoSummary": "Cargo summary",
+          "order": "Order",
+          "address": "Address",
+          "photoId": "Photo ID",
+          "title": "Title",
+          "location": "Location",
+          "capturedTime": "Captured time"
+        },
+        "placeholders": {
+          "fleetId": "ccsval_01",
+          "fleetLabel": "Caracas-Valencia 01",
+          "routeName": "Caracas to Valencia",
+          "driverName": "Diego Fernandez",
+          "shipmentId": "YR-34DFR734W2",
+          "etaText": "01:38:47",
+          "timeLeft": "57 min. left",
+          "cargoSummary": "Electronics, sealed boxes, and fragile cargo",
+          "address": "712 Miles City",
+          "photoId": "photo_001",
+          "photoTitle": "Point #1 Cargo Photo",
+          "capturedTime": "01:35 PM"
+        },
+        "select": {
+          "fleet": "Select fleet",
+          "driver": "Select driver",
+          "shipment": "Select shipment"
+        },
+        "statuses": {
+          "onRoute": "On Route",
+          "waiting": "Waiting",
+          "inactive": "Inactive"
+        },
+        "vehicles": {
+          "box": "Box",
+          "semi": "Semi",
+          "van": "Van"
+        },
+        "actions": {
+          "saveFleet": "Save fleet",
+          "saveDriver": "Save driver",
+          "saveShipment": "Save shipment",
+          "saveStop": "Save stop",
+          "saveCargoPhoto": "Save cargo photo",
+          "delete": "Delete",
+          "remove": "Remove",
+          "markActive": "Mark as active default shipment"
+        },
+        "lists": {
+          "fleets": "Fleets",
+          "drivers": "Drivers",
+          "shipments": "Shipments",
+          "cargoPhotos": "Cargo photos"
+        }
+      },
+      "emptyStates": {
+        "eyebrow": "Supabase",
+        "adminNoData": {
+          "title": "No fleet data yet",
+          "description": "No Supabase shipments exist yet. Add fleets, drivers, and shipments to start the delivery process from real database records.",
+          "action": "Open dispatcher data"
+        },
+        "dispatcherStart": {
+          "title": "Start a delivery workflow",
+          "description": "Start from zero by adding fleets, drivers, shipments, stops, and cargo photos in Supabase. Tracking views will populate from those records.",
+          "action": "Create fleet records"
+        },
+        "driverNoRoute": {
+          "title": "No driver route assigned",
+          "description": "No active shipment has been assigned yet. Add or activate a shipment before the driver route view can start.",
+          "action": "Open dispatcher data"
+        },
+        "viewerFleetNotFound": {
+          "title": "Fleet not found",
+          "description": "This fleet does not exist in Supabase yet. Add the fleet and an approved shipment before opening the viewer page.",
+          "action": "Open dispatcher data"
+        }
+      }
+    },
+    "fleetDashboard": {
+      "sidebar": {
+        "dashboard": "Dashboard",
+        "partners": "Partners",
+        "chats": "Chats",
+        "tracking": "Tracking",
+        "data": "Data",
+        "fleets": "Fleets",
+        "request": "Request",
+        "trucks": "Trucks",
+        "cargos": "Cargos",
+        "repair": "Repair",
+        "drivers": "Drivers",
+        "reports": "Reports",
+        "analysis": "Analysis",
+        "history": "History",
+        "createNewRequest": "Create new request"
+      },
+      "tracking": {
+        "title": "Tracking",
+        "search": "Search",
+        "filterByPartners": "Filter by Partners",
+        "show": "Show",
+        "openRoute": "Open route",
+        "active": "Active",
+        "inactive": "Inactive",
+        "all": "All",
+        "onRoute": "On Route",
+        "waiting": "Waiting"
+      },
+      "detail": {
+        "callDriver": "Call Driver",
+        "chatWithDriver": "Chat with Driver",
+        "selectedRouteComponent": "Selected Route Component",
+        "readyForAction": "Ready for action",
+        "openRoute": "Open route",
+        "assignAction": "Assign action",
+        "route": "Route",
+        "changeRoute": "Change Route",
+        "zoom": "Zoom",
+        "pin": "Pin",
+        "truck": "Truck",
+        "onRoute": "On Route",
+        "waiting": "Waiting",
+        "inactive": "Inactive"
+      },
+      "emptyDetail": {
+        "eyebrow": "Supabase",
+        "title": "No shipment selected",
+        "description": "Add fleets, drivers, and shipments from Dispatcher Data. Once records exist, tracking details will render from Supabase."
+      },
+      "emptyTracking": {
+        "shipments": "No Supabase shipments yet. Use Dispatcher Data to create fleets, drivers, shipments, stops, and cargo photos."
+      },
+      "map": {
+        "requestingLocation": "Requesting current location...",
+        "currentPosition": "Current GPS position",
+        "unavailable": "Geolocation is not available in this browser.",
+        "allowLocation": "Allow location access to show the live lat/long position."
+      }
     }
   },
   "es": {
@@ -96,6 +380,290 @@
           "description": "Abre una vista de flota aprobada por el despachador con ruta, carga y tiempos de entrega.",
           "metric": "Sin contrasena"
         }
+      }
+    },
+    "roleDashboard": {
+      "roles": {
+        "admin": "Administrador",
+        "dispatcher": "Despachador",
+        "driver": "Conductor",
+        "viewer": "Visor"
+      },
+      "descriptions": {
+        "adminHome": "Rendimiento de flota e inteligencia de entregas",
+        "dispatcherHome": "Configuracion de rutas y coordinacion activa de flota",
+        "dispatcherRequests": "Modulos operativos de solicitudes",
+        "dispatcherRequestModule": "Modulo operativo de solicitudes",
+        "driverHome": "Ruta asignada, carga, vehiculo y alertas",
+        "viewerHome": "Visibilidad de flota aprobada por el despachador"
+      },
+      "nav": {
+        "overview": "Resumen",
+        "dispatcherTracking": "Seguimiento del despachador",
+        "switchUser": "Cambiar usuario",
+        "home": "Inicio",
+        "tracking": "Seguimiento",
+        "requests": "Solicitudes",
+        "fleets": "Flotas",
+        "data": "Datos",
+        "route": "Ruta",
+        "defaultFleet": "Flota predeterminada"
+      },
+      "status": {
+        "onRoute": "En ruta",
+        "waiting": "En espera",
+        "inactive": "Inactivo"
+      },
+      "units": {
+        "kilograms": "kg"
+      },
+      "overviews": {
+        "common": {
+          "openRoute": "Abrir ruta",
+          "map": "Mapa"
+        },
+        "admin": {
+          "activeRoutes": "Rutas activas",
+          "openTracking": "Abrir seguimiento",
+          "deliveries": "Entregas",
+          "openDispatch": "Abrir despacho",
+          "cargoWeight": "Peso de carga",
+          "openViewer": "Abrir visor",
+          "fuelCost": "Costo de combustible",
+          "review": "Revisar",
+          "approveRoute": "Aprobar ruta",
+          "rejectRoute": "Rechazar"
+        },
+        "dispatcher": {
+          "routeBuilder": "Constructor de rutas",
+          "ready": "Listo",
+          "startRequest": "Iniciar solicitud",
+          "drivers": "Conductores",
+          "assign": "Asignar",
+          "reports": "Reportes",
+          "emailSheet": "Correo / Hoja",
+          "prepare": "Preparar"
+        },
+        "driver": {
+          "distance": "Distancia",
+          "routeTime": "Tiempo de ruta",
+          "stops": "Paradas",
+          "openEta": "Abrir ETA",
+          "openStops": "Abrir paradas",
+          "emergencyStopAlert": "Alerta de parada de emergencia"
+        },
+        "viewer": {
+          "fleetId": "ID de flota",
+          "deliveryTime": "Tiempo de entrega",
+          "cargo": "Carga",
+          "openFleet": "Abrir flota"
+        }
+      },
+      "dispatcherRequests": {
+        "eyebrow": "Modulos operativos",
+        "title": "Crear y gestionar solicitudes del despachador",
+        "intro": "Este esqueleto sigue el alcance POC de las instrucciones del stack: camiones, cargas, reparacion, conductores y reportes se mantienen agrupados bajo operaciones del despachador.",
+        "moduleEyebrow": "Solicitud del despachador",
+        "moduleIntro": "Esta es la primera vista lista para rutas del modulo {module}. Los formularios detallados y las acciones de backend pueden conectarse a esta superficie despues de aprobar el esqueleto de UI.",
+        "status": "Estado",
+        "access": "Acceso",
+        "accessValue": "Despachador",
+        "back": "Volver",
+        "allModules": "Todos los modulos",
+        "return": "Regresar",
+        "modules": {
+          "trucks": {
+            "label": "Camiones",
+            "status": "Asignar vehiculos",
+            "action": "Abrir camiones"
+          },
+          "cargos": {
+            "label": "Cargas",
+            "status": "Revisar carga",
+            "action": "Abrir cargas"
+          },
+          "repair": {
+            "label": "Reparacion",
+            "status": "Servicio vehicular",
+            "action": "Abrir reparacion"
+          },
+          "drivers": {
+            "label": "Conductores",
+            "status": "Gestionar conductores",
+            "action": "Abrir conductores"
+          },
+          "reports": {
+            "label": "Reportes",
+            "status": "Exportacion lista",
+            "action": "Abrir reportes"
+          }
+        }
+      },
+      "dispatcherData": {
+        "eyebrow": "Gestor de datos de Supabase",
+        "title": "Crear y mantener registros de flota",
+        "intro": "Estos formularios escriben en las tablas Postgres que creaste en Supabase: flotas, conductores, envios, paradas de envio y fotos de carga.",
+        "forms": {
+          "fleet": "Flota",
+          "driver": "Conductor",
+          "shipment": "Envio",
+          "shipmentStop": "Parada de envio",
+          "cargoPhoto": "Foto de carga"
+        },
+        "fields": {
+          "fleetId": "ID de flota",
+          "label": "Etiqueta",
+          "routeName": "Nombre de ruta",
+          "fullName": "Nombre completo",
+          "shipmentId": "ID de envio",
+          "fleet": "Flota",
+          "driver": "Conductor",
+          "status": "Estado",
+          "vehicle": "Vehiculo",
+          "weightKg": "Peso kg",
+          "fuelGallons": "Galones de combustible",
+          "fuelCostUsd": "Costo combustible USD",
+          "distanceKm": "Distancia km",
+          "deliveriesToday": "Entregas de hoy",
+          "etaText": "Texto ETA",
+          "timeLeft": "Tiempo restante",
+          "cargoSummary": "Resumen de carga",
+          "order": "Orden",
+          "address": "Direccion",
+          "photoId": "ID de foto",
+          "title": "Titulo",
+          "location": "Ubicacion",
+          "capturedTime": "Hora capturada"
+        },
+        "placeholders": {
+          "fleetId": "ccsval_01",
+          "fleetLabel": "Caracas-Valencia 01",
+          "routeName": "Caracas a Valencia",
+          "driverName": "Diego Fernandez",
+          "shipmentId": "YR-34DFR734W2",
+          "etaText": "01:38:47",
+          "timeLeft": "faltan 57 min.",
+          "cargoSummary": "Electronicos, cajas selladas y carga fragil",
+          "address": "712 Miles City",
+          "photoId": "foto_001",
+          "photoTitle": "Foto de carga punto #1",
+          "capturedTime": "01:35 PM"
+        },
+        "select": {
+          "fleet": "Selecciona flota",
+          "driver": "Selecciona conductor",
+          "shipment": "Selecciona envio"
+        },
+        "statuses": {
+          "onRoute": "En ruta",
+          "waiting": "En espera",
+          "inactive": "Inactivo"
+        },
+        "vehicles": {
+          "box": "Caja",
+          "semi": "Semi",
+          "van": "Van"
+        },
+        "actions": {
+          "saveFleet": "Guardar flota",
+          "saveDriver": "Guardar conductor",
+          "saveShipment": "Guardar envio",
+          "saveStop": "Guardar parada",
+          "saveCargoPhoto": "Guardar foto de carga",
+          "delete": "Eliminar",
+          "remove": "Quitar",
+          "markActive": "Marcar como envio activo predeterminado"
+        },
+        "lists": {
+          "fleets": "Flotas",
+          "drivers": "Conductores",
+          "shipments": "Envios",
+          "cargoPhotos": "Fotos de carga"
+        }
+      },
+      "emptyStates": {
+        "eyebrow": "Supabase",
+        "adminNoData": {
+          "title": "Aun no hay datos de flota",
+          "description": "Aun no existen envios en Supabase. Agrega flotas, conductores y envios para iniciar el proceso de entrega desde registros reales.",
+          "action": "Abrir datos del despachador"
+        },
+        "dispatcherStart": {
+          "title": "Iniciar flujo de entrega",
+          "description": "Comienza desde cero agregando flotas, conductores, envios, paradas y fotos de carga en Supabase. Las vistas de seguimiento se llenaran desde esos registros.",
+          "action": "Crear registros de flota"
+        },
+        "driverNoRoute": {
+          "title": "No hay ruta asignada al conductor",
+          "description": "Aun no se ha asignado un envio activo. Agrega o activa un envio antes de iniciar la vista de ruta del conductor.",
+          "action": "Abrir datos del despachador"
+        },
+        "viewerFleetNotFound": {
+          "title": "Flota no encontrada",
+          "description": "Esta flota aun no existe en Supabase. Agrega la flota y un envio aprobado antes de abrir la pagina del visor.",
+          "action": "Abrir datos del despachador"
+        }
+      }
+    },
+    "fleetDashboard": {
+      "sidebar": {
+        "dashboard": "Panel",
+        "partners": "Socios",
+        "chats": "Chats",
+        "tracking": "Seguimiento",
+        "data": "Datos",
+        "fleets": "Flotas",
+        "request": "Solicitud",
+        "trucks": "Camiones",
+        "cargos": "Cargas",
+        "repair": "Reparacion",
+        "drivers": "Conductores",
+        "reports": "Reportes",
+        "analysis": "Analisis",
+        "history": "Historial",
+        "createNewRequest": "Crear nueva solicitud"
+      },
+      "tracking": {
+        "title": "Seguimiento",
+        "search": "Buscar",
+        "filterByPartners": "Filtrar por socios",
+        "show": "Mostrar",
+        "openRoute": "Abrir ruta",
+        "active": "Activo",
+        "inactive": "Inactivo",
+        "all": "Todo",
+        "onRoute": "En ruta",
+        "waiting": "En espera"
+      },
+      "detail": {
+        "callDriver": "Llamar conductor",
+        "chatWithDriver": "Chatear con conductor",
+        "selectedRouteComponent": "Componente de ruta seleccionado",
+        "readyForAction": "Listo para accion",
+        "openRoute": "Abrir ruta",
+        "assignAction": "Asignar accion",
+        "route": "Ruta",
+        "changeRoute": "Cambiar ruta",
+        "zoom": "Zoom",
+        "pin": "Pin",
+        "truck": "Camion",
+        "onRoute": "En ruta",
+        "waiting": "En espera",
+        "inactive": "Inactivo"
+      },
+      "emptyDetail": {
+        "eyebrow": "Supabase",
+        "title": "No hay envio seleccionado",
+        "description": "Agrega flotas, conductores y envios desde Datos del despachador. Cuando existan registros, los detalles de seguimiento se mostraran desde Supabase."
+      },
+      "emptyTracking": {
+        "shipments": "Aun no hay envios en Supabase. Usa Datos del despachador para crear flotas, conductores, envios, paradas y fotos de carga."
+      },
+      "map": {
+        "requestingLocation": "Solicitando ubicacion actual...",
+        "currentPosition": "Posicion GPS actual",
+        "unavailable": "La geolocalizacion no esta disponible en este navegador.",
+        "allowLocation": "Permite el acceso a la ubicacion para mostrar la latitud/longitud en vivo."
       }
     }
   }

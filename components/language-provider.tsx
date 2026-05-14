@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
 
 import languages from "@/locales/languages.json";
 
@@ -13,11 +13,12 @@ type LanguageContextValue = {
 
 const languageStorageKey = "fleetcav-language";
 const LanguageContext = createContext<LanguageContextValue | null>(null);
+const defaultLanguageKey: LanguageKey = "es";
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [languageKey, setLanguageKeyState] = useState<LanguageKey>(() => {
     if (typeof window === "undefined") {
-      return "en";
+      return defaultLanguageKey;
     }
 
     const savedLanguage = window.localStorage.getItem(languageStorageKey);
@@ -26,8 +27,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       return savedLanguage;
     }
 
-    return "en";
+    return defaultLanguageKey;
   });
+
+  useEffect(() => {
+    document.documentElement.lang = languageKey;
+  }, [languageKey]);
 
   function setLanguageKey(nextLanguageKey: LanguageKey) {
     setLanguageKeyState(nextLanguageKey);

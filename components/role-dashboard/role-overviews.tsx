@@ -1,7 +1,38 @@
+"use client";
+
 import Link from "next/link";
 
-import { getDefaultShipment, shipmentCards, toVehicleSlug } from "@/components/fleet-dashboard/data";
+import { CurrentLocationMap } from "@/components/map/current-location-map";
+import { useLanguage } from "@/components/language-provider";
 import type { ShipmentCard } from "@/components/fleet-dashboard/types";
+import { updateShipmentLifecycleAction } from "@/lib/supabase/fleet-actions";
+import languages from "@/locales/languages.json";
+
+type RoleDashboardContent = typeof languages.en.roleDashboard;
+
+function getLocalizedStatus(status: string, content: RoleDashboardContent) {
+  if (status === "On Route") {
+    return content.status.onRoute;
+  }
+
+  if (status === "Waiting") {
+    return content.status.waiting;
+  }
+
+  if (status === "Inactive") {
+    return content.status.inactive;
+  }
+
+  return status;
+}
+
+function getLocalizedRouteName(routeName: string, languageKey: keyof typeof languages) {
+  return languageKey === "es" ? routeName.replace(" to ", " a ") : routeName;
+}
+
+function toVehicleSlug(vehicleId: string) {
+  return vehicleId.toLowerCase();
+}
 
 function ActionCard({
   label,
@@ -39,9 +70,15 @@ function ActionCard({
 
 function RouteActionCard({
   shipment,
+  action,
+  status,
+  routeName,
   href = `/dispatcher/tracking/${toVehicleSlug(shipment.id)}`,
 }: {
   shipment: ShipmentCard;
+  action: string;
+  status: string;
+  routeName: string;
   href?: string;
 }) {
   return (
@@ -55,131 +92,284 @@ function RouteActionCard({
           <h2 className="mt-1 text-2xl font-semibold text-[#20232a]">{shipment.fleetLabel}</h2>
         </div>
         <span className="rounded-full bg-[#eef9f1] px-3 py-1 text-sm font-semibold text-[#2d8f4d]">
-          {shipment.status}
+          {status}
         </span>
       </div>
       <div className="mt-6 rounded-lg bg-[#f8f7fb] px-4 py-3 text-sm font-semibold text-[#6d7685]">
-        {shipment.routeName}
+        {routeName}
       </div>
       <span className="mt-5 inline-flex rounded-lg bg-[#fff2f5] px-3 py-2 text-sm font-semibold text-[#d9546d] transition group-hover:bg-[#ef667c] group-hover:text-white">
-        Open route
+        {action}
       </span>
     </Link>
   );
 }
 
-function RouteMapSection({ shipment }: { shipment: ShipmentCard }) {
+function AdminApprovalCard({
+  action,
+  approveLabel,
+  rejectLabel,
+  routeName,
+  shipment,
+  status,
+}: {
+  action: string;
+  approveLabel: string;
+  rejectLabel: string;
+  routeName: string;
+  shipment: ShipmentCard;
+  status: string;
+}) {
+  return (
+    <article className="rounded-lg border border-[#dfe3ea] bg-white p-5 shadow-[0_12px_32px_rgba(32,35,42,0.04)]">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="text-sm font-semibold uppercase text-[#6d7685]">{shipment.fleetId}</p>
+          <h2 className="mt-1 text-2xl font-semibold text-[#20232a]">{shipment.fleetLabel}</h2>
+        </div>
+        <span className="rounded-full bg-[#eef9f1] px-3 py-1 text-sm font-semibold text-[#2d8f4d]">
+          {status}
+        </span>
+      </div>
+      <div className="mt-6 rounded-lg bg-[#f8f7fb] px-4 py-3 text-sm font-semibold text-[#6d7685]">
+        {routeName}
+      </div>
+      <div className="mt-5 flex flex-wrap gap-2">
+        <Link
+          className="inline-flex rounded-lg bg-[#fff2f5] px-3 py-2 text-sm font-semibold text-[#d9546d] transition hover:bg-[#ef667c] hover:text-white"
+          href={`/dispatcher/tracking/${toVehicleSlug(shipment.id)}`}
+        >
+          {action}
+        </Link>
+        <form action={updateShipmentLifecycleAction}>
+          <input name="id" type="hidden" value={shipment.id} />
+          <input name="status" type="hidden" value="On Route" />
+          <button className="rounded-lg bg-[#eef9f1] px-3 py-2 text-sm font-semibold text-[#2d8f4d]" type="submit">
+            {approveLabel}
+          </button>
+        </form>
+        <form action={updateShipmentLifecycleAction}>
+          <input name="id" type="hidden" value={shipment.id} />
+          <input name="status" type="hidden" value="Inactive" />
+          <button className="rounded-lg border border-[#f0b4c0] px-3 py-2 text-sm font-semibold text-[#d9546d]" type="submit">
+            {rejectLabel}
+          </button>
+        </form>
+      </div>
+    </article>
+  );
+}
+
+function RouteMapSection({
+  mapLabel,
+  routeName,
+  status,
+}: {
+  mapLabel: string;
+  routeName: string;
+  status: string;
+}) {
   return (
     <section className="overflow-hidden rounded-lg border border-[#dfe3ea] bg-white shadow-[0_12px_32px_rgba(32,35,42,0.04)]">
       <div className="flex flex-wrap items-start justify-between gap-3 px-5 py-5">
         <div>
-          <p className="text-sm font-semibold uppercase text-[#6d7685]">Map</p>
-          <h2 className="mt-1 text-2xl font-semibold text-[#20232a]">{shipment.routeName}</h2>
+          <p className="text-sm font-semibold uppercase text-[#6d7685]">{mapLabel}</p>
+          <h2 className="mt-1 text-2xl font-semibold text-[#20232a]">{routeName}</h2>
         </div>
         <span className="rounded-full bg-[#eef9f1] px-3 py-1 text-sm font-semibold text-[#2d8f4d]">
-          {shipment.status}
+          {status}
         </span>
       </div>
-      <div className="relative h-[22rem] overflow-hidden border-t border-[#ece8f1] bg-[#f3f1f6]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.9),transparent_26%),linear-gradient(90deg,rgba(255,255,255,0.8)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.8)_1px,transparent_1px)] bg-[length:14rem_14rem,2.8rem_2.8rem,2.8rem_2.8rem] opacity-90" />
-        <div className="absolute left-[16%] top-[76%] h-4 w-4 rounded-full border-4 border-white bg-[#ef667c] shadow-[0_0_0_10px_rgba(239,102,124,0.18)]" />
-        <div className="absolute left-[40%] top-[63%] h-4 w-4 rounded-full border-4 border-white bg-[#ef667c] shadow-[0_0_0_10px_rgba(239,102,124,0.18)]" />
-        <div className="absolute left-[58%] top-[49%] h-4 w-4 rounded-full border-4 border-white bg-[#ef667c] shadow-[0_0_0_10px_rgba(239,102,124,0.18)]" />
-        <div className="absolute left-[71%] top-[30%] h-4 w-4 rounded-full border-4 border-white bg-[#ef667c] shadow-[0_0_0_10px_rgba(239,102,124,0.18)]" />
-        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <path d="M18 82 C28 70, 32 73, 41 63 S58 48, 71 31" fill="none" stroke="#ef667c" strokeWidth="0.7" />
-        </svg>
-        <div className="absolute left-5 top-5 rounded-lg bg-white/90 px-4 py-3 shadow-[0_10px_24px_rgba(69,48,107,0.08)]">
-          <p className="text-sm font-semibold text-[#2c2933]">{shipment.fleetLabel}</p>
-          <p className="mt-1 text-xs font-semibold uppercase text-[#8a8393]">{shipment.driverName}</p>
-        </div>
-        <div className="absolute bottom-5 right-5 flex gap-2">
-          {["+", "-"].map((symbol) => (
-            <button
-              key={symbol}
-              className="grid h-11 w-11 place-items-center rounded-lg border border-[#f2ced5] bg-white text-2xl leading-none text-[#d9546d] shadow-[0_10px_24px_rgba(69,48,107,0.08)]"
-              type="button"
-            >
-              {symbol}
-            </button>
-          ))}
-        </div>
-      </div>
+      <CurrentLocationMap className="h-[22rem] rounded-none border-0 border-t border-[#ece8f1]" />
     </section>
   );
 }
 
-export function AdminOverview() {
-  const totalDeliveries = shipmentCards.reduce((sum, item) => sum + item.deliveriesToday, 0);
-  const totalFuelCost = shipmentCards.reduce((sum, item) => sum + item.fuelCostUsd, 0);
-  const totalWeight = shipmentCards.reduce((sum, item) => sum + item.weightKg, 0);
-  const defaultTrackingHref = `/dispatcher/tracking/${toVehicleSlug(getDefaultShipment().id)}`;
+function EmptyFleetState({
+  actionLabel,
+  description,
+  eyebrow,
+  title,
+}: {
+  actionLabel: string;
+  description: string;
+  eyebrow: string;
+  title: string;
+}) {
+  return (
+    <section className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+      <div className="rounded-lg border border-[#dfe3ea] bg-white p-6 shadow-[0_12px_32px_rgba(32,35,42,0.04)]">
+        <p className="text-sm font-semibold uppercase text-[#6d7685]">{eyebrow}</p>
+        <h2 className="mt-2 text-3xl font-semibold text-[#20232a]">{title}</h2>
+        <p className="mt-3 text-[#6d7685]">{description}</p>
+        <Link
+          className="mt-6 inline-flex rounded-lg bg-[#ef667c] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(239,102,124,0.22)] transition hover:bg-[#e75970]"
+          href="/dispatcher/data"
+        >
+          {actionLabel}
+        </Link>
+      </div>
+      <CurrentLocationMap className="h-[24rem]" />
+    </section>
+  );
+}
+
+export function AdminOverview({ shipments }: { shipments: ShipmentCard[] }) {
+  const { languageKey } = useLanguage();
+  const content = languages[languageKey].roleDashboard;
+  const overview = content.overviews;
+  const emptyStates = content.emptyStates;
+  const defaultShipment = shipments.find((shipment) => shipment.active) ?? shipments[0];
+
+  if (!defaultShipment) {
+    return (
+      <EmptyFleetState
+        actionLabel={emptyStates.adminNoData.action}
+        description={emptyStates.adminNoData.description}
+        eyebrow={emptyStates.eyebrow}
+        title={emptyStates.adminNoData.title}
+      />
+    );
+  }
+
+  const totalDeliveries = shipments.reduce((sum, item) => sum + item.deliveriesToday, 0);
+  const totalFuelCost = shipments.reduce((sum, item) => sum + item.fuelCostUsd, 0);
+  const totalWeight = shipments.reduce((sum, item) => sum + item.weightKg, 0);
+  const defaultTrackingHref = `/dispatcher/tracking/${toVehicleSlug(defaultShipment.id)}`;
 
   return (
     <section className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <ActionCard label="Active routes" value="4" href={defaultTrackingHref} action="Open tracking" />
-        <ActionCard label="Deliveries" value={String(totalDeliveries)} href="/dispatcher" action="Open dispatch" />
-        <ActionCard label="Cargo weight" value={`${totalWeight.toLocaleString()} kg`} href="/viewer" action="Open viewer" />
-        <ActionCard label="Fuel cost" value={`$${totalFuelCost}`} href="/admin" action="Review" />
+        <ActionCard label={overview.admin.activeRoutes} value={String(shipments.length)} href={defaultTrackingHref} action={overview.admin.openTracking} />
+        <ActionCard label={overview.admin.deliveries} value={String(totalDeliveries)} href="/dispatcher" action={overview.admin.openDispatch} />
+        <ActionCard label={overview.admin.cargoWeight} value={`${totalWeight.toLocaleString()} ${content.units.kilograms}`} href="/viewer" action={overview.admin.openViewer} />
+        <ActionCard label={overview.admin.fuelCost} value={`$${totalFuelCost}`} href="/admin" action={overview.admin.review} />
       </div>
       <div className="grid gap-4 xl:grid-cols-2">
-        {shipmentCards.slice(0, 4).map((shipment) => (
-          <RouteActionCard key={shipment.id} shipment={shipment} />
+        {shipments.slice(0, 4).map((shipment) => (
+          <AdminApprovalCard
+            action={overview.common.openRoute}
+            approveLabel={overview.admin.approveRoute}
+            key={shipment.id}
+            rejectLabel={overview.admin.rejectRoute}
+            routeName={getLocalizedRouteName(shipment.routeName, languageKey)}
+            shipment={shipment}
+            status={getLocalizedStatus(shipment.status, content)}
+          />
         ))}
       </div>
-      <RouteMapSection shipment={getDefaultShipment()} />
+      <RouteMapSection
+        mapLabel={overview.common.map}
+        routeName={getLocalizedRouteName(defaultShipment.routeName, languageKey)}
+        status={getLocalizedStatus(defaultShipment.status, content)}
+      />
     </section>
   );
 }
 
-export function DispatcherOverview() {
-  const defaultTrackingHref = `/dispatcher/tracking/${toVehicleSlug(getDefaultShipment().id)}`;
+export function DispatcherOverview({ shipments }: { shipments: ShipmentCard[] }) {
+  const { languageKey } = useLanguage();
+  const content = languages[languageKey].roleDashboard;
+  const overview = content.overviews;
+  const emptyStates = content.emptyStates;
+  const defaultShipment = shipments.find((shipment) => shipment.active) ?? shipments[0];
+
+  if (!defaultShipment) {
+    return (
+      <EmptyFleetState
+        actionLabel={emptyStates.dispatcherStart.action}
+        description={emptyStates.dispatcherStart.description}
+        eyebrow={emptyStates.eyebrow}
+        title={emptyStates.dispatcherStart.title}
+      />
+    );
+  }
+
+  const defaultTrackingHref = `/dispatcher/tracking/${toVehicleSlug(defaultShipment.id)}`;
 
   return (
     <section className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        <ActionCard label="Route builder" value="Ready" href="/dispatcher/requests" action="Start request" />
-        <ActionCard label="Drivers" value="6" href={defaultTrackingHref} action="Assign" />
-        <ActionCard label="Reports" value="Email / Sheet" href="/dispatcher/requests" action="Prepare" />
+        <ActionCard label={overview.dispatcher.routeBuilder} value={overview.dispatcher.ready} href="/dispatcher/requests" action={overview.dispatcher.startRequest} />
+        <ActionCard label={overview.dispatcher.drivers} value="6" href={defaultTrackingHref} action={overview.dispatcher.assign} />
+        <ActionCard label={overview.dispatcher.reports} value={overview.dispatcher.emailSheet} href="/dispatcher/requests" action={overview.dispatcher.prepare} />
       </div>
-      <RouteMapSection shipment={getDefaultShipment()} />
+      <RouteMapSection
+        mapLabel={overview.common.map}
+        routeName={getLocalizedRouteName(defaultShipment.routeName, languageKey)}
+        status={getLocalizedStatus(defaultShipment.status, content)}
+      />
     </section>
   );
 }
 
-export function DriverOverview() {
-  const shipment = getDefaultShipment();
+export function DriverOverview({ shipment }: { shipment: ShipmentCard | null }) {
+  const { languageKey } = useLanguage();
+  const content = languages[languageKey].roleDashboard;
+  const overview = content.overviews;
+  const emptyStates = content.emptyStates;
+
+  if (!shipment) {
+    return (
+      <EmptyFleetState
+        actionLabel={emptyStates.driverNoRoute.action}
+        description={emptyStates.driverNoRoute.description}
+        eyebrow={emptyStates.eyebrow}
+        title={emptyStates.driverNoRoute.title}
+      />
+    );
+  }
+
   const driverHref = "/driver";
+  const shipmentStatus = getLocalizedStatus(shipment.status, content);
+  const routeName = getLocalizedRouteName(shipment.routeName, languageKey);
 
   return (
     <section className="space-y-6">
       <div className="grid gap-4 md:grid-cols-3">
-        <ActionCard label="Distance" value={`${shipment.distanceKm} km`} href={driverHref} action="Open route" status={shipment.status} />
-        <ActionCard label="Route time" value={shipment.timeLeft} href={driverHref} action="Open ETA" />
-        <ActionCard label="Stops" value={String(shipment.stops.length)} href={driverHref} action="Open stops" />
+        <ActionCard label={overview.driver.distance} value={`${shipment.distanceKm} km`} href={driverHref} action={overview.common.openRoute} status={shipmentStatus} />
+        <ActionCard label={overview.driver.routeTime} value={shipment.timeLeft} href={driverHref} action={overview.driver.openEta} />
+        <ActionCard label={overview.driver.stops} value={String(shipment.stops.length)} href={driverHref} action={overview.driver.openStops} />
       </div>
-      <RouteMapSection shipment={shipment} />
-      <RouteActionCard shipment={shipment} href={driverHref} />
+      <RouteMapSection mapLabel={overview.common.map} routeName={routeName} status={shipmentStatus} />
+      <RouteActionCard action={overview.common.openRoute} routeName={routeName} shipment={shipment} status={shipmentStatus} href={driverHref} />
       <button className="rounded-lg bg-[#ef667c] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(239,102,124,0.22)] transition hover:bg-[#e75970]" type="button">
-        Emergency stop alert
+        {overview.driver.emergencyStopAlert}
       </button>
     </section>
   );
 }
 
-export function ViewerFleetOverview({ shipment }: { shipment: ShipmentCard }) {
+export function ViewerFleetOverview({ shipment }: { shipment: ShipmentCard | null }) {
+  const { languageKey } = useLanguage();
+  const content = languages[languageKey].roleDashboard;
+  const overview = content.overviews;
+  const emptyStates = content.emptyStates;
+
+  if (!shipment) {
+    return (
+      <EmptyFleetState
+        actionLabel={emptyStates.viewerFleetNotFound.action}
+        description={emptyStates.viewerFleetNotFound.description}
+        eyebrow={emptyStates.eyebrow}
+        title={emptyStates.viewerFleetNotFound.title}
+      />
+    );
+  }
+
   const viewerHref = `/viewer/fleet/${shipment.fleetId}`;
+  const shipmentStatus = getLocalizedStatus(shipment.status, content);
+  const routeName = getLocalizedRouteName(shipment.routeName, languageKey);
 
   return (
     <section className="space-y-6">
       <div className="grid gap-4 md:grid-cols-3">
-        <ActionCard label="Fleet ID" value={shipment.fleetId} href={viewerHref} action="Open fleet" status={shipment.status} />
-        <ActionCard label="Delivery time" value={shipment.timeLeft} href={viewerHref} action="Open route" />
-        <ActionCard label="Cargo" value={`${shipment.weightKg.toLocaleString()} kg`} href={viewerHref} action="Open cargo" />
+        <ActionCard label={overview.viewer.fleetId} value={shipment.fleetId} href={viewerHref} action={overview.viewer.openFleet} status={shipmentStatus} />
+        <ActionCard label={overview.viewer.deliveryTime} value={shipment.timeLeft} href={viewerHref} action={overview.common.openRoute} />
+        <ActionCard label={overview.viewer.cargo} value={`${shipment.weightKg.toLocaleString()} ${content.units.kilograms}`} href={viewerHref} action={overview.common.openRoute} />
       </div>
-      <RouteMapSection shipment={shipment} />
-      <RouteActionCard shipment={shipment} href={viewerHref} />
+      <RouteMapSection mapLabel={overview.common.map} routeName={routeName} status={shipmentStatus} />
+      <RouteActionCard action={overview.common.openRoute} routeName={routeName} shipment={shipment} status={shipmentStatus} href={viewerHref} />
     </section>
   );
 }

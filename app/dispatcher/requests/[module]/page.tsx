@@ -10,13 +10,13 @@ export default async function DispatcherRequestModulePage({
 
   return (
     <RoleLayoutShell
-      role="Dispatcher"
-      description="Operational request module"
+      roleKey="dispatcher"
+      descriptionKey="dispatcherRequestModule"
       navItems={[
-        { label: "Home", href: "/dispatcher" },
-        { label: "Tracking", href: "/dispatcher/tracking" },
-        { label: "Requests", href: "/dispatcher/requests" },
-        { label: "Switch user", href: "/login" },
+        { labelKey: "home", href: "/dispatcher" },
+        { labelKey: "fleets", href: "/dispatcher/data" },
+        { labelKey: "requests", href: "/dispatcher/requests" },
+        { labelKey: "tracking", href: "/dispatcher/tracking" },
       ]}
     >
       <DispatcherRequestModule moduleKey={module} />

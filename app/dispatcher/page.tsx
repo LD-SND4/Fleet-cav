@@ -1,19 +1,24 @@
 import { RoleLayoutShell } from "@/components/role-dashboard/role-layout-shell";
 import { DispatcherOverview } from "@/components/role-dashboard/role-overviews";
+import { getShipmentCards } from "@/lib/supabase/fleet-data";
 
-export default function DispatcherPage() {
+export const dynamic = "force-dynamic";
+
+export default async function DispatcherPage() {
+  const shipments = await getShipmentCards();
+
   return (
     <RoleLayoutShell
-      role="Dispatcher"
-      description="Route setup and active fleet coordination"
+      roleKey="dispatcher"
+      descriptionKey="dispatcherHome"
       navItems={[
-        { label: "Home", href: "/dispatcher" },
-        { label: "Tracking", href: "/dispatcher/tracking" },
-        { label: "Requests", href: "/dispatcher/requests" },
-        { label: "Switch user", href: "/login" },
+        { labelKey: "home", href: "/dispatcher" },
+        { labelKey: "fleets", href: "/dispatcher/data" },
+        { labelKey: "requests", href: "/dispatcher/requests" },
+        { labelKey: "tracking", href: "/dispatcher/tracking" },
       ]}
     >
-      <DispatcherOverview />
+      <DispatcherOverview shipments={shipments} />
     </RoleLayoutShell>
   );
 }

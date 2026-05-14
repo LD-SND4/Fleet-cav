@@ -5,11 +5,11 @@ import { RoleLayoutShell } from "@/components/role-dashboard/role-layout-shell";
 export default function ViewerLayout({ children }: { children: ReactNode }) {
   return (
     <RoleLayoutShell
-      role="Viewer"
-      description="Dispatcher-approved fleet visibility"
+      roleKey="viewer"
+      descriptionKey="viewerHome"
       navItems={[
-        { label: "Default fleet", href: "/viewer/fleet/ccsval_01" },
-        { label: "Switch user", href: "/login" },
+        { labelKey: "defaultFleet", href: "/viewer" },
+        { labelKey: "switchUser", href: "/login" },
       ]}
     >
       {children}

@@ -1,9 +1,56 @@
+"use client";
+
 import Link from "next/link";
 
-import { partnerFilters, shipmentCards, statusFilters, toVehicleSlug } from "./data";
+import { useLanguage } from "@/components/language-provider";
+import languages from "@/locales/languages.json";
+
+import { toVehicleSlug } from "./data";
 import type { FilterChip, ShipmentCard } from "./types";
 
-function ChipGroup({ title, items }: { title: string; items: FilterChip[] }) {
+type TrackingContent = typeof languages.en.fleetDashboard.tracking;
+
+function getStatusLabel(status: string, content: TrackingContent) {
+  if (status === "On Route") {
+    return content.onRoute;
+  }
+
+  if (status === "Waiting") {
+    return content.waiting;
+  }
+
+  if (status === "Active") {
+    return content.active;
+  }
+
+  if (status === "Inactive") {
+    return content.inactive;
+  }
+
+  if (status === "All") {
+    return content.all;
+  }
+
+  return status;
+}
+
+function getTimeLeftLabel(timeLeft: string, languageKey: keyof typeof languages) {
+  if (languageKey !== "es") {
+    return timeLeft;
+  }
+
+  return timeLeft.replace(/^(\d+) min\. left$/, "faltan $1 min.");
+}
+
+function ChipGroup({
+  title,
+  items,
+  content,
+}: {
+  title: string;
+  items: FilterChip[];
+  content?: TrackingContent;
+}) {
   return (
     <section className="space-y-4">
       <h2 className="text-lg font-medium text-[#726c7d]">{title}</h2>
@@ -13,7 +60,7 @@ function ChipGroup({ title, items }: { title: string; items: FilterChip[] }) {
             key={item.label}
             className="inline-flex items-center gap-2 rounded-lg border border-[#ef667c] bg-white/80 px-4 py-2 text-sm font-medium text-[#d9546d]"
           >
-            {item.label}
+            {content ? getStatusLabel(item.label, content) : item.label}
             <span className="grid h-6 min-w-6 place-items-center rounded-full bg-[#ef667c] px-1 text-xs text-white">
               {item.count}
             </span>
@@ -48,9 +95,13 @@ function VehicleIllustration({ type }: { type: ShipmentCard["vehicleType"] }) {
 function ShipmentCardView({
   card,
   selected,
+  content,
+  languageKey,
 }: {
   card: ShipmentCard;
   selected: boolean;
+  content: TrackingContent;
+  languageKey: keyof typeof languages;
 }) {
   return (
     <Link
@@ -72,18 +123,18 @@ function ShipmentCardView({
           ].join(" ")}
         >
           <span className="h-3 w-3 rounded-full bg-current opacity-80" />
-          {card.status}
+          {getStatusLabel(card.status, content)}
         </span>
       </div>
 
       <div className="mb-5 grid grid-cols-[1fr_1.2fr] gap-4 rounded-2xl bg-[#f6f4fb] p-4">
         <div className="space-y-3">
           <p className="text-2xl font-semibold text-[#312d39]">{card.eta}</p>
-          <p className="text-base text-[#8c8696]">{card.timeLeft}</p>
+          <p className="text-base text-[#8c8696]">{getTimeLeftLabel(card.timeLeft, languageKey)}</p>
         </div>
         <div className="flex items-center justify-end border-l border-[#ddd8e6] pl-4">
           <span className="rounded-lg bg-[#fff2f5] px-4 py-3 text-sm font-semibold text-[#d9546d] transition group-hover:bg-[#ef667c] group-hover:text-white">
-            Open route
+            {content.openRoute}
           </span>
         </div>
       </div>
@@ -93,30 +144,55 @@ function ShipmentCardView({
   );
 }
 
-export function TrackingPanel({ selectedVehicleId }: { selectedVehicleId?: string }) {
+export function TrackingPanel({
+  selectedVehicleId,
+  shipments,
+}: {
+  selectedVehicleId?: string;
+  shipments: ShipmentCard[];
+}) {
+  const { languageKey } = useLanguage();
+  const dashboardContent = languages[languageKey].fleetDashboard;
+  const content = dashboardContent.tracking;
+
   return (
     <section className="space-y-8 bg-[#f4f2fb] px-8 py-8">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-5xl font-semibold tracking-tight text-[#2c2933]">Tracking</h1>
+          <h1 className="text-5xl font-semibold tracking-tight text-[#2c2933]">{content.title}</h1>
         </div>
         <div className="grid h-12 w-12 place-items-center rounded-full bg-white text-[#7d7589] shadow-[0_12px_28px_rgba(69,48,107,0.08)]">
-          Search
+          {content.search}
         </div>
       </div>
 
-      <ChipGroup title="Filter by Partners" items={partnerFilters} />
-      <ChipGroup title="Show" items={statusFilters} />
+      <ChipGroup title={content.show} items={getStatusFilters(shipments)} content={content} />
 
       <div className="grid gap-5 xl:grid-cols-2">
-        {shipmentCards.map((card) => (
-          <ShipmentCardView
-            key={card.id}
-            card={card}
-            selected={selectedVehicleId ? card.id === selectedVehicleId : Boolean(card.active)}
-          />
-        ))}
+        {shipments.length > 0 ? (
+          shipments.map((card) => (
+            <ShipmentCardView
+              key={card.id}
+              card={card}
+              content={content}
+              languageKey={languageKey}
+              selected={selectedVehicleId ? card.id === selectedVehicleId : Boolean(card.active)}
+            />
+          ))
+        ) : (
+          <div className="rounded-lg border border-[#dfe3ea] bg-white p-6 text-[#6d7685] shadow-[0_12px_32px_rgba(32,35,42,0.04)] xl:col-span-2">
+            {dashboardContent.emptyTracking.shipments}
+          </div>
+        )}
       </div>
     </section>
   );
+}
+
+function getStatusFilters(shipments: ShipmentCard[]): FilterChip[] {
+  return [
+    { label: "Active", count: shipments.filter((shipment) => shipment.status === "On Route").length },
+    { label: "Inactive", count: shipments.filter((shipment) => shipment.status === "Inactive").length },
+    { label: "All", count: shipments.length },
+  ];
 }

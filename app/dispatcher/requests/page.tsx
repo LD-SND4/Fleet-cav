@@ -4,13 +4,13 @@ import { DispatcherRequestsOverview } from "@/components/role-dashboard/dispatch
 export default function DispatcherRequestsPage() {
   return (
     <RoleLayoutShell
-      role="Dispatcher"
-      description="Operational request modules"
+      roleKey="dispatcher"
+      descriptionKey="dispatcherRequests"
       navItems={[
-        { label: "Home", href: "/dispatcher" },
-        { label: "Tracking", href: "/dispatcher/tracking" },
-        { label: "Requests", href: "/dispatcher/requests" },
-        { label: "Switch user", href: "/login" },
+        { labelKey: "home", href: "/dispatcher" },
+        { labelKey: "fleets", href: "/dispatcher/data" },
+        { labelKey: "requests", href: "/dispatcher/requests" },
+        { labelKey: "tracking", href: "/dispatcher/tracking" },
       ]}
     >
       <DispatcherRequestsOverview />

@@ -5,11 +5,11 @@ import { RoleLayoutShell } from "@/components/role-dashboard/role-layout-shell";
 export default function DriverLayout({ children }: { children: ReactNode }) {
   return (
     <RoleLayoutShell
-      role="Driver"
-      description="Assigned route, cargo, vehicle, and alerts"
+      roleKey="driver"
+      descriptionKey="driverHome"
       navItems={[
-        { label: "Route", href: "/driver" },
-        { label: "Switch user", href: "/login" },
+        { labelKey: "route", href: "/driver" },
+        { labelKey: "switchUser", href: "/login" },
       ]}
     >
       {children}

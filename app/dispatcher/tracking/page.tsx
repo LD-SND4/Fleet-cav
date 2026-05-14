@@ -1,7 +1,15 @@
 import { redirect } from "next/navigation";
 
-import { getDefaultShipment, toVehicleSlug } from "@/components/fleet-dashboard/data";
+import { getDefaultShipmentCard, toVehicleSlug } from "@/lib/supabase/fleet-data";
 
-export default function DispatcherTrackingPage() {
-  redirect(`/dispatcher/tracking/${toVehicleSlug(getDefaultShipment().id)}`);
+export const dynamic = "force-dynamic";
+
+export default async function DispatcherTrackingPage() {
+  const shipment = await getDefaultShipmentCard();
+
+  if (!shipment) {
+    redirect("/dispatcher/data");
+  }
+
+  redirect(`/dispatcher/tracking/${toVehicleSlug(shipment.id)}`);
 }

@@ -23,7 +23,7 @@ export type ShipmentCard = {
   fuelCostUsd: number;
   distanceKm: number;
   deliveriesToday: number;
-  status: "On Route" | "Waiting";
+  status: "On Route" | "Waiting" | "Inactive";
   eta: string;
   timeLeft: string;
   stops: string[];

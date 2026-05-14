@@ -1,5 +1,7 @@
-import { getShipmentByVehicleId } from "@/components/fleet-dashboard/data";
 import { FleetDashboardShell } from "@/components/fleet-dashboard/shell";
+import { getShipmentCardByVehicleId, getShipmentCards } from "@/lib/supabase/fleet-data";
+
+export const dynamic = "force-dynamic";
 
 export default async function DispatcherVehicleTrackingPage({
   params,
@@ -7,7 +9,10 @@ export default async function DispatcherVehicleTrackingPage({
   params: Promise<{ vehicleId: string }>;
 }) {
   const { vehicleId } = await params;
-  const shipment = getShipmentByVehicleId(vehicleId);
+  const [shipment, shipments] = await Promise.all([
+    getShipmentCardByVehicleId(vehicleId),
+    getShipmentCards(),
+  ]);
 
-  return <FleetDashboardShell selectedShipment={shipment} />;
+  return <FleetDashboardShell selectedShipment={shipment} shipments={shipments} />;
 }

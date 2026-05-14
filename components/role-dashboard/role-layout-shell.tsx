@@ -4,24 +4,30 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { LanguageKey, useLanguage } from "@/components/language-provider";
+import languages from "@/locales/languages.json";
+
+type RoleKey = keyof typeof languages.en.roleDashboard.roles;
+type RoleDescriptionKey = keyof typeof languages.en.roleDashboard.descriptions;
+type RoleNavKey = keyof typeof languages.en.roleDashboard.nav;
 
 type RoleNavItem = {
-  label: string;
+  labelKey: RoleNavKey;
   href: string;
 };
 
 export function RoleLayoutShell({
-  role,
-  description,
+  roleKey,
+  descriptionKey,
   navItems,
   children,
 }: {
-  role: string;
-  description: string;
+  roleKey: RoleKey;
+  descriptionKey: RoleDescriptionKey;
   navItems: RoleNavItem[];
   children: ReactNode;
 }) {
   const { languageKey, setLanguageKey } = useLanguage();
+  const content = languages[languageKey].roleDashboard;
 
   return (
     <main className="min-h-screen bg-[#787781] px-5 py-6 text-[#201c27] sm:px-8 lg:px-10">
@@ -33,8 +39,10 @@ export function RoleLayoutShell({
                 FC
               </div>
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#8a8393]">{role}</p>
-                <h1 className="mt-1 text-3xl font-semibold tracking-tight text-[#2c2933]">{description}</h1>
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#8a8393]">{content.roles[roleKey]}</p>
+                <h1 className="mt-1 text-3xl font-semibold tracking-tight text-[#2c2933]">
+                  {content.descriptions[descriptionKey]}
+                </h1>
               </div>
             </div>
             <nav className="flex flex-wrap gap-2">
@@ -44,7 +52,7 @@ export function RoleLayoutShell({
                   href={item.href}
                   className="rounded-lg border border-[#ece8f1] bg-white px-4 py-2 text-sm font-semibold text-[#394150] shadow-[0_10px_24px_rgba(69,48,107,0.05)] transition hover:border-[#ef667c] hover:text-[#d9546d]"
                 >
-                  {item.label}
+                  {content.nav[item.labelKey]}
                 </Link>
               ))}
             </nav>

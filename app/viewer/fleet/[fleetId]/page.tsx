@@ -1,5 +1,7 @@
-import { getShipmentByFleetId } from "@/components/fleet-dashboard/data";
 import { ViewerFleetOverview } from "@/components/role-dashboard/role-overviews";
+import { getShipmentCardByFleetId } from "@/lib/supabase/fleet-data";
+
+export const dynamic = "force-dynamic";
 
 export default async function ViewerFleetPage({
   params,
@@ -7,7 +9,7 @@ export default async function ViewerFleetPage({
   params: Promise<{ fleetId: string }>;
 }) {
   const { fleetId } = await params;
-  const shipment = getShipmentByFleetId(fleetId);
+  const shipment = await getShipmentCardByFleetId(fleetId);
 
   return <ViewerFleetOverview shipment={shipment} />;
 }
