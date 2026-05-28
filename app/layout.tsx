@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FleetCav",
-  description: "FleetCav",
+  title: "Fleet-cav",
+  description: "Fleet-cav",
 };
 
 export default function RootLayout({

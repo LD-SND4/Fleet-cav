@@ -1,5 +1,9 @@
 import type { ReactNode } from "react";
 
-export default function DispatcherLayout({ children }: { children: ReactNode }) {
+import { requireAuthenticatedProfile } from "@/lib/auth/require-authenticated-profile";
+
+export default async function DispatcherLayout({ children }: { children: ReactNode }) {
+  await requireAuthenticatedProfile();
+
   return children;
 }

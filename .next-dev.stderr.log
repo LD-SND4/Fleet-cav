@@ -1,0 +1,949 @@
+⨯ Error: useLanguage must be used inside LanguageProvider.
+    at useLanguage (components\language-provider.tsx:64:11)
+    at AdminOverview (components\role-dashboard\role-overviews.tsx:310:38)
+  62 |
+  63 |   if (!context) {
+> 64 |     throw new Error("useLanguage must be used inside LanguageProvider.");
+     |           ^
+  65 |   }
+  66 |
+  67 |   return context; {
+  digest: '1044628956'
+}
+⨯ ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+[31m[1m>[0m [90m1 |[0m [36mimport[0m { [33mRoleLoginScreen[0m } [36mfrom[0m [32m"@/components/auth/role-login-screen"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mexport[0m [36mdefault[0m [36mfunction[0m [33mLoginPage[0m() {
+  [90m4 |[0m   [36mreturn[0m <[33mRoleLoginScreen[0m />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+[31m[1m>[0m [90m1 |[0m [36mimport[0m { [33mRoleLoginScreen[0m } [36mfrom[0m [32m"@/components/auth/role-login-screen"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mexport[0m [36mdefault[0m [36mfunction[0m [33mLoginPage[0m() {
+  [90m4 |[0m   [36mreturn[0m <[33mRoleLoginScreen[0m />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+[31m[1m>[0m [90m1 |[0m [36mimport[0m { [33mRoleLoginScreen[0m } [36mfrom[0m [32m"@/components/auth/role-login-screen"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mexport[0m [36mdefault[0m [36mfunction[0m [33mLoginPage[0m() {
+  [90m4 |[0m   [36mreturn[0m <[33mRoleLoginScreen[0m />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+[31m[1m>[0m [90m1 |[0m [36mimport[0m { [33mRoleLoginScreen[0m } [36mfrom[0m [32m"@/components/auth/role-login-screen"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mexport[0m [36mdefault[0m [36mfunction[0m [33mLoginPage[0m() {
+  [90m4 |[0m   [36mreturn[0m <[33mRoleLoginScreen[0m />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+[31m[1m>[0m [90m1 |[0m [36mimport[0m { [33mRoleLoginScreen[0m } [36mfrom[0m [32m"@/components/auth/role-login-screen"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mexport[0m [36mdefault[0m [36mfunction[0m [33mLoginPage[0m() {
+  [90m4 |[0m   [36mreturn[0m <[33mRoleLoginScreen[0m />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[browser] Uncaught Error: ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (Error: ./app/login/page.tsx:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (Error: (./app/login/page.tsx:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+⨯ ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+[31m[1m>[0m [90m1 |[0m [36mimport[0m { [33mRoleLoginScreen[0m } [36mfrom[0m [32m"@/components/auth/role-login-screen"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mexport[0m [36mdefault[0m [36mfunction[0m [33mLoginPage[0m() {
+  [90m4 |[0m   [36mreturn[0m <[33mRoleLoginScreen[0m />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[browser] Uncaught Error: ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (Error: ./app/login/page.tsx:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (Error: (./app/login/page.tsx:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+⨯ ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+[31m[1m>[0m [90m1 |[0m [36mimport[0m { [33mRoleLoginScreen[0m } [36mfrom[0m [32m"@/components/auth/role-login-screen"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mexport[0m [36mdefault[0m [36mfunction[0m [33mLoginPage[0m() {
+  [90m4 |[0m   [36mreturn[0m <[33mRoleLoginScreen[0m />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[browser] Uncaught Error: ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (Error: ./app/login/page.tsx:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (Error: (./app/login/page.tsx:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+⨯ ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+[31m[1m>[0m [90m1 |[0m [36mimport[0m { [33mRoleLoginScreen[0m } [36mfrom[0m [32m"@/components/auth/role-login-screen"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mexport[0m [36mdefault[0m [36mfunction[0m [33mLoginPage[0m() {
+  [90m4 |[0m   [36mreturn[0m <[33mRoleLoginScreen[0m />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[browser] Uncaught Error: ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (Error: ./app/login/page.tsx:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (Error: (./app/login/page.tsx:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+⨯ ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+[31m[1m>[0m [90m1 |[0m [36mimport[0m { [33mRoleLoginScreen[0m } [36mfrom[0m [32m"@/components/auth/role-login-screen"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m
+  [90m3 |[0m [36mexport[0m [36mdefault[0m [36mfunction[0m [33mLoginPage[0m() {
+  [90m4 |[0m   [36mreturn[0m <[33mRoleLoginScreen[0m />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[browser] Uncaught Error: ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (Error: ./app/login/page.tsx:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (Error: (./app/login/page.tsx:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./app/login/page.tsx:1:1
+Module not found: Can't resolve '@/components/auth/role-login-screen'
+> 1 | import { RoleLoginScreen } from "@/components/auth/role-login-screen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function LoginPage() {
+  4 |   return <RoleLoginScreen />;
+
+Import map: aliased to relative './components/auth/role-login-screen' inside of [project]/
+
+https://nextjs.org/docs/messages/module-not-found 
+⨯ TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components\auth\login-screen.tsx:21:54)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault(); {
+  digest: '3758965768'
+}
+⨯ TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components\auth\login-screen.tsx:21:54)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault(); {
+  digest: '3758965768'
+}
+[browser] Uncaught TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components/auth/login-screen.tsx:21:54)
+    at LoginPage (app\login\page.tsx:4:10)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault();
+⨯ TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components\auth\login-screen.tsx:21:54)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault(); {
+  digest: '3758965768'
+}
+[browser] Uncaught TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components/auth/login-screen.tsx:21:54)
+    at LoginPage (app\login\page.tsx:4:10)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault();
+⨯ TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components\auth\login-screen.tsx:21:54)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault(); {
+  digest: '3758965768'
+}
+[browser] Uncaught TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components/auth/login-screen.tsx:21:54)
+    at LoginPage (app\login\page.tsx:4:10)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault();
+⨯ TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components\auth\login-screen.tsx:21:54)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault(); {
+  digest: '3758965768'
+}
+[browser] Uncaught TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components/auth/login-screen.tsx:21:54)
+    at LoginPage (app\login\page.tsx:4:10)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault();
+⨯ TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components\auth\login-screen.tsx:21:54)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault(); {
+  digest: '3758965768'
+}
+[browser] Uncaught TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components/auth/login-screen.tsx:21:54)
+    at LoginPage (app\login\page.tsx:4:10)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault();
+⨯ TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components\auth\login-screen.tsx:21:54)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault(); {
+  digest: '3758965768'
+}
+[browser] Uncaught TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components/auth/login-screen.tsx:21:54)
+    at LoginPage (app\login\page.tsx:4:10)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault();
+⨯ TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components\auth\login-screen.tsx:21:54)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault(); {
+  digest: '3758965768'
+}
+[browser] Uncaught TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components/auth/login-screen.tsx:21:54)
+    at LoginPage (app\login\page.tsx:4:10)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault();
+⨯ TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components\auth\login-screen.tsx:21:54)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault(); {
+  digest: '3758965768'
+}
+⨯ TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components\auth\login-screen.tsx:21:54)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault(); {
+  digest: '3758965768'
+}
+[browser] Can't perform a React state update on a component that hasn't mounted yet. This indicates that you have a side-effect in your render function that asynchronously tries to update the component. Move this work to useEffect instead. 
+[browser] Uncaught TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components/auth/login-screen.tsx:21:54)
+    at LoginPage (app\login\page.tsx:4:10)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault();
+⨯ TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components\auth\login-screen.tsx:21:54)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault(); {
+  digest: '3758965768'
+}
+[browser] Uncaught TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components/auth/login-screen.tsx:21:54)
+    at LoginPage (app\login\page.tsx:4:10)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault();
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+⨯ TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components\auth\login-screen.tsx:21:54)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault(); {
+  digest: '3758965768'
+}
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+⨯ TypeError: Cannot read properties of undefined (reading 'login')
+    at LoginScreen (components\auth\login-screen.tsx:21:54)
+  19 |
+  20 |   const content = languages[languageKey].appLogin;
+> 21 |   const modeContent = authMode === "login" ? content.login : content.register;
+     |                                                      ^
+  22 |
+  23 |   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  24 |     event.preventDefault(); {
+  digest: '3758965768'
+}
+⚠ Fast Refresh had to perform a full reload due to a runtime error.

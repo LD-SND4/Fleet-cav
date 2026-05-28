@@ -5,7 +5,6 @@ import Link from "next/link";
 import { CurrentLocationMap } from "@/components/map/current-location-map";
 import { useLanguage } from "@/components/language-provider";
 import type { ShipmentCard } from "@/components/fleet-dashboard/types";
-import { updateShipmentLifecycleAction } from "@/lib/supabase/fleet-actions";
 import languages from "@/locales/languages.json";
 
 type RoleDashboardContent = typeof languages.en.roleDashboard;
@@ -28,6 +27,69 @@ function getLocalizedStatus(status: string, content: RoleDashboardContent) {
 
 function getLocalizedRouteName(routeName: string, languageKey: keyof typeof languages) {
   return languageKey === "es" ? routeName.replace(" to ", " a ") : routeName;
+}
+
+function getAdminDeliveryStatus(shipment: ShipmentCard, index: number, languageKey: keyof typeof languages) {
+  const labels = {
+    en: {
+      delivered: "Already delivered",
+      dispatcherHalt: "On halt - dispatcher order",
+      driverHalt: "On halt - driver requested",
+      ongoing: "Ongoing",
+      prepared: "Being prepared",
+      stopped: "Stopped",
+    },
+    es: {
+      delivered: "Ya entregado",
+      dispatcherHalt: "En pausa - orden del despachador",
+      driverHalt: "En pausa - solicitado por conductor",
+      ongoing: "En curso",
+      prepared: "En preparacion",
+      stopped: "Detenido",
+    },
+  }[languageKey];
+
+  if (shipment.status === "On Route") {
+    return { label: labels.ongoing, tone: "green" };
+  }
+
+  if (shipment.status === "Waiting") {
+    return { label: labels.prepared, tone: "yellow" };
+  }
+
+  if (shipment.deliveriesToday > 0 && !shipment.active) {
+    return { label: labels.delivered, tone: "blue" };
+  }
+
+  if (index % 3 === 0) {
+    return { label: labels.driverHalt, tone: "pink" };
+  }
+
+  if (index % 3 === 1) {
+    return { label: labels.dispatcherHalt, tone: "pink" };
+  }
+
+  return { label: labels.stopped, tone: "red" };
+}
+
+function getStatusToneClass(tone: string) {
+  if (tone === "green") {
+    return "bg-[#eef9f1] text-[#2d8f4d]";
+  }
+
+  if (tone === "yellow") {
+    return "bg-[#fff8df] text-[#a17212]";
+  }
+
+  if (tone === "blue") {
+    return "bg-[#edf5ff] text-[#2d6ea3]";
+  }
+
+  if (tone === "pink") {
+    return "bg-[#fff2f5] text-[#d9546d]";
+  }
+
+  return "bg-[#f4f2f3] text-[#6f6878]";
 }
 
 function toVehicleSlug(vehicleId: string) {
@@ -105,56 +167,86 @@ function RouteActionCard({
   );
 }
 
-function AdminApprovalCard({
-  action,
-  approveLabel,
-  rejectLabel,
-  routeName,
+function AdminDeliveryRow({
   shipment,
-  status,
+  index,
+  languageKey,
+  openLabel,
 }: {
-  action: string;
-  approveLabel: string;
-  rejectLabel: string;
-  routeName: string;
   shipment: ShipmentCard;
-  status: string;
+  index: number;
+  languageKey: keyof typeof languages;
+  openLabel: string;
 }) {
+  const deliveryStatus = getAdminDeliveryStatus(shipment, index, languageKey);
+  const labels = {
+    en: {
+      cargo: "Cargo",
+      deliveries: "Deliveries",
+      driver: "Driver",
+      eta: "ETA",
+      fleet: "Fleet",
+      route: "Route",
+      stops: "Stops",
+      weight: "Weight",
+    },
+    es: {
+      cargo: "Carga",
+      deliveries: "Entregas",
+      driver: "Conductor",
+      eta: "ETA",
+      fleet: "Flota",
+      route: "Ruta",
+      stops: "Paradas",
+      weight: "Peso",
+    },
+  }[languageKey];
+
   return (
     <article className="rounded-lg border border-[#dfe3ea] bg-white p-5 shadow-[0_12px_32px_rgba(32,35,42,0.04)]">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold uppercase text-[#6d7685]">{shipment.fleetId}</p>
+          <p className="text-sm font-semibold uppercase text-[#6d7685]">{labels.fleet} {shipment.fleetId}</p>
           <h2 className="mt-1 text-2xl font-semibold text-[#20232a]">{shipment.fleetLabel}</h2>
         </div>
-        <span className="rounded-full bg-[#eef9f1] px-3 py-1 text-sm font-semibold text-[#2d8f4d]">
-          {status}
+        <span className={["rounded-full px-3 py-1 text-sm font-semibold", getStatusToneClass(deliveryStatus.tone)].join(" ")}>
+          {deliveryStatus.label}
         </span>
       </div>
-      <div className="mt-6 rounded-lg bg-[#f8f7fb] px-4 py-3 text-sm font-semibold text-[#6d7685]">
-        {routeName}
-      </div>
-      <div className="mt-5 flex flex-wrap gap-2">
+
+      <dl className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <div className="rounded-lg bg-[#f8f7fb] px-4 py-3">
+          <dt className="text-xs font-semibold uppercase text-[#8a8393]">{labels.route}</dt>
+          <dd className="mt-1 text-sm font-semibold text-[#394150]">{getLocalizedRouteName(shipment.routeName, languageKey)}</dd>
+        </div>
+        <div className="rounded-lg bg-[#f8f7fb] px-4 py-3">
+          <dt className="text-xs font-semibold uppercase text-[#8a8393]">{labels.driver}</dt>
+          <dd className="mt-1 text-sm font-semibold text-[#394150]">{shipment.driverName}</dd>
+        </div>
+        <div className="rounded-lg bg-[#f8f7fb] px-4 py-3">
+          <dt className="text-xs font-semibold uppercase text-[#8a8393]">{labels.eta}</dt>
+          <dd className="mt-1 text-sm font-semibold text-[#394150]">{shipment.eta}</dd>
+        </div>
+        <div className="rounded-lg bg-[#f8f7fb] px-4 py-3">
+          <dt className="text-xs font-semibold uppercase text-[#8a8393]">{labels.stops}</dt>
+          <dd className="mt-1 text-sm font-semibold text-[#394150]">{shipment.stops.length}</dd>
+        </div>
+      </dl>
+
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-[#ece8f1] pt-5">
+        <p className="max-w-2xl text-sm leading-6 text-[#6d7685]">
+          <span className="font-semibold text-[#394150]">{labels.cargo}:</span> {shipment.cargoSummary || "--"}
+          <span className="mx-2 text-[#c7bfcc]">/</span>
+          <span className="font-semibold text-[#394150]">{labels.weight}:</span> {shipment.weightKg.toLocaleString()} kg
+          <span className="mx-2 text-[#c7bfcc]">/</span>
+          <span className="font-semibold text-[#394150]">{labels.deliveries}:</span> {shipment.deliveriesToday}
+        </p>
         <Link
           className="inline-flex rounded-lg bg-[#fff2f5] px-3 py-2 text-sm font-semibold text-[#d9546d] transition hover:bg-[#ef667c] hover:text-white"
           href={`/dispatcher/tracking/${toVehicleSlug(shipment.id)}`}
         >
-          {action}
+          {openLabel}
         </Link>
-        <form action={updateShipmentLifecycleAction}>
-          <input name="id" type="hidden" value={shipment.id} />
-          <input name="status" type="hidden" value="On Route" />
-          <button className="rounded-lg bg-[#eef9f1] px-3 py-2 text-sm font-semibold text-[#2d8f4d]" type="submit">
-            {approveLabel}
-          </button>
-        </form>
-        <form action={updateShipmentLifecycleAction}>
-          <input name="id" type="hidden" value={shipment.id} />
-          <input name="status" type="hidden" value="Inactive" />
-          <button className="rounded-lg border border-[#f0b4c0] px-3 py-2 text-sm font-semibold text-[#d9546d]" type="submit">
-            {rejectLabel}
-          </button>
-        </form>
       </div>
     </article>
   );
@@ -219,9 +311,7 @@ export function AdminOverview({ shipments }: { shipments: ShipmentCard[] }) {
   const content = languages[languageKey].roleDashboard;
   const overview = content.overviews;
   const emptyStates = content.emptyStates;
-  const defaultShipment = shipments.find((shipment) => shipment.active) ?? shipments[0];
-
-  if (!defaultShipment) {
+  if (!shipments.length) {
     return (
       <EmptyFleetState
         actionLabel={emptyStates.adminNoData.action}
@@ -235,6 +325,7 @@ export function AdminOverview({ shipments }: { shipments: ShipmentCard[] }) {
   const totalDeliveries = shipments.reduce((sum, item) => sum + item.deliveriesToday, 0);
   const totalFuelCost = shipments.reduce((sum, item) => sum + item.fuelCostUsd, 0);
   const totalWeight = shipments.reduce((sum, item) => sum + item.weightKg, 0);
+  const defaultShipment = shipments.find((shipment) => shipment.active) ?? shipments[0];
   const defaultTrackingHref = `/dispatcher/tracking/${toVehicleSlug(defaultShipment.id)}`;
 
   return (
@@ -245,24 +336,17 @@ export function AdminOverview({ shipments }: { shipments: ShipmentCard[] }) {
         <ActionCard label={overview.admin.cargoWeight} value={`${totalWeight.toLocaleString()} ${content.units.kilograms}`} href="/viewer" action={overview.admin.openViewer} />
         <ActionCard label={overview.admin.fuelCost} value={`$${totalFuelCost}`} href="/admin" action={overview.admin.review} />
       </div>
-      <div className="grid gap-4 xl:grid-cols-2">
-        {shipments.slice(0, 4).map((shipment) => (
-          <AdminApprovalCard
-            action={overview.common.openRoute}
-            approveLabel={overview.admin.approveRoute}
+      <div className="space-y-4">
+        {shipments.map((shipment, index) => (
+          <AdminDeliveryRow
+            index={index}
             key={shipment.id}
-            rejectLabel={overview.admin.rejectRoute}
-            routeName={getLocalizedRouteName(shipment.routeName, languageKey)}
+            languageKey={languageKey}
+            openLabel={overview.common.openRoute}
             shipment={shipment}
-            status={getLocalizedStatus(shipment.status, content)}
           />
         ))}
       </div>
-      <RouteMapSection
-        mapLabel={overview.common.map}
-        routeName={getLocalizedRouteName(defaultShipment.routeName, languageKey)}
-        status={getLocalizedStatus(defaultShipment.status, content)}
-      />
     </section>
   );
 }

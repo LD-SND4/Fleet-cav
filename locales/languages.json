@@ -1,14 +1,66 @@
 {
   "en": {
     "languageName": "English",
-    "roleLogin": {
-      "brand": "FleetCav",
+    "appLogin": {
+      "brand": "Fleet-cav",
+      "eyebrow": "Fleet operations",
+      "status": "Secure access",
+      "title": "Start your fleet workspace.",
+      "intro": "Sign in or create an account to continue into Fleet-cav operations.",
+      "formEyebrow": "Account access",
+      "loading": "Opening workspace...",
+      "authNote": "Access is matched to the role stored on your Supabase profile.",
+      "confirmEmail": "Check your email to confirm this account before logging in.",
+      "login": {
+        "tab": "Log in",
+        "title": "Log in",
+        "action": "Continue"
+      },
+      "register": {
+        "tab": "Register",
+        "title": "Create account",
+        "action": "Create account"
+      },
+      "fields": {
+        "name": "Full name",
+        "email": "Email",
+        "password": "Password"
+      },
+      "placeholders": {
+        "name": "Operations manager",
+        "email": "name@company.com",
+        "password": "Enter password"
+      },
+      "errors": {
+        "authFailed": "We could not complete this authentication request.",
+        "emailRequired": "Enter your email to continue.",
+        "nameRequired": "Enter your full name to create an account.",
+        "passwordRequired": "Enter your password to continue.",
+        "profileRequired": "This user is not registered with a Fleet-cav profile."
+      },
+      "metrics": [
+        {
+          "value": "24/7",
+          "label": "Dispatch"
+        },
+        {
+          "value": "5",
+          "label": "Live fleets"
+        },
+        {
+          "value": "4",
+          "label": "Role views"
+        }
+      ]
+    },
+    "roleSelection": {
+      "brand": "Fleet-cav",
       "title": "Select your role",
-      "intro": "Choose a user type first. Admin, dispatcher, and driver views require only a password for this POC; viewer access opens a simplified fleet view without a password.",
+      "intro": "Choose a user type first. For testing, every dashboard opens without a password after selecting a role.",
       "currentSelection": "Current selection",
       "noUserTypeSelected": "No user type selected",
-      "passwordRequired": "Password required",
-      "viewerNoPassword": "Viewer access does not require a password",
+      "passwordRequired": "No password required",
+      "viewerNoPassword": "Testing access does not require a password",
       "pickRolePrompt": "Pick one of the role cards to unlock the next step",
       "password": "Password",
       "passwordPlaceholder": "Enter {role} password",
@@ -29,17 +81,17 @@
         "admin_user": {
           "label": "Admin",
           "description": "Review fleet performance, timing, deliveries, and dispatcher reports.",
-          "metric": "Full access"
+          "metric": "No password"
         },
         "dispatcher_user": {
           "label": "Dispatcher",
           "description": "Create routes, assign drivers, and monitor live fleet operations.",
-          "metric": "Live board"
+          "metric": "No password"
         },
         "driver_user": {
           "label": "Driver",
           "description": "See the assigned route, vehicle, cargo, map, and emergency actions.",
-          "metric": "Assigned trip"
+          "metric": "No password"
         },
         "viewer_user": {
           "label": "Viewer",
@@ -248,10 +300,10 @@
         }
       },
       "emptyStates": {
-        "eyebrow": "Supabase",
+        "eyebrow": "Fleet records",
         "adminNoData": {
           "title": "No fleet data yet",
-          "description": "No Supabase shipments exist yet. Add fleets, drivers, and shipments to start the delivery process from real database records.",
+          "description": "No deliveries exist yet. Add fleets, drivers, and shipments to start the delivery process from real records.",
           "action": "Open dispatcher data"
         },
         "dispatcherStart": {
@@ -335,14 +387,66 @@
   },
   "es": {
     "languageName": "Espanol",
-    "roleLogin": {
-      "brand": "FleetCav",
+    "appLogin": {
+      "brand": "Fleet-cav",
+      "eyebrow": "Operaciones de flota",
+      "status": "Acceso seguro",
+      "title": "Inicia tu espacio de flota.",
+      "intro": "Inicia sesion o crea una cuenta para continuar a las operaciones de Fleet-cav.",
+      "formEyebrow": "Acceso de cuenta",
+      "loading": "Abriendo espacio...",
+      "authNote": "El acceso se conecta con el rol guardado en tu perfil de Supabase.",
+      "confirmEmail": "Revisa tu correo para confirmar esta cuenta antes de iniciar sesion.",
+      "login": {
+        "tab": "Ingresar",
+        "title": "Iniciar sesion",
+        "action": "Continuar"
+      },
+      "register": {
+        "tab": "Registro",
+        "title": "Crear cuenta",
+        "action": "Crear cuenta"
+      },
+      "fields": {
+        "name": "Nombre completo",
+        "email": "Correo",
+        "password": "Contrasena"
+      },
+      "placeholders": {
+        "name": "Gerente de operaciones",
+        "email": "nombre@empresa.com",
+        "password": "Ingresa contrasena"
+      },
+      "errors": {
+        "authFailed": "No pudimos completar esta solicitud de autenticacion.",
+        "emailRequired": "Ingresa tu correo para continuar.",
+        "nameRequired": "Ingresa tu nombre completo para crear una cuenta.",
+        "passwordRequired": "Ingresa tu contrasena para continuar.",
+        "profileRequired": "Este usuario no esta registrado con un perfil de Fleet-cav."
+      },
+      "metrics": [
+        {
+          "value": "24/7",
+          "label": "Despacho"
+        },
+        {
+          "value": "5",
+          "label": "Flotas vivas"
+        },
+        {
+          "value": "4",
+          "label": "Vistas de rol"
+        }
+      ]
+    },
+    "roleSelection": {
+      "brand": "Fleet-cav",
       "title": "Selecciona tu rol",
-      "intro": "Elige primero un tipo de usuario. Las vistas de administrador, despachador y conductor solo requieren una contrasena para este POC; el acceso de visor abre una vista simplificada de la flota sin contrasena.",
+      "intro": "Elige primero un tipo de usuario. Para pruebas, cada panel abre sin contrasena despues de seleccionar un rol.",
       "currentSelection": "Seleccion actual",
       "noUserTypeSelected": "No hay tipo de usuario seleccionado",
-      "passwordRequired": "Contrasena requerida",
-      "viewerNoPassword": "El acceso de visor no requiere contrasena",
+      "passwordRequired": "No requiere contrasena",
+      "viewerNoPassword": "El acceso de prueba no requiere contrasena",
       "pickRolePrompt": "Elige una tarjeta de rol para desbloquear el siguiente paso",
       "password": "Contrasena",
       "passwordPlaceholder": "Ingresa la contrasena de {role}",
@@ -363,20 +467,20 @@
         "admin_user": {
           "label": "Administrador",
           "description": "Revisa el rendimiento de la flota, tiempos, entregas y reportes del despachador.",
-          "metric": "Acceso total"
+          "metric": "Sin contrasena"
         },
         "dispatcher_user": {
           "label": "Despachador",
           "description": "Crea rutas, asigna conductores y monitorea las operaciones de la flota en vivo.",
-          "metric": "Tablero en vivo"
+          "metric": "Sin contrasena"
         },
         "driver_user": {
           "label": "Conductor",
           "description": "Consulta la ruta asignada, vehiculo, carga, mapa y acciones de emergencia.",
-          "metric": "Viaje asignado"
+          "metric": "Sin contrasena"
         },
         "viewer_user": {
-          "label": "Visor",
+          "label": "Visualizador",
           "description": "Abre una vista de flota aprobada por el despachador con ruta, carga y tiempos de entrega.",
           "metric": "Sin contrasena"
         }
@@ -387,7 +491,7 @@
         "admin": "Administrador",
         "dispatcher": "Despachador",
         "driver": "Conductor",
-        "viewer": "Visor"
+        "viewer": "Visualizador"
       },
       "descriptions": {
         "adminHome": "Rendimiento de flota e inteligencia de entregas",
@@ -428,7 +532,7 @@
           "deliveries": "Entregas",
           "openDispatch": "Abrir despacho",
           "cargoWeight": "Peso de carga",
-          "openViewer": "Abrir visor",
+          "openViewer": "Abrir Visualizador",
           "fuelCost": "Costo de combustible",
           "review": "Revisar",
           "approveRoute": "Aprobar ruta",
@@ -582,10 +686,10 @@
         }
       },
       "emptyStates": {
-        "eyebrow": "Supabase",
+        "eyebrow": "Registros de flota",
         "adminNoData": {
           "title": "Aun no hay datos de flota",
-          "description": "Aun no existen envios en Supabase. Agrega flotas, conductores y envios para iniciar el proceso de entrega desde registros reales.",
+          "description": "Aun no existen entregas. Agrega flotas, conductores y envios para iniciar el proceso de entrega desde registros reales.",
           "action": "Abrir datos del despachador"
         },
         "dispatcherStart": {
@@ -600,7 +704,7 @@
         },
         "viewerFleetNotFound": {
           "title": "Flota no encontrada",
-          "description": "Esta flota aun no existe en Supabase. Agrega la flota y un envio aprobado antes de abrir la pagina del visor.",
+          "description": "Esta flota aun no existe en Supabase. Agrega la flota y un envio aprobado antes de abrir la pagina del Visualizador.",
           "action": "Abrir datos del despachador"
         }
       }

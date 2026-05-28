@@ -28,10 +28,13 @@ export function RoleLayoutShell({
 }) {
   const { languageKey, setLanguageKey } = useLanguage();
   const content = languages[languageKey].roleDashboard;
+  const shellNavItems = navItems.some((item) => item.href === "/login")
+    ? navItems
+    : [...navItems, { labelKey: "switchUser" as const, href: "/login" }];
 
   return (
-    <main className="min-h-screen bg-[#787781] px-5 py-6 text-[#201c27] sm:px-8 lg:px-10">
-      <div className="relative mx-auto min-h-[calc(100vh-3rem)] max-w-7xl overflow-hidden rounded-lg border border-white/35 bg-white/70 shadow-[0_40px_120px_rgba(33,24,46,0.22)] backdrop-blur">
+    <main className="min-h-screen bg-[#f4f2fb] text-[#201c27]">
+      <div className="relative min-h-screen overflow-hidden bg-white/70">
         <header className="border-b border-[#ece8f1] bg-[#fbfafc]">
           <div className="flex flex-wrap items-center justify-between gap-5 px-7 py-7 sm:px-10">
             <div className="flex items-center gap-4">
@@ -46,11 +49,16 @@ export function RoleLayoutShell({
               </div>
             </div>
             <nav className="flex flex-wrap gap-2">
-              {navItems.map((item) => (
+              {shellNavItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="rounded-lg border border-[#ece8f1] bg-white px-4 py-2 text-sm font-semibold text-[#394150] shadow-[0_10px_24px_rgba(69,48,107,0.05)] transition hover:border-[#ef667c] hover:text-[#d9546d]"
+                  className={[
+                    "rounded-lg border px-4 py-2 text-sm font-semibold shadow-[0_10px_24px_rgba(69,48,107,0.05)] transition",
+                    item.href === "/login"
+                      ? "border-[#f0b4c0] bg-[#fff2f5] text-[#d9546d] hover:border-[#ef667c] hover:bg-[#ef667c] hover:text-white"
+                      : "border-[#ece8f1] bg-white text-[#394150] hover:border-[#ef667c] hover:text-[#d9546d]",
+                  ].join(" ")}
                 >
                   {content.nav[item.labelKey]}
                 </Link>
@@ -58,7 +66,7 @@ export function RoleLayoutShell({
             </nav>
           </div>
         </header>
-        <div className="bg-[#f4f2fb] px-7 py-8 sm:px-10">{children}</div>
+        <div className="min-h-[calc(100vh-7rem)] bg-[#f4f2fb] px-5 py-6 sm:px-8 lg:px-10">{children}</div>
         <div className="absolute bottom-4 right-4 rounded-full border border-[#ece8f1] bg-white/90 p-1 shadow-[0_12px_28px_rgba(69,48,107,0.14)] backdrop-blur">
           {(["es", "en"] as LanguageKey[]).map((key) => (
             <button

@@ -1,15 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const protectedPrefixes = ["/admin", "/dispatcher", "/driver", "/viewer"];
+const authCookieNames = [
+  "fleetcav_access_token",
+  "fleetcav_refresh_token",
+  "fleetcav_role",
+  "fleetcav_user_id",
+];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname === "/login") {
     const response = NextResponse.next();
-    response.cookies.set("fleetcav_role", "", {
-      maxAge: 0,
-      path: "/",
+
+    authCookieNames.forEach((cookieName) => {
+      response.cookies.set(cookieName, "", {
+        maxAge: 0,
+        path: "/",
+      });
     });
 
     return response;
@@ -21,9 +30,11 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  const accessTokenCookie = request.cookies.get("fleetcav_access_token");
   const roleCookie = request.cookies.get("fleetcav_role");
+  const userIdCookie = request.cookies.get("fleetcav_user_id");
 
-  if (roleCookie) {
+  if (accessTokenCookie && roleCookie && userIdCookie) {
     return NextResponse.next();
   }
 
