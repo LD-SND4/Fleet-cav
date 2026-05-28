@@ -1,5 +1,33 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Environment Variables
+
+Create `.env.local` for local development:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+SUPABASE_SECRET_KEY=your-secret-key
+```
+
+Legacy Supabase key names are also supported:
+
+```bash
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+```
+
+For Vercel deployments, add the same variable names in the project dashboard under
+**Settings -> Environment Variables** for the environments you deploy to. At minimum,
+Production needs:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` or `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SECRET_KEY` or `SUPABASE_SERVICE_ROLE_KEY`
+
+Redeploy after adding or changing these variables. The app logs the missing variable
+names in Vercel function logs if Supabase auth cannot be initialized.
+
 ## Getting Started
 
 First, run the development server:

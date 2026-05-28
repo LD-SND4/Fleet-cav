@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import type { Database } from "@/lib/supabase/database.types";
-import { createSupabaseAuthClient, createSupabaseServerClient } from "@/lib/supabase/server";
+import {
+  createSupabaseAuthClient,
+  createSupabaseServerClient,
+  getMissingSupabaseAuthEnv,
+  getMissingSupabaseServerEnv,
+} from "@/lib/supabase/server";
 
 type AccountMode = "login" | "register";
 type ProfileRole = Database["public"]["Tables"]["profiles"]["Row"]["role"];
@@ -31,6 +36,8 @@ export async function POST(request: NextRequest) {
   const supabase = createSupabaseAuthClient();
 
   if (!supabase) {
+    console.error("Supabase authentication is not configured. Missing env:", getMissingSupabaseAuthEnv().join(", "));
+
     return NextResponse.json({ error: "Supabase authentication is not configured." }, { status: 500 });
   }
 
@@ -127,6 +134,8 @@ async function getProfileRole(userId: string): Promise<
   const supabase = createSupabaseServerClient();
 
   if (!supabase) {
+    console.error("Supabase profile verification is not configured. Missing env:", getMissingSupabaseServerEnv().join(", "));
+
     return {
       error: "Fleet-cav profile verification is not configured.",
       ok: false,

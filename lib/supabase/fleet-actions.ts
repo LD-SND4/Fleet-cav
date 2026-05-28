@@ -176,7 +176,7 @@ function requireSupabase() {
   const supabase = createSupabaseServerClient();
 
   if (!supabase) {
-    throw new Error("Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_URL and a server key to .env.local.");
+    throw new Error("Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_URL and a Supabase server key to .env.local.");
   }
 
   return supabase;
