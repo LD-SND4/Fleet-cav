@@ -4,6 +4,8 @@ import Link from "next/link";
 
 import { LanguageKey, useLanguage } from "@/components/language-provider";
 import { CurrentLocationMap } from "@/components/map/current-location-map";
+import { WorkspacePermissionNav } from "@/components/shared/workspace-permission-nav";
+import type { PermissionRole } from "@/lib/auth/permissions";
 import languages from "@/locales/languages.json";
 
 import { sidebarItems } from "./data";
@@ -15,13 +17,16 @@ import type { ShipmentCard } from "./types";
 export function FleetDashboardShell({
   selectedShipment,
   shipments,
+  workspacePermissions,
 }: {
   selectedShipment: ShipmentCard | null;
   shipments: ShipmentCard[];
+  workspacePermissions?: PermissionRole[];
 }) {
   const { languageKey, setLanguageKey } = useLanguage();
   const content = languages[languageKey].fleetDashboard;
   const roleContent = languages[languageKey].roleDashboard;
+  const activeWorkspacePermissions: PermissionRole[] = workspacePermissions?.length ? workspacePermissions : ["dispatcher"];
 
   return (
     <main className="min-h-screen bg-[#f4f2fb] text-[#201c27]">
@@ -32,6 +37,11 @@ export function FleetDashboardShell({
           {selectedShipment ? <DetailPanel shipment={selectedShipment} /> : <EmptyTrackingDetail content={content.emptyDetail} />}
         </div>
         <div className="absolute bottom-4 right-4 flex flex-wrap justify-end gap-2">
+          <WorkspacePermissionNav
+            activePermission="dispatcher"
+            variant="floating"
+            workspacePermissions={activeWorkspacePermissions}
+          />
           <Link
             className="rounded-full border border-[#f0b4c0] bg-[#fff2f5] px-4 py-2 text-sm font-semibold text-[#d9546d] shadow-[0_12px_28px_rgba(69,48,107,0.14)] transition hover:border-[#ef667c] hover:bg-[#ef667c] hover:text-white"
             href="/login"

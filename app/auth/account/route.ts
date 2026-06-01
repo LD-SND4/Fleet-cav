@@ -1,33 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
+import { randomInt } from "crypto";
 
-import type { Database } from "@/lib/supabase/database.types";
+import {
+  getDefaultPermissionRoute,
+  normalizePermissions,
+  profileRoleCookies,
+  serializePermissions,
+  type PermissionRole,
+} from "@/lib/auth/permissions";
+import { getAuthenticatedProfilePermissions } from "@/lib/auth/profile-permissions";
 import {
   createSupabaseAuthClient,
-  createSupabaseServerClient,
   getMissingSupabaseAuthEnv,
-  getMissingSupabaseServerEnv,
 } from "@/lib/supabase/server";
 
 type AccountMode = "login" | "register";
-type ProfileRole = Database["public"]["Tables"]["profiles"]["Row"]["role"];
-
-const profileRoleRoutes: Record<ProfileRole, string> = {
-  admin: "/admin",
-  dispatcher: "/dispatcher",
-  driver: "/driver",
-  viewer: "/viewer",
-};
-
-const profileRoleCookies: Record<ProfileRole, string> = {
-  admin: "admin_user",
-  dispatcher: "dispatcher_user",
-  driver: "driver_user",
-  viewer: "viewer_user",
-};
 
 const authCookieNames = [
   "fleetcav_access_token",
+  "fleetcav_permission_requests",
   "fleetcav_refresh_token",
+  "fleetcav_permissions",
   "fleetcav_role",
   "fleetcav_user_id",
 ];
@@ -43,21 +36,21 @@ export async function POST(request: NextRequest) {
 
   const body = (await request.json()) as {
     email?: string;
-    fullName?: string;
     mode?: AccountMode;
     password?: string;
+    requestedPermissions?: unknown;
   };
   const mode = body.mode === "register" ? "register" : "login";
   const email = body.email?.trim().toLowerCase() ?? "";
-  const fullName = body.fullName?.trim() ?? "";
   const password = body.password ?? "";
+  const requestedPermissions = mode === "register" ? normalizePermissions(body.requestedPermissions) : [];
 
   if (!email || !password) {
     return NextResponse.json({ error: "Email and password are required." }, { status: 400 });
   }
 
-  if (mode === "register" && !fullName) {
-    return NextResponse.json({ error: "Full name is required." }, { status: 400 });
+  if (mode === "register" && !requestedPermissions.length) {
+    return NextResponse.json({ error: "Select at least one workspace permission." }, { status: 400 });
   }
 
   const { data, error } = mode === "register"
@@ -66,7 +59,8 @@ export async function POST(request: NextRequest) {
         password,
         options: {
           data: {
-            full_name: fullName,
+            full_name: createGeneratedUserName(email),
+            requested_permissions: requestedPermissions,
           },
         },
       })
@@ -90,22 +84,25 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  const profileRoleResult = await getProfileRole(data.user.id);
+  const profileResult = await getAuthenticatedProfilePermissions(data.user.id);
 
-  if (!profileRoleResult.ok) {
-    return NextResponse.json({ error: profileRoleResult.error }, { status: profileRoleResult.status });
+  if (!profileResult.ok) {
+    return NextResponse.json({ error: profileResult.error }, { status: profileResult.status });
   }
 
-  const profileRole = profileRoleResult.role;
+  const { permissions: sessionPermissions, role: profileRole } = profileResult.profile;
   const response = NextResponse.json({
+    grantedPermissions: sessionPermissions,
     ok: true,
-    redirectTo: profileRoleRoutes[profileRole],
+    permissions: sessionPermissions,
+    redirectTo: getDefaultPermissionRoute(sessionPermissions),
     role: profileRole,
   });
 
   setAuthCookies(response, {
     accessToken: data.session.access_token,
     expiresIn: data.session.expires_in,
+    permissions: sessionPermissions,
     refreshToken: data.session.refresh_token,
     role: profileRole,
     userId: data.user.id,
@@ -120,66 +117,14 @@ export function DELETE() {
   return response;
 }
 
-async function getProfileRole(userId: string): Promise<
-  | {
-      ok: true;
-      role: ProfileRole;
-    }
-  | {
-      error: string;
-      ok: false;
-      status: number;
-    }
-> {
-  const supabase = createSupabaseServerClient();
-
-  if (!supabase) {
-    console.error("Supabase profile verification is not configured. Missing env:", getMissingSupabaseServerEnv().join(", "));
-
-    return {
-      error: "Fleet-cav profile verification is not configured.",
-      ok: false,
-      status: 500,
-    };
-  }
-
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", userId)
-    .maybeSingle();
-
-  if (error) {
-    console.error("Unable to load authenticated user profile:", error.message);
-
-    return {
-      error: "We could not verify this user's Fleet-cav profile.",
-      ok: false,
-      status: 500,
-    };
-  }
-
-  if (!data?.role) {
-    return {
-      error: "This account exists in Auth, but it is not registered in Fleet-cav profiles.",
-      ok: false,
-      status: 403,
-    };
-  }
-
-  return {
-    ok: true,
-    role: data.role,
-  };
-}
-
 function setAuthCookies(
   response: NextResponse,
   values: {
     accessToken: string;
     expiresIn: number;
+    permissions: PermissionRole[];
     refreshToken: string;
-    role: ProfileRole;
+    role: PermissionRole;
     userId: string;
   },
 ) {
@@ -196,6 +141,13 @@ function setAuthCookies(
   response.cookies.set("fleetcav_refresh_token", values.refreshToken, {
     httpOnly: true,
     maxAge: 60 * 60 * 24 * 30,
+    path: "/",
+    sameSite: "lax",
+    secure,
+  });
+  response.cookies.set("fleetcav_permissions", serializePermissions(values.permissions), {
+    httpOnly: true,
+    maxAge: 60 * 60 * 24,
     path: "/",
     sameSite: "lax",
     secure,
@@ -223,4 +175,15 @@ function clearAuthCookies(response: NextResponse) {
       path: "/",
     });
   });
+}
+
+function createGeneratedUserName(email: string) {
+  const [localPart] = email.split("@");
+  const baseName = localPart
+    .split(/[^a-z0-9]+/i)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join(" ");
+
+  return `${baseName || "Fleet User"} ${randomInt(1000, 10000)}`;
 }

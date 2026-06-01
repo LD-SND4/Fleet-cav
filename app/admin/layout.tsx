@@ -4,7 +4,7 @@ import { RoleLayoutShell } from "@/components/role-dashboard/role-layout-shell";
 import { requireAuthenticatedProfile } from "@/lib/auth/require-authenticated-profile";
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
-  await requireAuthenticatedProfile();
+  const profile = await requireAuthenticatedProfile("admin");
 
   return (
     <RoleLayoutShell
@@ -15,6 +15,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         { labelKey: "dispatcherTracking", href: "/dispatcher/tracking" },
         { labelKey: "switchUser", href: "/login" },
       ]}
+      workspacePermissions={profile.permissions}
     >
       {children}
     </RoleLayoutShell>

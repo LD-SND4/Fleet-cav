@@ -27,6 +27,23 @@ function getDetailStatus(status: string, content: DetailContent) {
 export function DetailPanel({ shipment }: { shipment: ShipmentCard }) {
   const { languageKey } = useLanguage();
   const content = languages[languageKey].fleetDashboard.detail;
+  const telemetryItems = [
+    shipment.currentLatitude != null && shipment.currentLongitude != null
+      ? {
+          label: content.currentLocation,
+          value: `${shipment.currentLatitude.toFixed(5)}, ${shipment.currentLongitude.toFixed(5)}`,
+        }
+      : null,
+    shipment.averageSpeedKmh !== null && shipment.averageSpeedKmh !== undefined
+      ? { label: content.averageSpeed, value: `${shipment.averageSpeedKmh} km/h` }
+      : null,
+    shipment.temperatureCelsius !== null && shipment.temperatureCelsius !== undefined
+      ? { label: content.temperature, value: `${shipment.temperatureCelsius} C` }
+      : null,
+    shipment.fuelEfficiencyKmPerGallon !== null && shipment.fuelEfficiencyKmPerGallon !== undefined
+      ? { label: content.fuelEfficiency, value: `${shipment.fuelEfficiencyKmPerGallon} km/gal` }
+      : null,
+  ].filter((item): item is { label: string; value: string } => Boolean(item));
 
   return (
     <section className="space-y-8 bg-white px-8 py-8">
@@ -73,6 +90,20 @@ export function DetailPanel({ shipment }: { shipment: ShipmentCard }) {
           </div>
         </div>
       </section>
+
+      {telemetryItems.length ? (
+        <section className="space-y-4">
+          <h3 className="text-2xl font-semibold text-[#2c2933]">{content.telemetry}</h3>
+          <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {telemetryItems.map((item) => (
+              <div className="rounded-lg border border-[#ece8f1] bg-[#f8f7fb] px-4 py-3" key={item.label}>
+                <dt className="text-xs font-semibold uppercase text-[#8a8393]">{item.label}</dt>
+                <dd className="mt-1 text-sm font-semibold text-[#394150]">{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ) : null}
 
       <section className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-4">

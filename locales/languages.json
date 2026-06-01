@@ -9,8 +9,52 @@
       "intro": "Sign in or create an account to continue into Fleet-cav operations.",
       "formEyebrow": "Account access",
       "loading": "Opening workspace...",
-      "authNote": "Access is matched to the role stored on your Supabase profile.",
+      "authNote": "Your available app views load from the permissions stored on your Supabase profile.",
       "confirmEmail": "Check your email to confirm this account before logging in.",
+      "loadingStages": {
+        "validating": "Checking account details...",
+        "authenticating": "Verifying credentials...",
+        "preparing": "Preparing workspace permissions...",
+        "opening": "Opening {role} view..."
+      },
+      "permissions": {
+        "label": "Permissions",
+        "title": "Workspace permissions",
+        "intro": "Choose one or more views for this session.",
+        "selected": "Selected",
+        "notSelected": "Not selected",
+        "available": "Available",
+        "locked": "Locked",
+        "request": "Request access",
+        "requested": "Requested",
+        "requesting": "Sending request...",
+        "requestSent": "{role} permission request sent.",
+        "workspaceTitle": "Choose a workspace view",
+        "workspaceIntro": "Only active permissions can open. Locked views stay visible for access requests.",
+        "openView": "Open {role} view",
+        "notGranted": "Not granted on this profile",
+        "notIncluded": "Not selected for this session",
+        "noneReady": "No selected permissions are active on this profile yet.",
+        "ready": "Your available workspace views are ready.",
+        "roles": {
+          "admin": {
+            "label": "Admin",
+            "description": "Fleet performance, reports, and route oversight."
+          },
+          "dispatcher": {
+            "label": "Dispatcher",
+            "description": "Route setup, driver assignment, and live operations."
+          },
+          "driver": {
+            "label": "Driver",
+            "description": "Assigned route, vehicle, cargo, map, and alerts."
+          },
+          "viewer": {
+            "label": "Viewer",
+            "description": "Dispatcher-approved fleet visibility."
+          }
+        }
+      },
       "login": {
         "tab": "Log in",
         "title": "Log in",
@@ -22,21 +66,20 @@
         "action": "Create account"
       },
       "fields": {
-        "name": "Full name",
         "email": "Email",
         "password": "Password"
       },
       "placeholders": {
-        "name": "Operations manager",
         "email": "name@company.com",
         "password": "Enter password"
       },
       "errors": {
         "authFailed": "We could not complete this authentication request.",
         "emailRequired": "Enter your email to continue.",
-        "nameRequired": "Enter your full name to create an account.",
         "passwordRequired": "Enter your password to continue.",
-        "profileRequired": "This user is not registered with a Fleet-cav profile."
+        "permissionRequired": "Select at least one workspace permission.",
+        "profileRequired": "This user is not registered with a Fleet-cav profile.",
+        "requestFailed": "We could not send this permission request."
       }
     },
     "roleSelection": {
@@ -219,11 +262,20 @@
           "label": "Label",
           "routeName": "Route name",
           "fullName": "Full name",
+          "phoneNumber": "Phone number",
+          "licenseNumber": "License number",
           "shipmentId": "Shipment ID",
           "fleet": "Fleet",
           "driver": "Driver",
           "status": "Status",
           "vehicle": "Vehicle",
+          "currentLatitude": "Current latitude",
+          "currentLongitude": "Current longitude",
+          "averageSpeedKmh": "Average speed km/h",
+          "temperatureCelsius": "Temperature C",
+          "fuelEfficiency": "Fuel efficiency km/gal",
+          "startedAt": "Started at",
+          "deliveredAt": "Delivered at",
           "weightKg": "Weight kg",
           "fuelGallons": "Fuel gallons",
           "fuelCostUsd": "Fuel cost USD",
@@ -234,8 +286,12 @@
           "cargoSummary": "Cargo summary",
           "order": "Order",
           "address": "Address",
+          "latitude": "Latitude",
+          "longitude": "Longitude",
+          "completed": "Completed",
           "photoId": "Photo ID",
           "title": "Title",
+          "imageUrl": "Image URL",
           "location": "Location",
           "capturedTime": "Captured time"
         },
@@ -244,13 +300,18 @@
           "fleetLabel": "Caracas-Valencia 01",
           "routeName": "Caracas to Valencia",
           "driverName": "Diego Fernandez",
+          "phoneNumber": "+1 555 0100",
+          "licenseNumber": "VEN-40291",
           "shipmentId": "YR-34DFR734W2",
+          "latitude": "10.500000",
+          "longitude": "-66.916664",
           "etaText": "01:38:47",
           "timeLeft": "57 min. left",
           "cargoSummary": "Electronics, sealed boxes, and fragile cargo",
           "address": "712 Miles City",
           "photoId": "photo_001",
           "photoTitle": "Point #1 Cargo Photo",
+          "imageUrl": "https://example.com/cargo-photo.jpg",
           "capturedTime": "01:35 PM"
         },
         "select": {
@@ -351,6 +412,11 @@
         "zoom": "Zoom",
         "pin": "Pin",
         "truck": "Truck",
+        "telemetry": "Telemetry",
+        "currentLocation": "Current location",
+        "averageSpeed": "Average speed",
+        "temperature": "Temperature",
+        "fuelEfficiency": "Fuel efficiency",
         "onRoute": "On Route",
         "waiting": "Waiting",
         "inactive": "Inactive"
@@ -381,8 +447,52 @@
       "intro": "Inicia sesion o crea una cuenta para continuar a las operaciones de Fleet-cav.",
       "formEyebrow": "Acceso de cuenta",
       "loading": "Abriendo espacio...",
-      "authNote": "El acceso se conecta con el rol guardado en tu perfil de Supabase.",
+      "authNote": "Tus vistas disponibles se cargan desde los permisos guardados en tu perfil de Supabase.",
       "confirmEmail": "Revisa tu correo para confirmar esta cuenta antes de iniciar sesion.",
+      "loadingStages": {
+        "validating": "Revisando datos de cuenta...",
+        "authenticating": "Verificando credenciales...",
+        "preparing": "Preparando permisos del espacio...",
+        "opening": "Abriendo vista de {role}..."
+      },
+      "permissions": {
+        "label": "Permisos",
+        "title": "Permisos de espacio",
+        "intro": "Elige una o mas vistas para esta sesion.",
+        "selected": "Seleccionado",
+        "notSelected": "No seleccionado",
+        "available": "Disponible",
+        "locked": "Bloqueado",
+        "request": "Solicitar acceso",
+        "requested": "Solicitado",
+        "requesting": "Enviando solicitud...",
+        "requestSent": "Solicitud de permiso {role} enviada.",
+        "workspaceTitle": "Elige una vista de trabajo",
+        "workspaceIntro": "Solo los permisos activos pueden abrir. Las vistas bloqueadas quedan visibles para solicitar acceso.",
+        "openView": "Abrir vista {role}",
+        "notGranted": "No otorgado en este perfil",
+        "notIncluded": "No seleccionado para esta sesion",
+        "noneReady": "Ningun permiso seleccionado esta activo en este perfil aun.",
+        "ready": "Tus vistas de trabajo disponibles estan listas.",
+        "roles": {
+          "admin": {
+            "label": "Administrador",
+            "description": "Rendimiento de flota, reportes y supervision de rutas."
+          },
+          "dispatcher": {
+            "label": "Despachador",
+            "description": "Configuracion de rutas, asignacion de conductores y operaciones en vivo."
+          },
+          "driver": {
+            "label": "Conductor",
+            "description": "Ruta asignada, vehiculo, carga, mapa y alertas."
+          },
+          "viewer": {
+            "label": "Visualizador",
+            "description": "Visibilidad de flota aprobada por el despachador."
+          }
+        }
+      },
       "login": {
         "tab": "Ingresar",
         "title": "Iniciar sesion",
@@ -394,21 +504,20 @@
         "action": "Crear cuenta"
       },
       "fields": {
-        "name": "Nombre completo",
         "email": "Correo",
         "password": "Contrasena"
       },
       "placeholders": {
-        "name": "Gerente de operaciones",
         "email": "nombre@empresa.com",
         "password": "Ingresa contrasena"
       },
       "errors": {
         "authFailed": "No pudimos completar esta solicitud de autenticacion.",
         "emailRequired": "Ingresa tu correo para continuar.",
-        "nameRequired": "Ingresa tu nombre completo para crear una cuenta.",
         "passwordRequired": "Ingresa tu contrasena para continuar.",
-        "profileRequired": "Este usuario no esta registrado con un perfil de Fleet-cav."
+        "permissionRequired": "Selecciona al menos un permiso de espacio.",
+        "profileRequired": "Este usuario no esta registrado con un perfil de Fleet-cav.",
+        "requestFailed": "No pudimos enviar esta solicitud de permiso."
       }
     },
     "roleSelection": {
@@ -591,11 +700,20 @@
           "label": "Etiqueta",
           "routeName": "Nombre de ruta",
           "fullName": "Nombre completo",
+          "phoneNumber": "Telefono",
+          "licenseNumber": "Licencia",
           "shipmentId": "ID de envio",
           "fleet": "Flota",
           "driver": "Conductor",
           "status": "Estado",
           "vehicle": "Vehiculo",
+          "currentLatitude": "Latitud actual",
+          "currentLongitude": "Longitud actual",
+          "averageSpeedKmh": "Velocidad prom. km/h",
+          "temperatureCelsius": "Temperatura C",
+          "fuelEfficiency": "Eficiencia km/gal",
+          "startedAt": "Inicio",
+          "deliveredAt": "Entrega",
           "weightKg": "Peso kg",
           "fuelGallons": "Galones de combustible",
           "fuelCostUsd": "Costo combustible USD",
@@ -606,8 +724,12 @@
           "cargoSummary": "Resumen de carga",
           "order": "Orden",
           "address": "Direccion",
+          "latitude": "Latitud",
+          "longitude": "Longitud",
+          "completed": "Completado",
           "photoId": "ID de foto",
           "title": "Titulo",
+          "imageUrl": "URL de imagen",
           "location": "Ubicacion",
           "capturedTime": "Hora capturada"
         },
@@ -616,13 +738,18 @@
           "fleetLabel": "Caracas-Valencia 01",
           "routeName": "Caracas a Valencia",
           "driverName": "Diego Fernandez",
+          "phoneNumber": "+58 412 0100000",
+          "licenseNumber": "VEN-40291",
           "shipmentId": "YR-34DFR734W2",
+          "latitude": "10.500000",
+          "longitude": "-66.916664",
           "etaText": "01:38:47",
           "timeLeft": "faltan 57 min.",
           "cargoSummary": "Electronicos, cajas selladas y carga fragil",
           "address": "712 Miles City",
           "photoId": "foto_001",
           "photoTitle": "Foto de carga punto #1",
+          "imageUrl": "https://example.com/foto-carga.jpg",
           "capturedTime": "01:35 PM"
         },
         "select": {
@@ -723,6 +850,11 @@
         "zoom": "Zoom",
         "pin": "Pin",
         "truck": "Camion",
+        "telemetry": "Telemetria",
+        "currentLocation": "Ubicacion actual",
+        "averageSpeed": "Velocidad promedio",
+        "temperature": "Temperatura",
+        "fuelEfficiency": "Eficiencia combustible",
         "onRoute": "En ruta",
         "waiting": "En espera",
         "inactive": "Inactivo"

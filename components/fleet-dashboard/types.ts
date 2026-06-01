@@ -17,8 +17,14 @@ export type ShipmentCard = {
   fleetLabel: string;
   driverName: string;
   routeName: string;
+  averageSpeedKmh?: number | null;
   cargoSummary: string;
+  currentLatitude?: number | null;
+  currentLongitude?: number | null;
+  deliveredAt?: string | null;
   weightKg: number;
+  temperatureCelsius?: number | null;
+  fuelEfficiencyKmPerGallon?: number | null;
   fuelUsageGallons: number;
   fuelCostUsd: number;
   distanceKm: number;
@@ -27,12 +33,14 @@ export type ShipmentCard = {
   eta: string;
   timeLeft: string;
   stops: string[];
+  startedAt?: string | null;
   vehicleType: "box" | "semi" | "van";
   active?: boolean;
 };
 
 export type CargoPhoto = {
   id: string;
+  imageUrl?: string | null;
   title: string;
   location: string;
   time: string;

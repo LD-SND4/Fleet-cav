@@ -4,9 +4,11 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { LanguageKey, useLanguage } from "@/components/language-provider";
+import { WorkspacePermissionNav } from "@/components/shared/workspace-permission-nav";
+import type { PermissionRole } from "@/lib/auth/permissions";
 import languages from "@/locales/languages.json";
 
-type RoleKey = keyof typeof languages.en.roleDashboard.roles;
+type RoleKey = PermissionRole;
 type RoleDescriptionKey = keyof typeof languages.en.roleDashboard.descriptions;
 type RoleNavKey = keyof typeof languages.en.roleDashboard.nav;
 
@@ -19,15 +21,18 @@ export function RoleLayoutShell({
   roleKey,
   descriptionKey,
   navItems,
+  workspacePermissions,
   children,
 }: {
   roleKey: RoleKey;
   descriptionKey: RoleDescriptionKey;
   navItems: RoleNavItem[];
+  workspacePermissions?: PermissionRole[];
   children: ReactNode;
 }) {
   const { languageKey, setLanguageKey } = useLanguage();
   const content = languages[languageKey].roleDashboard;
+  const activeWorkspacePermissions = workspacePermissions?.length ? workspacePermissions : [roleKey];
   const shellNavItems = navItems.some((item) => item.href === "/login")
     ? navItems
     : [...navItems, { labelKey: "switchUser" as const, href: "/login" }];
@@ -49,6 +54,7 @@ export function RoleLayoutShell({
               </div>
             </div>
             <nav className="flex flex-wrap gap-2">
+              <WorkspacePermissionNav activePermission={roleKey} workspacePermissions={activeWorkspacePermissions} />
               {shellNavItems.map((item) => (
                 <Link
                   key={item.href}

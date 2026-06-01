@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 
 const authCookieNames = [
   "fleetcav_access_token",
+  "fleetcav_permission_requests",
   "fleetcav_refresh_token",
+  "fleetcav_permissions",
   "fleetcav_role",
   "fleetcav_user_id",
 ];

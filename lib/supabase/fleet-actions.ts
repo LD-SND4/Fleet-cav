@@ -32,15 +32,19 @@ export async function deleteFleetAction(formData: FormData) {
 export async function upsertDriverAction(formData: FormData) {
   const supabase = requireSupabase();
   const id = getText(formData, "id", false);
+  const basePayload = {
+    ...(id ? { id } : {}),
+    full_name: getText(formData, "full_name"),
+  };
+  const pocPayload = {
+    ...basePayload,
+    license_number: getText(formData, "license_number", false),
+    phone_number: getText(formData, "phone_number", false),
+  };
 
-  await throwIfError(
-    supabase.from("drivers").upsert(
-      {
-        ...(id ? { id } : {}),
-        full_name: getText(formData, "full_name"),
-      },
-      { onConflict: "full_name" },
-    ),
+  await throwIfErrorWithFallback(
+    () => supabase.from("drivers").upsert(pocPayload, { onConflict: "full_name" }),
+    () => supabase.from("drivers").upsert(basePayload, { onConflict: "full_name" }),
     "driver",
   );
 
@@ -62,23 +66,36 @@ export async function upsertShipmentAction(formData: FormData) {
     await throwIfError(supabase.from("shipments").update({ is_active: false }).eq("is_active", true), "shipment");
   }
 
-  await throwIfError(
-    supabase.from("shipments").upsert({
-      cargo_summary: getText(formData, "cargo_summary", false),
-      deliveries_today: getInteger(formData, "deliveries_today"),
-      distance_km: getInteger(formData, "distance_km"),
-      driver_id: getText(formData, "driver_id"),
-      eta_text: getText(formData, "eta_text", false),
-      fleet_id: getText(formData, "fleet_id"),
-      fuel_cost_usd: getNumber(formData, "fuel_cost_usd"),
-      fuel_usage_gallons: getNumber(formData, "fuel_usage_gallons"),
-      id: getText(formData, "id"),
-      is_active: isActive,
-      status: getText(formData, "status") as "On Route" | "Waiting" | "Inactive",
-      time_left_text: getText(formData, "time_left_text", false),
-      vehicle_type: getText(formData, "vehicle_type") as "box" | "semi" | "van",
-      weight_kg: getInteger(formData, "weight_kg"),
-    }),
+  const basePayload = {
+    cargo_summary: getText(formData, "cargo_summary", false),
+    deliveries_today: getInteger(formData, "deliveries_today"),
+    distance_km: getInteger(formData, "distance_km"),
+    driver_id: getText(formData, "driver_id"),
+    eta_text: getText(formData, "eta_text", false),
+    fleet_id: getText(formData, "fleet_id"),
+    fuel_cost_usd: getNumber(formData, "fuel_cost_usd"),
+    fuel_usage_gallons: getNumber(formData, "fuel_usage_gallons"),
+    id: getText(formData, "id"),
+    is_active: isActive,
+    status: getText(formData, "status") as "On Route" | "Waiting" | "Inactive",
+    time_left_text: getText(formData, "time_left_text", false),
+    vehicle_type: getText(formData, "vehicle_type") as "box" | "semi" | "van",
+    weight_kg: getInteger(formData, "weight_kg"),
+  };
+  const pocPayload = {
+    ...basePayload,
+    average_speed_kmh: getNumber(formData, "average_speed_kmh"),
+    current_latitude: getNumber(formData, "current_latitude"),
+    current_longitude: getNumber(formData, "current_longitude"),
+    delivered_at: getText(formData, "delivered_at", false),
+    fuel_efficiency_km_per_gallon: getNumber(formData, "fuel_efficiency_km_per_gallon"),
+    started_at: getText(formData, "started_at", false),
+    temperature_celsius: getNumber(formData, "temperature_celsius"),
+  };
+
+  await throwIfErrorWithFallback(
+    () => supabase.from("shipments").upsert(pocPayload),
+    () => supabase.from("shipments").upsert(basePayload),
     "shipment",
   );
 
@@ -118,16 +135,21 @@ export async function updateShipmentLifecycleAction(formData: FormData) {
 
 export async function upsertShipmentStopAction(formData: FormData) {
   const supabase = requireSupabase();
+  const basePayload = {
+    address: getText(formData, "address"),
+    shipment_id: getText(formData, "shipment_id"),
+    stop_order: getInteger(formData, "stop_order") ?? 1,
+  };
+  const pocPayload = {
+    ...basePayload,
+    completed: formData.get("completed") === "on",
+    latitude: getNumber(formData, "latitude"),
+    longitude: getNumber(formData, "longitude"),
+  };
 
-  await throwIfError(
-    supabase.from("shipment_stops").upsert(
-      {
-        address: getText(formData, "address"),
-        shipment_id: getText(formData, "shipment_id"),
-        stop_order: getInteger(formData, "stop_order") ?? 1,
-      },
-      { onConflict: "shipment_id,stop_order" },
-    ),
+  await throwIfErrorWithFallback(
+    () => supabase.from("shipment_stops").upsert(pocPayload, { onConflict: "shipment_id,stop_order" }),
+    () => supabase.from("shipment_stops").upsert(basePayload, { onConflict: "shipment_id,stop_order" }),
     "shipment stop",
   );
 
@@ -150,15 +172,21 @@ export async function deleteShipmentStopAction(formData: FormData) {
 
 export async function upsertCargoPhotoAction(formData: FormData) {
   const supabase = requireSupabase();
+  const basePayload = {
+    captured_time_text: getText(formData, "captured_time_text", false),
+    id: getText(formData, "id"),
+    location: getText(formData, "location", false),
+    shipment_id: getText(formData, "shipment_id"),
+    title: getText(formData, "title"),
+  };
+  const pocPayload = {
+    ...basePayload,
+    image_url: getText(formData, "image_url", false),
+  };
 
-  await throwIfError(
-    supabase.from("cargo_photos").upsert({
-      captured_time_text: getText(formData, "captured_time_text", false),
-      id: getText(formData, "id"),
-      location: getText(formData, "location", false),
-      shipment_id: getText(formData, "shipment_id"),
-      title: getText(formData, "title"),
-    }),
+  await throwIfErrorWithFallback(
+    () => supabase.from("cargo_photos").upsert(pocPayload),
+    () => supabase.from("cargo_photos").upsert(basePayload),
     "cargo photo",
   );
 
@@ -191,6 +219,38 @@ async function throwIfError<T>(
   if (result.error) {
     throw new Error(`Unable to save ${entityName}: ${result.error.message}`);
   }
+}
+
+async function throwIfErrorWithFallback<T>(
+  query: () => PromiseLike<{ error: { message: string } | null; data?: T | null }>,
+  fallbackQuery: () => PromiseLike<{ error: { message: string } | null; data?: T | null }>,
+  entityName: string,
+) {
+  const result = await query();
+
+  if (!result.error) {
+    return;
+  }
+
+  if (!isSchemaMismatchError(result.error.message)) {
+    throw new Error(`Unable to save ${entityName}: ${result.error.message}`);
+  }
+
+  console.warn(`Unable to save ${entityName} with POC fields; retrying base schema:`, result.error.message);
+  const fallbackResult = await fallbackQuery();
+
+  if (fallbackResult.error) {
+    throw new Error(`Unable to save ${entityName}: ${fallbackResult.error.message}`);
+  }
+}
+
+function isSchemaMismatchError(message: string) {
+  const normalizedMessage = message.toLowerCase();
+
+  return (
+    normalizedMessage.includes("column") && normalizedMessage.includes("does not exist")
+  ) || normalizedMessage.includes("could not find")
+    || normalizedMessage.includes("schema cache");
 }
 
 function getText(formData: FormData, key: string, required?: true): string;

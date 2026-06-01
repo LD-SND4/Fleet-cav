@@ -43,6 +43,7 @@ function Field({
         name={name}
         placeholder={placeholder}
         required={required}
+        step={type === "number" ? "any" : undefined}
         type={type}
       />
     </label>
@@ -131,7 +132,11 @@ export function DispatcherDataManager({
 
         <form action={upsertDriverAction} className="space-y-4 rounded-lg border border-[#dfe3ea] bg-white p-5">
           <h3 className="text-2xl font-semibold text-[#20232a]">{content.forms.driver}</h3>
-          <Field label={content.fields.fullName} name="full_name" placeholder={content.placeholders.driverName} />
+          <div className="grid gap-4 md:grid-cols-3">
+            <Field label={content.fields.fullName} name="full_name" placeholder={content.placeholders.driverName} />
+            <Field label={content.fields.phoneNumber} name="phone_number" placeholder={content.placeholders.phoneNumber} required={false} />
+            <Field label={content.fields.licenseNumber} name="license_number" placeholder={content.placeholders.licenseNumber} required={false} />
+          </div>
           <SubmitButton>{content.actions.saveDriver}</SubmitButton>
         </form>
       </div>
@@ -166,13 +171,20 @@ export function DispatcherDataManager({
             <option value="semi">{content.vehicles.semi}</option>
             <option value="van">{content.vehicles.van}</option>
           </SelectField>
+          <Field label={content.fields.currentLatitude} name="current_latitude" placeholder={content.placeholders.latitude} required={false} type="number" />
+          <Field label={content.fields.currentLongitude} name="current_longitude" placeholder={content.placeholders.longitude} required={false} type="number" />
+          <Field label={content.fields.averageSpeedKmh} name="average_speed_kmh" required={false} type="number" />
+          <Field label={content.fields.temperatureCelsius} name="temperature_celsius" required={false} type="number" />
           <Field label={content.fields.weightKg} name="weight_kg" required={false} type="number" />
           <Field label={content.fields.fuelGallons} name="fuel_usage_gallons" required={false} type="number" />
           <Field label={content.fields.fuelCostUsd} name="fuel_cost_usd" required={false} type="number" />
+          <Field label={content.fields.fuelEfficiency} name="fuel_efficiency_km_per_gallon" required={false} type="number" />
           <Field label={content.fields.distanceKm} name="distance_km" required={false} type="number" />
           <Field label={content.fields.deliveriesToday} name="deliveries_today" required={false} type="number" />
           <Field label={content.fields.etaText} name="eta_text" placeholder={content.placeholders.etaText} required={false} />
           <Field label={content.fields.timeLeft} name="time_left_text" placeholder={content.placeholders.timeLeft} required={false} />
+          <Field label={content.fields.startedAt} name="started_at" required={false} type="datetime-local" />
+          <Field label={content.fields.deliveredAt} name="delivered_at" required={false} type="datetime-local" />
         </div>
         <label className="block space-y-2 text-sm font-semibold uppercase text-[#6d7685]">
           <span>{content.fields.cargoSummary}</span>
@@ -200,10 +212,16 @@ export function DispatcherDataManager({
               </option>
             ))}
           </SelectField>
-          <div className="grid gap-4 md:grid-cols-[8rem_1fr]">
+          <div className="grid gap-4 md:grid-cols-[8rem_1fr_10rem_10rem]">
             <Field label={content.fields.order} name="stop_order" type="number" />
             <Field label={content.fields.address} name="address" placeholder={content.placeholders.address} />
+            <Field label={content.fields.latitude} name="latitude" placeholder={content.placeholders.latitude} required={false} type="number" />
+            <Field label={content.fields.longitude} name="longitude" placeholder={content.placeholders.longitude} required={false} type="number" />
           </div>
+          <label className="flex items-center gap-3 text-sm font-semibold text-[#394150]">
+            <input className="h-4 w-4 accent-[#ef667c]" name="completed" type="checkbox" />
+            {content.fields.completed}
+          </label>
           <SubmitButton>{content.actions.saveStop}</SubmitButton>
         </form>
 
@@ -220,6 +238,7 @@ export function DispatcherDataManager({
               ))}
             </SelectField>
             <Field label={content.fields.title} name="title" placeholder={content.placeholders.photoTitle} />
+            <Field label={content.fields.imageUrl} name="image_url" placeholder={content.placeholders.imageUrl} required={false} />
             <Field label={content.fields.location} name="location" placeholder={content.placeholders.address} required={false} />
             <Field label={content.fields.capturedTime} name="captured_time_text" placeholder={content.placeholders.capturedTime} required={false} />
           </div>
@@ -246,7 +265,10 @@ export function DispatcherDataManager({
         <RecordList title={content.lists.drivers}>
           {drivers.map((driver) => (
             <li className="flex items-center justify-between gap-3 rounded-lg bg-[#f8f7fb] px-4 py-3" key={driver.id}>
-              <span className="font-semibold text-[#20232a]">{driver.full_name}</span>
+              <span>
+                <span className="block font-semibold text-[#20232a]">{driver.full_name}</span>
+                <span className="text-sm text-[#6d7685]">{driver.phone_number || driver.license_number || driver.id}</span>
+              </span>
               <form action={deleteDriverAction}>
                 <input name="id" type="hidden" value={driver.id} />
                 <DeleteButton>{content.actions.delete}</DeleteButton>

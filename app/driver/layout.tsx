@@ -4,7 +4,7 @@ import { RoleLayoutShell } from "@/components/role-dashboard/role-layout-shell";
 import { requireAuthenticatedProfile } from "@/lib/auth/require-authenticated-profile";
 
 export default async function DriverLayout({ children }: { children: ReactNode }) {
-  await requireAuthenticatedProfile();
+  const profile = await requireAuthenticatedProfile("driver");
 
   return (
     <RoleLayoutShell
@@ -14,6 +14,7 @@ export default async function DriverLayout({ children }: { children: ReactNode }
         { labelKey: "route", href: "/driver" },
         { labelKey: "switchUser", href: "/login" },
       ]}
+      workspacePermissions={profile.permissions}
     >
       {children}
     </RoleLayoutShell>
