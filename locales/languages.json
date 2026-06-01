@@ -37,21 +37,7 @@
         "nameRequired": "Enter your full name to create an account.",
         "passwordRequired": "Enter your password to continue.",
         "profileRequired": "This user is not registered with a Fleet-cav profile."
-      },
-      "metrics": [
-        {
-          "value": "24/7",
-          "label": "Dispatch"
-        },
-        {
-          "value": "5",
-          "label": "Live fleets"
-        },
-        {
-          "value": "4",
-          "label": "Role views"
-        }
-      ]
+      }
     },
     "roleSelection": {
       "brand": "Fleet-cav",
@@ -423,21 +409,7 @@
         "nameRequired": "Ingresa tu nombre completo para crear una cuenta.",
         "passwordRequired": "Ingresa tu contrasena para continuar.",
         "profileRequired": "Este usuario no esta registrado con un perfil de Fleet-cav."
-      },
-      "metrics": [
-        {
-          "value": "24/7",
-          "label": "Despacho"
-        },
-        {
-          "value": "5",
-          "label": "Flotas vivas"
-        },
-        {
-          "value": "4",
-          "label": "Vistas de rol"
-        }
-      ]
+      }
     },
     "roleSelection": {
       "brand": "Fleet-cav",

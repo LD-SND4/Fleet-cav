@@ -85,7 +85,7 @@ export function LoginScreen() {
   return (
     <main className="min-h-screen bg-[#f4f2fb] text-[#201c27]">
       <div className="grid min-h-screen lg:grid-cols-[1.05fr_0.95fr]">
-        <section className="flex min-h-[42rem] flex-col justify-between bg-[#fbfafc] px-6 py-7 sm:px-10 lg:px-12">
+        <section className="flex min-h-[42rem] flex-col bg-[#fbfafc] px-6 py-7 sm:px-10 lg:px-12">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="grid h-14 w-14 place-items-center rounded-full bg-[#29262f] text-sm font-semibold text-white">
@@ -120,15 +120,6 @@ export function LoginScreen() {
               {content.title}
             </h2>
             <p className="mt-6 max-w-xl text-lg leading-8 text-[#6f6878]">{content.intro}</p>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            {content.metrics.map((metric) => (
-              <div className="rounded-lg border border-[#ece8f1] bg-white px-4 py-4 shadow-[0_14px_28px_rgba(69,48,107,0.05)]" key={metric.label}>
-                <p className="text-2xl font-semibold text-[#2c2933]">{metric.value}</p>
-                <p className="mt-1 text-sm font-semibold uppercase text-[#8a8393]">{metric.label}</p>
-              </div>
-            ))}
           </div>
         </section>
 
