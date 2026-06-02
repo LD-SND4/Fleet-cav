@@ -9,10 +9,12 @@ import languages from "@/locales/languages.json";
 
 export function WorkspacePermissionNav({
   activePermission,
+  showGrantedLinks = true,
   workspacePermissions,
   variant = "header",
 }: {
   activePermission: PermissionRole;
+  showGrantedLinks?: boolean;
   workspacePermissions: PermissionRole[];
   variant?: "floating" | "header";
 }) {
@@ -21,6 +23,7 @@ export function WorkspacePermissionNav({
   const loginContent = languages[languageKey].appLogin;
   const accessContent = loginContent.permissions;
   const activePermissions = workspacePermissions.length ? workspacePermissions : [activePermission];
+  const canRequestMoreAccess = activePermissions.length <= 1;
   const [requestingPermission, setRequestingPermission] = useState<PermissionRole | null>(null);
   const [requestedPermissions, setRequestedPermissions] = useState<PermissionRole[]>([]);
   const [message, setMessage] = useState("");
@@ -52,42 +55,56 @@ export function WorkspacePermissionNav({
     }
   }
 
+  const permissionActions = permissionRoles.map((permission) => {
+    const hasPermission = activePermissions.includes(permission);
+    const requested = requestedPermissions.includes(permission);
+    const requesting = requestingPermission === permission;
+
+    if (hasPermission) {
+      if (!showGrantedLinks) {
+        return null;
+      }
+
+      return (
+        <Link
+          aria-current={permission === activePermission ? "page" : undefined}
+          className={getLinkClassName({ active: permission === activePermission, variant })}
+          href={permissionRoutes[permission]}
+          key={permission}
+        >
+          {roleContent[permission]}
+        </Link>
+      );
+    }
+
+    if (!canRequestMoreAccess) {
+      return null;
+    }
+
+    return (
+      <button
+        className={getRequestClassName(variant)}
+        disabled={requesting || requested}
+        key={permission}
+        onClick={() => handleRequestPermission(permission)}
+        type="button"
+      >
+        {requesting
+          ? accessContent.requesting
+          : requested
+            ? `${roleContent[permission]} ${accessContent.requested}`
+            : `${accessContent.request}: ${roleContent[permission]}`}
+      </button>
+    );
+  });
+
+  if (!permissionActions.some(Boolean) && !message) {
+    return null;
+  }
+
   return (
     <div className="flex flex-wrap justify-end gap-2">
-      {permissionRoles.map((permission) => {
-        const hasPermission = activePermissions.includes(permission);
-        const requested = requestedPermissions.includes(permission);
-        const requesting = requestingPermission === permission;
-
-        if (hasPermission) {
-          return (
-            <Link
-              aria-current={permission === activePermission ? "page" : undefined}
-              className={getLinkClassName({ active: permission === activePermission, variant })}
-              href={permissionRoutes[permission]}
-              key={permission}
-            >
-              {roleContent[permission]}
-            </Link>
-          );
-        }
-
-        return (
-          <button
-            className={getRequestClassName(variant)}
-            disabled={requesting || requested}
-            key={permission}
-            onClick={() => handleRequestPermission(permission)}
-            type="button"
-          >
-            {requesting
-              ? accessContent.requesting
-              : requested
-                ? `${roleContent[permission]} ${accessContent.requested}`
-                : `${accessContent.request}: ${roleContent[permission]}`}
-          </button>
-        );
-      })}
+      {permissionActions}
       {message ? (
         <span
           aria-live="polite"

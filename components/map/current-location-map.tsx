@@ -14,7 +14,7 @@ type CurrentLocation = {
 type MapMessageKey = keyof typeof languages.en.fleetDashboard.map;
 
 export function CurrentLocationMap({
-  className = "h-[23rem]",
+  className = "",
 }: {
   className?: string;
 }) {
@@ -106,7 +106,13 @@ export function CurrentLocationMap({
   }, []);
 
   return (
-    <div className={`relative overflow-hidden rounded-lg border border-[#ece8f1] bg-[#f3f1f6] ${className}`}>
+    <div
+      className={[
+        "relative aspect-square overflow-hidden rounded-lg border border-[#ece8f1] bg-[#f3f1f6]",
+        "w-[min(500px,100%)] max-w-[500px]",
+        className,
+      ].join(" ")}
+    >
       <div className="h-full w-full" ref={mapContainerRef} />
       <div className="absolute left-4 top-4 max-w-xs rounded-lg bg-white/95 px-4 py-3 shadow-[0_10px_24px_rgba(69,48,107,0.12)]">
         <p className="text-sm font-semibold text-[#2c2933]">{content[messageKey]}</p>

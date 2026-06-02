@@ -136,6 +136,9 @@
         "driver": "Driver",
         "viewer": "Viewer"
       },
+      "viewSwitcher": {
+        "title": "Views"
+      },
       "descriptions": {
         "adminHome": "Fleet performance and delivery intelligence",
         "dispatcherHome": "Route setup and active fleet coordination",
@@ -573,6 +576,9 @@
         "dispatcher": "Despachador",
         "driver": "Conductor",
         "viewer": "Visualizador"
+      },
+      "viewSwitcher": {
+        "title": "Vistas"
       },
       "descriptions": {
         "adminHome": "Rendimiento de flota e inteligencia de entregas",

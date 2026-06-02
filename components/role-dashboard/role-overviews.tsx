@@ -146,19 +146,21 @@ function RouteActionCard({
   return (
     <Link
       href={href}
-      className="group block rounded-lg border border-[#dfe3ea] bg-white p-5 shadow-[0_12px_32px_rgba(32,35,42,0.04)] transition hover:-translate-y-0.5 hover:border-[#ef667c] hover:shadow-[0_18px_44px_rgba(239,102,124,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ef667c]"
+      className="group flex h-full min-h-48 flex-col justify-between rounded-lg border border-[#dfe3ea] bg-white p-5 shadow-[0_12px_32px_rgba(32,35,42,0.04)] transition hover:-translate-y-0.5 hover:border-[#ef667c] hover:shadow-[0_18px_44px_rgba(239,102,124,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ef667c]"
     >
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <p className="text-sm font-semibold uppercase text-[#6d7685]">{shipment.fleetId}</p>
-          <h2 className="mt-1 text-2xl font-semibold text-[#20232a]">{shipment.fleetLabel}</h2>
+      <div>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="text-sm font-semibold uppercase text-[#6d7685]">{shipment.fleetId}</p>
+            <h2 className="mt-1 text-2xl font-semibold text-[#20232a]">{shipment.fleetLabel}</h2>
+          </div>
+          <span className="rounded-full bg-[#eef9f1] px-3 py-1 text-sm font-semibold text-[#2d8f4d]">
+            {status}
+          </span>
         </div>
-        <span className="rounded-full bg-[#eef9f1] px-3 py-1 text-sm font-semibold text-[#2d8f4d]">
-          {status}
-        </span>
-      </div>
-      <div className="mt-6 rounded-lg bg-[#f8f7fb] px-4 py-3 text-sm font-semibold text-[#6d7685]">
-        {routeName}
+        <div className="mt-6 rounded-lg bg-[#f8f7fb] px-4 py-3 text-sm font-semibold text-[#6d7685]">
+          {routeName}
+        </div>
       </div>
       <span className="mt-5 inline-flex rounded-lg bg-[#fff2f5] px-3 py-2 text-sm font-semibold text-[#d9546d] transition group-hover:bg-[#ef667c] group-hover:text-white">
         {action}
@@ -262,7 +264,7 @@ function RouteMapSection({
   status: string;
 }) {
   return (
-    <section className="overflow-hidden rounded-lg border border-[#dfe3ea] bg-white shadow-[0_12px_32px_rgba(32,35,42,0.04)]">
+    <section className="w-full overflow-hidden rounded-lg border border-[#dfe3ea] bg-white shadow-[0_12px_32px_rgba(32,35,42,0.04)]">
       <div className="flex flex-wrap items-start justify-between gap-3 px-5 py-5">
         <div>
           <p className="text-sm font-semibold uppercase text-[#6d7685]">{mapLabel}</p>
@@ -272,7 +274,26 @@ function RouteMapSection({
           {status}
         </span>
       </div>
-      <CurrentLocationMap className="h-[22rem] rounded-none border-0 border-t border-[#ece8f1]" />
+      <CurrentLocationMap className="rounded-none border-0 border-t border-[#ece8f1]" />
+    </section>
+  );
+}
+
+function RouteMapFleetGrid({
+  children,
+  mapLabel,
+  routeName,
+  status,
+}: {
+  children: React.ReactNode;
+  mapLabel: string;
+  routeName: string;
+  status: string;
+}) {
+  return (
+    <section className="grid w-full max-w-[1266px] gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:items-stretch">
+      <RouteMapSection mapLabel={mapLabel} routeName={routeName} status={status} />
+      <div className="min-w-0">{children}</div>
     </section>
   );
 }
@@ -301,7 +322,7 @@ function EmptyFleetState({
           {actionLabel}
         </Link>
       </div>
-      <CurrentLocationMap className="h-[24rem]" />
+      <CurrentLocationMap />
     </section>
   );
 }
@@ -378,11 +399,18 @@ export function DispatcherOverview({ shipments }: { shipments: ShipmentCard[] })
         <ActionCard label={overview.dispatcher.drivers} value="6" href={defaultTrackingHref} action={overview.dispatcher.assign} />
         <ActionCard label={overview.dispatcher.reports} value={overview.dispatcher.emailSheet} href="/dispatcher/requests" action={overview.dispatcher.prepare} />
       </div>
-      <RouteMapSection
+      <RouteMapFleetGrid
         mapLabel={overview.common.map}
         routeName={getLocalizedRouteName(defaultShipment.routeName, languageKey)}
         status={getLocalizedStatus(defaultShipment.status, content)}
-      />
+      >
+        <RouteActionCard
+          action={overview.common.openRoute}
+          routeName={getLocalizedRouteName(defaultShipment.routeName, languageKey)}
+          shipment={defaultShipment}
+          status={getLocalizedStatus(defaultShipment.status, content)}
+        />
+      </RouteMapFleetGrid>
     </section>
   );
 }
@@ -415,8 +443,9 @@ export function DriverOverview({ shipment }: { shipment: ShipmentCard | null }) 
         <ActionCard label={overview.driver.routeTime} value={shipment.timeLeft} href={driverHref} action={overview.driver.openEta} />
         <ActionCard label={overview.driver.stops} value={String(shipment.stops.length)} href={driverHref} action={overview.driver.openStops} />
       </div>
-      <RouteMapSection mapLabel={overview.common.map} routeName={routeName} status={shipmentStatus} />
-      <RouteActionCard action={overview.common.openRoute} routeName={routeName} shipment={shipment} status={shipmentStatus} href={driverHref} />
+      <RouteMapFleetGrid mapLabel={overview.common.map} routeName={routeName} status={shipmentStatus}>
+        <RouteActionCard action={overview.common.openRoute} routeName={routeName} shipment={shipment} status={shipmentStatus} href={driverHref} />
+      </RouteMapFleetGrid>
       <button className="rounded-lg bg-[#ef667c] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(239,102,124,0.22)] transition hover:bg-[#e75970]" type="button">
         {overview.driver.emergencyStopAlert}
       </button>
@@ -452,8 +481,9 @@ export function ViewerFleetOverview({ shipment }: { shipment: ShipmentCard | nul
         <ActionCard label={overview.viewer.deliveryTime} value={shipment.timeLeft} href={viewerHref} action={overview.common.openRoute} />
         <ActionCard label={overview.viewer.cargo} value={`${shipment.weightKg.toLocaleString()} ${content.units.kilograms}`} href={viewerHref} action={overview.common.openRoute} />
       </div>
-      <RouteMapSection mapLabel={overview.common.map} routeName={routeName} status={shipmentStatus} />
-      <RouteActionCard action={overview.common.openRoute} routeName={routeName} shipment={shipment} status={shipmentStatus} href={viewerHref} />
+      <RouteMapFleetGrid mapLabel={overview.common.map} routeName={routeName} status={shipmentStatus}>
+        <RouteActionCard action={overview.common.openRoute} routeName={routeName} shipment={shipment} status={shipmentStatus} href={viewerHref} />
+      </RouteMapFleetGrid>
     </section>
   );
 }
