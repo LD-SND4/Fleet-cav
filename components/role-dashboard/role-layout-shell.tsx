@@ -4,7 +4,6 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { LanguageKey, useLanguage } from "@/components/language-provider";
-import { WorkspacePermissionNav } from "@/components/shared/workspace-permission-nav";
 import { WorkspaceViewSidebar } from "@/components/shared/workspace-view-sidebar";
 import type { PermissionRole } from "@/lib/auth/permissions";
 import languages from "@/locales/languages.json";
@@ -34,9 +33,7 @@ export function RoleLayoutShell({
   const { languageKey, setLanguageKey } = useLanguage();
   const content = languages[languageKey].roleDashboard;
   const activeWorkspacePermissions = workspacePermissions?.length ? workspacePermissions : [roleKey];
-  const shellNavItems = navItems.some((item) => item.href === "/login")
-    ? navItems
-    : [...navItems, { labelKey: "switchUser" as const, href: "/login" }];
+  const shellNavItems = navItems.filter((item) => item.href !== "/login");
 
   return (
     <main className="min-h-screen bg-[#f4f2fb] text-[#201c27]">
@@ -57,11 +54,6 @@ export function RoleLayoutShell({
                 </div>
               </div>
               <nav className="flex flex-wrap gap-2">
-                <WorkspacePermissionNav
-                  activePermission={roleKey}
-                  showGrantedLinks={false}
-                  workspacePermissions={activeWorkspacePermissions}
-                />
                 {shellNavItems.map((item) => (
                   <Link
                     key={item.href}
@@ -80,7 +72,7 @@ export function RoleLayoutShell({
             </div>
           </header>
           <div className="min-h-[calc(100vh-7rem)] bg-[#f4f2fb] px-5 py-6 sm:px-8 lg:px-10">{children}</div>
-          <div className="absolute bottom-4 right-4 rounded-full border border-[#ece8f1] bg-white/90 p-1 shadow-[0_12px_28px_rgba(69,48,107,0.14)] backdrop-blur">
+          <div className="fixed bottom-4 left-4 z-40 rounded-full border border-[#ece8f1] bg-white/90 p-1 shadow-[0_12px_28px_rgba(69,48,107,0.14)] backdrop-blur">
             {(["es", "en"] as LanguageKey[]).map((key) => (
               <button
                 aria-pressed={languageKey === key}

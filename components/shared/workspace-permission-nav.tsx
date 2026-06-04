@@ -106,15 +106,12 @@ export function WorkspacePermissionNav({
     <div className="flex flex-wrap justify-end gap-2">
       {permissionActions}
       {message ? (
-        <span
+        <aside
           aria-live="polite"
-          className={[
-            "rounded-full border border-[#bce5c8] bg-[#f6fff8] px-3 py-2 text-xs font-semibold text-[#2d8f4d]",
-            variant === "header" ? "basis-full text-right" : "",
-          ].join(" ")}
+          className="fixed bottom-4 right-4 z-40 max-w-sm rounded-lg border border-[#bce5c8] bg-[#f6fff8] px-4 py-3 text-sm font-semibold text-[#2d8f4d] shadow-[0_18px_42px_rgba(45,143,77,0.18)]"
         >
           {message}
-        </span>
+        </aside>
       ) : null}
     </div>
   );

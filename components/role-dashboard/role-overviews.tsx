@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo, useState } from "react";
 
 import { CurrentLocationMap } from "@/components/map/current-location-map";
 import { useLanguage } from "@/components/language-provider";
@@ -133,12 +134,14 @@ function ActionCard({
 function RouteActionCard({
   shipment,
   action,
+  className = "",
   status,
   routeName,
   href = `/dispatcher/tracking/${toVehicleSlug(shipment.id)}`,
 }: {
   shipment: ShipmentCard;
   action: string;
+  className?: string;
   status: string;
   routeName: string;
   href?: string;
@@ -146,7 +149,10 @@ function RouteActionCard({
   return (
     <Link
       href={href}
-      className="group flex h-full min-h-48 flex-col justify-between rounded-lg border border-[#dfe3ea] bg-white p-5 shadow-[0_12px_32px_rgba(32,35,42,0.04)] transition hover:-translate-y-0.5 hover:border-[#ef667c] hover:shadow-[0_18px_44px_rgba(239,102,124,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ef667c]"
+      className={[
+        "group flex h-full min-h-48 flex-col justify-between rounded-lg border border-[#dfe3ea] bg-white p-5 shadow-[0_12px_32px_rgba(32,35,42,0.04)] transition hover:-translate-y-0.5 hover:border-[#ef667c] hover:shadow-[0_18px_44px_rgba(239,102,124,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ef667c]",
+        className,
+      ].join(" ")}
     >
       <div>
         <div className="flex flex-wrap items-start justify-between gap-3">
@@ -255,10 +261,16 @@ function AdminDeliveryRow({
 }
 
 function RouteMapSection({
+  className = "",
+  latitude,
+  longitude,
   mapLabel,
   routeName,
   status,
 }: {
+  className?: string;
+  latitude?: number | null;
+  longitude?: number | null;
   mapLabel: string;
   routeName: string;
   status: string;
@@ -274,25 +286,42 @@ function RouteMapSection({
           {status}
         </span>
       </div>
-      <CurrentLocationMap className="rounded-none border-0 border-t border-[#ece8f1]" />
+      <CurrentLocationMap
+        className={["rounded-none border-0 border-t border-[#ece8f1]", className].join(" ")}
+        latitude={latitude}
+        longitude={longitude}
+      />
     </section>
   );
 }
 
 function RouteMapFleetGrid({
   children,
+  latitude,
+  longitude,
+  mapClassName = "",
   mapLabel,
   routeName,
   status,
 }: {
   children: React.ReactNode;
+  latitude?: number | null;
+  longitude?: number | null;
+  mapClassName?: string;
   mapLabel: string;
   routeName: string;
   status: string;
 }) {
   return (
     <section className="grid w-full max-w-[1266px] gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:items-stretch">
-      <RouteMapSection mapLabel={mapLabel} routeName={routeName} status={status} />
+      <RouteMapSection
+        className={mapClassName}
+        latitude={latitude}
+        longitude={longitude}
+        mapLabel={mapLabel}
+        routeName={routeName}
+        status={status}
+      />
       <div className="min-w-0">{children}</div>
     </section>
   );
@@ -453,11 +482,22 @@ export function DriverOverview({ shipment }: { shipment: ShipmentCard | null }) 
   );
 }
 
-export function ViewerFleetOverview({ shipment }: { shipment: ShipmentCard | null }) {
+export function ViewerFleetOverview({
+  selectedFleetId,
+  shipments,
+}: {
+  selectedFleetId: string;
+  shipments: ShipmentCard[];
+}) {
   const { languageKey } = useLanguage();
   const content = languages[languageKey].roleDashboard;
   const overview = content.overviews;
   const emptyStates = content.emptyStates;
+  const [selectedId, setSelectedId] = useState(selectedFleetId);
+  const shipment = useMemo(
+    () => shipments.find((item) => item.fleetId.toLowerCase() === selectedId.toLowerCase()) ?? shipments[0] ?? null,
+    [selectedId, shipments],
+  );
 
   if (!shipment) {
     return (
@@ -481,9 +521,88 @@ export function ViewerFleetOverview({ shipment }: { shipment: ShipmentCard | nul
         <ActionCard label={overview.viewer.deliveryTime} value={shipment.timeLeft} href={viewerHref} action={overview.common.openRoute} />
         <ActionCard label={overview.viewer.cargo} value={`${shipment.weightKg.toLocaleString()} ${content.units.kilograms}`} href={viewerHref} action={overview.common.openRoute} />
       </div>
-      <RouteMapFleetGrid mapLabel={overview.common.map} routeName={routeName} status={shipmentStatus}>
-        <RouteActionCard action={overview.common.openRoute} routeName={routeName} shipment={shipment} status={shipmentStatus} href={viewerHref} />
+      <RouteMapFleetGrid
+        mapClassName="h-[400px] max-h-[400px] w-full max-w-none aspect-auto"
+        latitude={shipment.currentLatitude}
+        longitude={shipment.currentLongitude}
+        mapLabel={overview.common.map}
+        routeName={routeName}
+        status={shipmentStatus}
+      >
+        <FleetListPanel
+          activeFleetId={shipment.fleetId}
+          languageKey={languageKey}
+          onSelectFleet={setSelectedId}
+          openLabel={overview.viewer.openFleet}
+          shipments={shipments}
+        />
       </RouteMapFleetGrid>
+    </section>
+  );
+}
+
+function FleetListPanel({
+  activeFleetId,
+  languageKey,
+  onSelectFleet,
+  openLabel,
+  shipments,
+}: {
+  activeFleetId: string;
+  languageKey: keyof typeof languages;
+  onSelectFleet: (fleetId: string) => void;
+  openLabel: string;
+  shipments: ShipmentCard[];
+}) {
+  const content = languages[languageKey].roleDashboard;
+  const labels = languageKey === "es"
+    ? { title: "Flotas actuales", route: "Ruta", load: "Carga" }
+    : { title: "Current fleets", route: "Route", load: "Load" };
+
+  return (
+    <section className="h-[400px] overflow-hidden rounded-lg border border-[#dfe3ea] bg-white shadow-[0_12px_32px_rgba(32,35,42,0.04)]">
+      <div className="border-b border-[#ece8f1] px-5 py-4">
+        <p className="text-sm font-semibold uppercase text-[#6d7685]">{labels.title}</p>
+      </div>
+      <div className="h-[calc(400px-4.5rem)] overflow-y-auto p-3">
+        <div className="grid gap-3">
+          {shipments.map((shipment) => {
+            const active = shipment.fleetId === activeFleetId;
+            const status = getLocalizedStatus(shipment.status, content);
+
+            return (
+              <button
+                className={[
+                  "w-full rounded-lg border p-4 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef667c]",
+                  active
+                    ? "border-[#ef667c] bg-[#fff2f5] shadow-[0_12px_28px_rgba(239,102,124,0.12)]"
+                    : "border-[#ece8f1] bg-white hover:border-[#ef667c]",
+                ].join(" ")}
+                key={shipment.id}
+                onClick={() => onSelectFleet(shipment.fleetId)}
+                type="button"
+              >
+                <span className="flex items-start justify-between gap-3">
+                  <span>
+                    <span className="block text-xs font-semibold uppercase text-[#6d7685]">{shipment.fleetId}</span>
+                    <span className="mt-1 block text-lg font-semibold text-[#20232a]">{shipment.fleetLabel}</span>
+                  </span>
+                  <span className={["rounded-full px-3 py-1 text-xs font-semibold", getStatusToneClass(shipment.status === "On Route" ? "green" : shipment.status === "Waiting" ? "yellow" : "red")].join(" ")}>
+                    {status}
+                  </span>
+                </span>
+                <span className="mt-3 grid gap-2 text-sm font-semibold text-[#6d7685] sm:grid-cols-2">
+                  <span className="rounded-lg bg-[#f8f7fb] px-3 py-2">{labels.route}: {getLocalizedRouteName(shipment.routeName, languageKey)}</span>
+                  <span className="rounded-lg bg-[#f8f7fb] px-3 py-2">{labels.load}: {shipment.weightKg.toLocaleString()} {content.units.kilograms}</span>
+                </span>
+                <span className="mt-3 inline-flex rounded-lg bg-[#fff2f5] px-3 py-2 text-sm font-semibold text-[#d9546d]">
+                  {openLabel}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
     </section>
   );
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomInt } from "crypto";
+import { cookies } from "next/headers";
 
 import {
   getDefaultPermissionRoute,
@@ -24,6 +25,42 @@ const authCookieNames = [
   "fleetcav_role",
   "fleetcav_user_id",
 ];
+
+export async function GET() {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("fleetcav_access_token")?.value;
+  const userId = cookieStore.get("fleetcav_user_id")?.value;
+
+  if (!accessToken || !userId) {
+    return NextResponse.json({ error: "No active account session." }, { status: 401 });
+  }
+
+  const supabase = createSupabaseAuthClient();
+
+  if (!supabase) {
+    return NextResponse.json({ error: "Supabase authentication is not configured." }, { status: 500 });
+  }
+
+  const { data, error } = await supabase.auth.getUser(accessToken);
+
+  if (error || !data.user) {
+    return NextResponse.json({ error: "Unable to verify this account session." }, { status: 401 });
+  }
+
+  const profileResult = await getAuthenticatedProfilePermissions(userId);
+
+  if (!profileResult.ok) {
+    return NextResponse.json({ error: profileResult.error }, { status: profileResult.status });
+  }
+
+  return NextResponse.json({
+    email: data.user.email ?? "",
+    fullName: getUserFullName(data.user.user_metadata, data.user.email ?? ""),
+    ok: true,
+    permissions: profileResult.profile.permissions,
+    role: profileResult.profile.role,
+  });
+}
 
 export async function POST(request: NextRequest) {
   const supabase = createSupabaseAuthClient();
@@ -111,10 +148,44 @@ export async function POST(request: NextRequest) {
   return response;
 }
 
+export async function PATCH() {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("fleetcav_access_token")?.value;
+  const supabase = createSupabaseAuthClient();
+
+  if (!accessToken || !supabase) {
+    return NextResponse.json({ error: "No active account session." }, { status: 401 });
+  }
+
+  const { data, error } = await supabase.auth.getUser(accessToken);
+
+  if (error || !data.user?.email) {
+    return NextResponse.json({ error: "Unable to verify this account email." }, { status: 401 });
+  }
+
+  const resetResult = await supabase.auth.resetPasswordForEmail(data.user.email);
+
+  if (resetResult.error) {
+    return NextResponse.json({ error: resetResult.error.message }, { status: 400 });
+  }
+
+  return NextResponse.json({ ok: true });
+}
+
 export function DELETE() {
   const response = NextResponse.json({ ok: true });
   clearAuthCookies(response);
   return response;
+}
+
+function getUserFullName(metadata: Record<string, unknown> | null | undefined, email: string) {
+  const name = metadata?.full_name;
+
+  if (typeof name === "string" && name.trim()) {
+    return name.trim();
+  }
+
+  return createGeneratedUserName(email);
 }
 
 function setAuthCookies(

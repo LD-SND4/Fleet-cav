@@ -15,8 +15,12 @@ type MapMessageKey = keyof typeof languages.en.fleetDashboard.map;
 
 export function CurrentLocationMap({
   className = "",
+  latitude,
+  longitude,
 }: {
   className?: string;
+  latitude?: number | null;
+  longitude?: number | null;
 }) {
   const { languageKey } = useLanguage();
   const content = languages[languageKey].fleetDashboard.map;
@@ -37,10 +41,11 @@ export function CurrentLocationMap({
         return;
       }
 
+      const hasProvidedLocation = typeof latitude === "number" && typeof longitude === "number";
       const map = L.map(mapContainerRef.current, {
         attributionControl: true,
         zoomControl: true,
-      }).setView([0, 0], 2);
+      }).setView(hasProvidedLocation ? [latitude, longitude] : [0, 0], hasProvidedLocation ? 14 : 2);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
@@ -48,6 +53,19 @@ export function CurrentLocationMap({
       }).addTo(map);
 
       mapRef.current = map;
+
+      if (hasProvidedLocation) {
+        setLocation({ latitude, longitude });
+        setMessageKey("currentPosition");
+        locationLayerRef.current = L.circleMarker([latitude, longitude], {
+          color: "#ffffff",
+          fillColor: "#ef667c",
+          fillOpacity: 1,
+          radius: 9,
+          weight: 4,
+        }).addTo(map);
+        return;
+      }
 
       if (!navigator.geolocation) {
         setMessageKey("unavailable");
@@ -103,7 +121,7 @@ export function CurrentLocationMap({
       mapRef.current = null;
       locationLayerRef.current = null;
     };
-  }, []);
+  }, [latitude, longitude]);
 
   return (
     <div

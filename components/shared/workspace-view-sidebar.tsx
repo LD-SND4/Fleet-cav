@@ -1,10 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCarSide, faClipboardList, faEye, faRoute, faShieldHalved } from "@fortawesome/free-solid-svg-icons";
 
 import { useLanguage } from "@/components/language-provider";
+import { AccountProfileModal } from "@/components/shared/account-profile-modal";
 import { permissionRoles, permissionRoutes, type PermissionRole } from "@/lib/auth/permissions";
 import languages from "@/locales/languages.json";
+
+const roleIcons = {
+  admin: faShieldHalved,
+  dispatcher: faClipboardList,
+  driver: faCarSide,
+  viewer: faEye,
+} satisfies Record<PermissionRole, typeof faRoute>;
 
 export function WorkspaceViewSidebar({
   activePermission,
@@ -18,7 +28,6 @@ export function WorkspaceViewSidebar({
   const { languageKey } = useLanguage();
   const roleContent = languages[languageKey].roleDashboard.roles;
   const switcherContent = languages[languageKey].roleDashboard.viewSwitcher;
-  const permissionContent = languages[languageKey].appLogin.permissions;
   const activePermissions = workspacePermissions.length ? workspacePermissions : [activePermission];
 
   return (
@@ -28,10 +37,8 @@ export function WorkspaceViewSidebar({
         className,
       ].join(" ")}
     >
-      <div className="flex items-center gap-3 lg:block lg:space-y-4">
-        <div className="grid h-12 w-12 flex-none place-items-center rounded-full bg-[#29262f] text-sm font-semibold text-white">
-          FC
-        </div>
+      <div className="flex items-center justify-between gap-3 lg:block lg:space-y-4">
+        <AccountProfileModal workspacePermissions={activePermissions} />
         <div className="min-w-0">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#8a8393]">
             {switcherContent.title}
@@ -40,7 +47,7 @@ export function WorkspaceViewSidebar({
         </div>
       </div>
 
-      <nav aria-label={permissionContent.workspaceTitle} className="mt-5 grid gap-2">
+      <nav aria-label={switcherContent.title} className="mt-5 grid gap-2">
         {permissionRoles.map((permission) => {
           const canOpen = activePermissions.includes(permission);
           const active = permission === activePermission;
@@ -52,9 +59,9 @@ export function WorkspaceViewSidebar({
                 className="flex min-h-14 items-center justify-between gap-3 rounded-lg border border-[#e5e1eb] bg-[#f3f1f6] px-3 py-2 text-sm font-semibold text-[#8a8393]"
                 key={permission}
               >
-                <span>{roleContent[permission]}</span>
-                <span className="rounded-full bg-white px-2 py-1 text-[0.68rem] uppercase text-[#8a8393]">
-                  {permissionContent.locked}
+                <span className="flex min-w-0 items-center gap-3">
+                  <FontAwesomeIcon aria-hidden="true" className="h-4 w-4 flex-none" icon={roleIcons[permission]} />
+                  <span className="truncate">{roleContent[permission]}</span>
                 </span>
               </div>
             );
@@ -72,14 +79,9 @@ export function WorkspaceViewSidebar({
               href={permissionRoutes[permission]}
               key={permission}
             >
-              <span>{roleContent[permission]}</span>
-              <span
-                className={[
-                  "rounded-full px-2 py-1 text-[0.68rem] uppercase",
-                  active ? "bg-white/20 text-white" : "bg-[#edf9f0] text-[#2d8f4d]",
-                ].join(" ")}
-              >
-                {active ? permissionContent.selected : permissionContent.available}
+              <span className="flex min-w-0 items-center gap-3">
+                <FontAwesomeIcon aria-hidden="true" className="h-4 w-4 flex-none" icon={roleIcons[permission]} />
+                <span className="truncate">{roleContent[permission]}</span>
               </span>
             </Link>
           );
