@@ -7,7 +7,7 @@ import {
   isPermissionRole,
   type PermissionRole,
 } from "@/lib/auth/permissions";
-import { createSupabaseServerClient, getMissingSupabaseServerEnv } from "@/lib/supabase/server";
+import { createSupabaseServerClient, createSupabaseUserClient, getMissingSupabaseServerEnv } from "@/lib/supabase/server";
 
 type ProfilePermissionResult =
   | {
@@ -25,6 +25,8 @@ type ProfilePermissionResult =
     };
 
 type UserPermissionRow = {
+  user_id?: string | null;
+  email?: string | null;
   role_name: string | null;
 };
 
@@ -37,7 +39,7 @@ type ProfileIdRow = {
   id: string;
 };
 
-export async function getAuthenticatedProfilePermissions(userId: string): Promise<ProfilePermissionResult> {
+export async function getAuthenticatedProfilePermissions(userId: string, accessToken?: string): Promise<ProfilePermissionResult> {
   const supabase = createSupabaseServerClient();
 
   if (!supabase) {
@@ -48,6 +50,12 @@ export async function getAuthenticatedProfilePermissions(userId: string): Promis
       ok: false,
       status: 500,
     };
+  }
+
+  const rpcResult = accessToken ? await getPermissionsFromCurrentUserPermissionsRpc(userId, accessToken) : null;
+
+  if (rpcResult?.ok) {
+    return rpcResult;
   }
 
   const viewResult = await getPermissionsFromUserPermissionsView(userId);
@@ -72,7 +80,61 @@ export async function getAuthenticatedProfilePermissions(userId: string): Promis
     return profileFallback;
   }
 
-  return profileRoleResult.status >= 500 ? profileRoleResult : viewResult;
+  return rpcResult && rpcResult.status >= 500
+    ? rpcResult
+    : profileRoleResult.status >= 500
+      ? profileRoleResult
+      : viewResult;
+}
+
+async function getPermissionsFromCurrentUserPermissionsRpc(
+  userId: string,
+  accessToken: string,
+): Promise<ProfilePermissionResult> {
+  const supabase = createSupabaseUserClient(accessToken);
+
+  if (!supabase) {
+    return {
+      error: "Fleet-cav profile verification is not configured.",
+      ok: false,
+      status: 500,
+    };
+  }
+
+  const { data, error } = await supabase.rpc("get_current_user_permissions");
+
+  if (error) {
+    console.warn("Unable to load get_current_user_permissions RPC; falling back to compatibility permissions:", error.message);
+
+    return {
+      error: "Unable to load current user permissions.",
+      ok: false,
+      status: 500,
+    };
+  }
+
+  const roles = ((data ?? []) as UserPermissionRow[])
+    .filter((row) => row.user_id === userId)
+    .map((row) => row.role_name)
+    .filter(isPermissionRole);
+  const permissions = getEffectivePermissions(roles);
+
+  if (!permissions.length) {
+    return {
+      error: "This account exists, but no Fleet-cav role has been granted yet.",
+      ok: false,
+      status: 403,
+    };
+  }
+
+  return {
+    ok: true,
+    profile: {
+      id: userId,
+      permissions,
+      role: getPrimaryPermission(permissions),
+    },
+  };
 }
 
 async function getPermissionsFromUserPermissionsView(userId: string): Promise<ProfilePermissionResult> {

@@ -63,6 +63,26 @@ export function createSupabaseAuthClient() {
   });
 }
 
+export function createSupabaseUserClient(accessToken: string) {
+  const supabaseUrl = getEnvValue("NEXT_PUBLIC_SUPABASE_URL");
+  const supabaseKey = getFirstEnvValue(supabasePublicKeyEnvKeys);
+
+  if (!supabaseUrl || !supabaseKey) {
+    return null;
+  }
+
+  return createClient<Database>(supabaseUrl, supabaseKey, {
+    auth: {
+      persistSession: false,
+    },
+    global: {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  });
+}
+
 function getFirstEnvValue(keys: readonly string[]) {
   for (const key of keys) {
     const value = getEnvValue(key);

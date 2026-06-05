@@ -368,7 +368,16 @@ export type Database = {
         Relationships: [];
       };
     };
-    Functions: Record<string, never>;
+    Functions: {
+      get_current_user_permissions: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          email: string | null;
+          role_name: "admin" | "dispatcher" | "driver" | "viewer" | null;
+          user_id: string | null;
+        }[];
+      };
+    };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
   };

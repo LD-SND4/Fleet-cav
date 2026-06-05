@@ -31,7 +31,7 @@ export async function requireAuthenticatedProfile(requiredPermission?: Permissio
     redirect("/login");
   }
 
-  const profileResult = await getAuthenticatedProfilePermissions(userData.user.id);
+  const profileResult = await getAuthenticatedProfilePermissions(userData.user.id, accessToken);
 
   if (!profileResult.ok) {
     redirect("/login");

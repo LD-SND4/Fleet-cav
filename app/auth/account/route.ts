@@ -47,7 +47,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unable to verify this account session." }, { status: 401 });
   }
 
-  const profileResult = await getAuthenticatedProfilePermissions(userId);
+  const profileResult = await getAuthenticatedProfilePermissions(userId, accessToken);
 
   if (!profileResult.ok) {
     return NextResponse.json({ error: profileResult.error }, { status: profileResult.status });
@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  const profileResult = await getAuthenticatedProfilePermissions(data.user.id);
+  const profileResult = await getAuthenticatedProfilePermissions(data.user.id, data.session.access_token);
 
   if (!profileResult.ok) {
     return NextResponse.json({ error: profileResult.error }, { status: profileResult.status });

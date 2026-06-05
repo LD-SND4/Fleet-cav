@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isPermissionRole, permissionRoles, type PermissionRole } from "@/lib/auth/permissions";
 import {
   createSupabaseAuthClient,
-  createSupabaseServerClient,
+  createSupabaseUserClient,
   getMissingSupabaseAuthEnv,
 } from "@/lib/supabase/server";
 
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Your session could not be verified." }, { status: 401 });
   }
 
-  const databaseRequest = await persistPermissionRequest(userId, permission);
+  const databaseRequest = await persistPermissionRequest(userId, permission, accessToken);
   const previousRequests = parsePermissionRequests(request.cookies.get("fleetcav_permission_requests")?.value);
   const requestedPermissions = permissionRoles.filter((role) => role === permission || previousRequests.includes(role));
   const response = NextResponse.json({
@@ -57,14 +57,14 @@ export async function POST(request: NextRequest) {
   return response;
 }
 
-async function persistPermissionRequest(userId: string, permission: PermissionRole) {
-  const serverClient = createSupabaseServerClient();
+async function persistPermissionRequest(userId: string, permission: PermissionRole, accessToken: string) {
+  const userClient = createSupabaseUserClient(accessToken);
 
-  if (!serverClient) {
+  if (!userClient) {
     return { persisted: false };
   }
 
-  const { data: role, error: roleError } = await serverClient
+  const { data: role, error: roleError } = await userClient
     .from("roles")
     .select("id")
     .eq("name", permission)
@@ -75,7 +75,7 @@ async function persistPermissionRequest(userId: string, permission: PermissionRo
     return { persisted: false };
   }
 
-  const { data: existingRequest, error: existingError } = await serverClient
+  const { data: existingRequest, error: existingError } = await userClient
     .from("permission_requests")
     .select("id")
     .eq("user_id", userId)
@@ -92,7 +92,7 @@ async function persistPermissionRequest(userId: string, permission: PermissionRo
     return { persisted: true };
   }
 
-  const { error } = await serverClient
+  const { error } = await userClient
     .from("permission_requests")
     .insert({
       notes: "Requested from Fleet-cav workspace navigation",
