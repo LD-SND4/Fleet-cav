@@ -107,7 +107,7 @@ function ActionCard({
   label: string;
   value: string;
   href: string;
-  action: string;
+  action?: string;
   status?: string;
 }) {
   return (
@@ -124,9 +124,11 @@ function ActionCard({
         ) : null}
       </span>
       <span className="mt-3 block text-3xl font-semibold text-[#20232a]">{value}</span>
-      <span className="mt-6 inline-flex rounded-lg bg-[#fff2f5] px-3 py-2 text-sm font-semibold text-[#d9546d] transition group-hover:bg-[#ef667c] group-hover:text-white">
-        {action}
-      </span>
+      {action ? (
+        <span className="mt-6 inline-flex rounded-lg bg-[#fff2f5] px-3 py-2 text-sm font-semibold text-[#d9546d] transition group-hover:bg-[#ef667c] group-hover:text-white">
+          {action}
+        </span>
+      ) : null}
     </Link>
   );
 }
@@ -518,8 +520,8 @@ export function ViewerFleetOverview({
     <section className="space-y-6">
       <div className="grid gap-4 md:grid-cols-3">
         <ActionCard label={overview.viewer.fleetId} value={shipment.fleetId} href={viewerHref} action={overview.viewer.openFleet} status={shipmentStatus} />
-        <ActionCard label={overview.viewer.deliveryTime} value={shipment.timeLeft} href={viewerHref} action={overview.common.openRoute} />
-        <ActionCard label={overview.viewer.cargo} value={`${shipment.weightKg.toLocaleString()} ${content.units.kilograms}`} href={viewerHref} action={overview.common.openRoute} />
+        <ActionCard label={overview.viewer.deliveryTime} value={shipment.timeLeft} href={viewerHref} />
+        <ActionCard label={overview.viewer.cargo} value={`${shipment.weightKg.toLocaleString()} ${content.units.kilograms}`} href={viewerHref} />
       </div>
       <RouteMapFleetGrid
         mapClassName="h-[400px] max-h-[400px] w-full max-w-none aspect-auto"

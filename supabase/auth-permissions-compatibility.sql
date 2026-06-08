@@ -275,11 +275,26 @@ security definer
 set search_path = public
 as $$
 declare
-  viewer_role_id integer;
+  primary_role_name text;
   requested_permissions_json jsonb;
   requested_role_name text;
   requested_role_id integer;
 begin
+  requested_permissions_json :=
+    case
+      when jsonb_typeof(new.raw_user_meta_data->'requested_permissions') = 'array'
+        then new.raw_user_meta_data->'requested_permissions'
+      else '["viewer"]'::jsonb
+    end;
+
+  primary_role_name :=
+    case
+      when requested_permissions_json ? 'admin' then 'admin'
+      when requested_permissions_json ? 'dispatcher' then 'dispatcher'
+      when requested_permissions_json ? 'driver' then 'driver'
+      else 'viewer'
+    end;
+
   insert into public.profiles (
     id,
     email,
@@ -293,68 +308,38 @@ begin
       nullif(new.raw_user_meta_data->>'full_name', ''),
       split_part(new.email, '@', 1)
     ),
-    'viewer'
+    primary_role_name
   )
   on conflict (id) do update
   set
     email = excluded.email,
     full_name = coalesce(public.profiles.full_name, excluded.full_name),
+    role = excluded.role,
     updated_at = now();
 
-  select id
-  into viewer_role_id
-  from public.roles
-  where name = 'viewer';
-
-  if viewer_role_id is not null then
-    insert into public.user_roles (
-      user_id,
-      role_id
-    )
-    values (
-      new.id,
-      viewer_role_id
-    )
-    on conflict (user_id, role_id) do nothing;
-  end if;
-
-  requested_permissions_json :=
-    case
-      when jsonb_typeof(new.raw_user_meta_data->'requested_permissions') = 'array'
-        then new.raw_user_meta_data->'requested_permissions'
-      else '[]'::jsonb
-    end;
-
   for requested_role_name in
-    select jsonb_array_elements_text(requested_permissions_json)
+    select distinct requested_role
+    from (
+      select jsonb_array_elements_text(requested_permissions_json) as requested_role
+      union all
+      select 'viewer'
+    ) requested_roles
   loop
-    -- Viewer is granted by default during the compatibility phase.
-    if requested_role_name = 'viewer' then
-      continue;
-    end if;
-
     select id
     into requested_role_id
     from public.roles
     where name = requested_role_name;
 
     if requested_role_id is not null then
-      insert into public.permission_requests (
+      insert into public.user_roles (
         user_id,
-        requested_role_id,
-        notes
+        role_id
       )
-      select
+      values (
         new.id,
-        requested_role_id,
-        'Requested during registration'
-      where not exists (
-        select 1
-        from public.permission_requests
-        where permission_requests.user_id = new.id
-          and permission_requests.requested_role_id = requested_role_id
-          and permission_requests.status = 'pending'
-      );
+        requested_role_id
+      )
+      on conflict (user_id, role_id) do nothing;
     end if;
   end loop;
 
@@ -528,4 +513,3 @@ for update
 to authenticated
 using (public.has_role('admin'))
 with check (public.has_role('admin'));
-
