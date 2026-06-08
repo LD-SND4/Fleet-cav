@@ -1,10 +1,7 @@
-import { DriverOverview } from "@/components/role-dashboard/role-overviews";
-import { getDefaultShipmentCard } from "@/lib/supabase/fleet-data";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default async function DriverPage() {
-  const shipment = await getDefaultShipmentCard();
-
-  return <DriverOverview shipment={shipment} />;
+  redirect("/viewer");
 }

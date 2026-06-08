@@ -1,6 +1,8 @@
-export const permissionRoles = ["admin", "dispatcher", "driver", "viewer"] as const;
+export const permissionRoles = ["admin", "dispatcher", "viewer", "driver"] as const;
 
 export type PermissionRole = (typeof permissionRoles)[number];
+
+export const disabledPermissionRoles: readonly PermissionRole[] = ["driver"];
 
 export const permissionRoutes: Record<PermissionRole, string> = {
   admin: "/admin",
@@ -24,7 +26,7 @@ const permissionRoutePrefixes: Record<PermissionRole, string> = {
 };
 
 const roleGrants: Record<PermissionRole, PermissionRole[]> = {
-  admin: ["admin", "dispatcher", "driver", "viewer"],
+  admin: ["admin", "dispatcher", "viewer", "driver"],
   dispatcher: ["dispatcher", "viewer"],
   driver: ["driver"],
   viewer: ["viewer"],
@@ -52,6 +54,10 @@ export function getDefaultPermissionRoute(permissions: PermissionRole[]) {
 
 export function isPermissionRole(value: unknown): value is PermissionRole {
   return typeof value === "string" && permissionRoles.includes(value as PermissionRole);
+}
+
+export function isPermissionDisabled(permission: PermissionRole) {
+  return disabledPermissionRoles.includes(permission);
 }
 
 export function normalizePermissions(value: unknown) {

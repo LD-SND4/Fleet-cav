@@ -31,9 +31,9 @@ export function FleetDashboardShell({
         <WorkspaceViewSidebar activePermission="dispatcher" workspacePermissions={activeWorkspacePermissions} />
         <div className="relative min-h-screen overflow-hidden bg-white/65">
           <div className="grid min-h-screen lg:grid-cols-[18rem_1fr] xl:grid-cols-[18rem_1.15fr_1.45fr]">
-            <DashboardSidebar items={sidebarItems} />
-            <TrackingPanel selectedVehicleId={selectedShipment?.id} shipments={shipments} />
-            {selectedShipment ? <DetailPanel shipment={selectedShipment} /> : <EmptyTrackingDetail content={content.emptyDetail} />}
+          {/*   <DashboardSidebar items={sidebarItems} /> */}
+           {/*  <TrackingPanel selectedVehicleId={selectedShipment?.id} shipments={shipments} /> */}
+           {/*  {selectedShipment ? <DetailPanel shipment={selectedShipment} /> : <EmptyTrackingDetail content={content.emptyDetail} />} */}
           </div>
           <div className="fixed bottom-4 left-4 z-40 flex flex-wrap justify-end gap-2">
             <div className="rounded-full border border-[#ece8f1] bg-white/90 p-1 shadow-[0_12px_28px_rgba(69,48,107,0.14)] backdrop-blur">

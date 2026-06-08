@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { isPermissionRole, permissionRoles, type PermissionRole } from "@/lib/auth/permissions";
+import { isPermissionDisabled, isPermissionRole, permissionRoles, type PermissionRole } from "@/lib/auth/permissions";
 import {
   createSupabaseAuthClient,
   createSupabaseUserClient,
@@ -30,6 +30,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Select a valid permission to request." }, { status: 400 });
   }
 
+  if (isPermissionDisabled(permission)) {
+    return NextResponse.json({ error: "This permission is disabled until live tracking is available." }, { status: 400 });
+  }
+
   const { data, error } = await authClient.auth.getUser(accessToken);
 
   if (error || !data.user || data.user.id !== userId) {
@@ -38,7 +42,7 @@ export async function POST(request: NextRequest) {
 
   const databaseRequest = await persistPermissionRequest(userId, permission, accessToken);
   const previousRequests = parsePermissionRequests(request.cookies.get("fleetcav_permission_requests")?.value);
-  const requestedPermissions = permissionRoles.filter((role) => role === permission || previousRequests.includes(role));
+  const requestedPermissions = permissionRoles.filter((role) => !isPermissionDisabled(role) && (role === permission || previousRequests.includes(role)));
   const response = NextResponse.json({
     persisted: databaseRequest.persisted,
     ok: true,
@@ -116,5 +120,5 @@ function parsePermissionRequests(value: string | undefined) {
 
   const requestedPermissions = value.split(",").map((permission) => permission.trim());
 
-  return permissionRoles.filter((permission) => requestedPermissions.includes(permission));
+  return permissionRoles.filter((permission) => !isPermissionDisabled(permission) && requestedPermissions.includes(permission));
 }

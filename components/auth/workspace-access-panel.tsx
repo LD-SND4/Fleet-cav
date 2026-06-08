@@ -1,5 +1,5 @@
 import type { PermissionRole } from "@/lib/auth/permissions";
-import { permissionRoles } from "@/lib/auth/permissions";
+import { isPermissionDisabled, permissionRoles } from "@/lib/auth/permissions";
 import languages from "@/locales/languages.json";
 
 type PermissionContent = typeof languages.en.appLogin.permissions;
@@ -36,9 +36,11 @@ export function WorkspaceAccessPanel({
       <div className="grid gap-3 sm:grid-cols-2">
         {permissionRoles.map((permission) => {
           const roleContent = content.roles[permission];
-          const canOpen = sessionPermissions.includes(permission);
+          const permissionDisabled = isPermissionDisabled(permission);
+          const canOpen = sessionPermissions.includes(permission) && !permissionDisabled;
           const requestSent = requestedAccess.includes(permission);
           const busy = openingPermission === permission || pendingRequestPermission === permission;
+          const label = permissionDisabled ? `${roleContent.label} (Disabled)` : roleContent.label;
 
           return (
             <article
@@ -54,7 +56,7 @@ export function WorkspaceAccessPanel({
               <div className="relative flex h-full flex-col justify-between gap-4">
                 <div>
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="text-base font-semibold text-[#2c2933]">{roleContent.label}</h3>
+                    <h3 className="text-base font-semibold text-[#2c2933]">{label}</h3>
                     <span
                       className={[
                         "rounded-full px-2.5 py-1 text-[0.68rem] font-semibold uppercase",
@@ -67,7 +69,7 @@ export function WorkspaceAccessPanel({
                   <p className="mt-2 text-sm leading-6 text-[#6f6878]">{roleContent.description}</p>
                   {!canOpen ? (
                     <p className="mt-3 rounded-lg border border-[#e6e0eb] bg-white/80 px-3 py-2 text-xs font-semibold text-[#6f6878]">
-                      {content.notGranted}
+                      {permissionDisabled ? "This view is disabled until live tracking is available." : content.notGranted}
                     </p>
                   ) : null}
                 </div>
@@ -84,11 +86,13 @@ export function WorkspaceAccessPanel({
                 ) : (
                   <button
                     className="rounded-lg border border-[#f0b4c0] bg-[#fffafb] px-4 py-3 text-sm font-semibold text-[#d9546d] shadow-[0_12px_26px_rgba(217,84,109,0.10)] transition hover:border-[#ef667c] hover:bg-[#fff2f5] disabled:cursor-not-allowed disabled:border-[#dfe3ea] disabled:bg-[#eef1f5] disabled:text-[#7a8490] disabled:shadow-none"
-                    disabled={disabled || busy || requestSent}
+                    disabled={disabled || busy || requestSent || permissionDisabled}
                     onClick={() => onRequest(permission)}
                     type="button"
                   >
-                    {pendingRequestPermission === permission
+                    {permissionDisabled
+                      ? "Disabled"
+                      : pendingRequestPermission === permission
                       ? content.requesting
                       : requestSent
                         ? content.requested

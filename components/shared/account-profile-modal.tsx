@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faKey, faTimes, faUserCircle, faUsersGear } from "@fortawesome/free-solid-svg-icons";
 
 import { useLanguage } from "@/components/language-provider";
-import { permissionRoles, type PermissionRole } from "@/lib/auth/permissions";
+import { isPermissionDisabled, permissionRoles, type PermissionRole } from "@/lib/auth/permissions";
 import languages from "@/locales/languages.json";
 
 type AccountProfile = {
@@ -94,7 +94,7 @@ export function AccountProfileModal({ workspacePermissions }: { workspacePermiss
   }
 
   const currentPermissions = profile?.permissions.length ? profile.permissions : workspacePermissions;
-  const missingPermissions = permissionRoles.filter((permission) => !currentPermissions.includes(permission));
+  const missingPermissions = permissionRoles.filter((permission) => !currentPermissions.includes(permission) || isPermissionDisabled(permission));
 
   return (
     <>
@@ -145,7 +145,7 @@ export function AccountProfileModal({ workspacePermissions }: { workspacePermiss
                 <div className="mt-2 flex flex-wrap gap-2">
                   {currentPermissions.map((permission) => (
                     <span className="rounded-full bg-[#edf9f0] px-3 py-1 text-xs font-semibold text-[#2d8f4d]" key={permission}>
-                      {roleLabels[permission]}
+                      {isPermissionDisabled(permission) ? `${roleLabels[permission]} (Disabled)` : roleLabels[permission]}
                     </span>
                   ))}
                 </div>
@@ -155,22 +155,26 @@ export function AccountProfileModal({ workspacePermissions }: { workspacePermiss
                   <p className="text-xs font-semibold uppercase text-[#8a8393]">{isSpanish ? "Solicitar roles" : "Request roles"}</p>
                   <div className="mt-2 grid gap-2">
                     {missingPermissions.map((permission) => {
+                      const disabled = isPermissionDisabled(permission);
                       const requested = requestedPermissions.includes(permission);
                       const requesting = requestingPermission === permission;
+                      const label = disabled ? `${roleLabels[permission]} (Disabled)` : roleLabels[permission];
 
                       return (
                         <button
                           className="inline-flex items-center justify-center rounded-lg border border-[#dfe3ea] bg-white px-3 py-2 text-sm font-semibold text-[#6f6878] transition hover:border-[#ef667c] hover:text-[#d9546d] disabled:cursor-not-allowed disabled:bg-[#eef1f5] disabled:text-[#7a8490]"
-                          disabled={requesting || requested}
+                          disabled={requesting || requested || disabled}
                           key={permission}
                           onClick={() => handleRequestPermission(permission)}
                           type="button"
                         >
-                          {requesting
+                          {disabled
+                            ? label
+                            : requesting
                             ? isSpanish ? "Enviando..." : "Sending..."
                             : requested
-                              ? isSpanish ? `${roleLabels[permission]} solicitado` : `${roleLabels[permission]} requested`
-                              : isSpanish ? `Solicitar ${roleLabels[permission]}` : `Request ${roleLabels[permission]}`}
+                              ? isSpanish ? `${label} solicitado` : `${label} requested`
+                              : isSpanish ? `Solicitar ${label}` : `Request ${label}`}
                         </button>
                       );
                     })}

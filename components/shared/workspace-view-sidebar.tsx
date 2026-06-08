@@ -6,7 +6,7 @@ import { faCarSide, faClipboardList, faEye, faRoute, faShieldHalved } from "@for
 
 import { useLanguage } from "@/components/language-provider";
 import { AccountProfileModal } from "@/components/shared/account-profile-modal";
-import { permissionRoles, permissionRoutes, type PermissionRole } from "@/lib/auth/permissions";
+import { isPermissionDisabled, permissionRoles, permissionRoutes, type PermissionRole } from "@/lib/auth/permissions";
 import languages from "@/locales/languages.json";
 
 const roleIcons = {
@@ -50,18 +50,20 @@ export function WorkspaceViewSidebar({
       <nav aria-label={switcherContent.title} className="mt-5 grid gap-2">
         {permissionRoles.map((permission) => {
           const canOpen = activePermissions.includes(permission);
+          const disabled = isPermissionDisabled(permission);
           const active = permission === activePermission;
+          const label = disabled ? `${roleContent[permission]} (Disabled)` : roleContent[permission];
 
-          if (!canOpen) {
+          if (!canOpen || disabled) {
             return (
               <div
                 aria-disabled="true"
-                className="flex min-h-14 items-center justify-between gap-3 rounded-lg border border-[#e5e1eb] bg-[#f3f1f6] px-3 py-2 text-sm font-semibold text-[#8a8393]"
+                className="flex min-h-14 cursor-not-allowed items-center justify-between gap-3 rounded-lg border border-[#e5e1eb] bg-[#f3f1f6] px-3 py-2 text-sm font-semibold text-[#8a8393]"
                 key={permission}
               >
                 <span className="flex min-w-0 items-center gap-3">
                   <FontAwesomeIcon aria-hidden="true" className="h-4 w-4 flex-none" icon={roleIcons[permission]} />
-                  <span className="truncate">{roleContent[permission]}</span>
+                  <span className="truncate">{label}</span>
                 </span>
               </div>
             );
@@ -81,7 +83,7 @@ export function WorkspaceViewSidebar({
             >
               <span className="flex min-w-0 items-center gap-3">
                 <FontAwesomeIcon aria-hidden="true" className="h-4 w-4 flex-none" icon={roleIcons[permission]} />
-                <span className="truncate">{roleContent[permission]}</span>
+                <span className="truncate">{label}</span>
               </span>
             </Link>
           );

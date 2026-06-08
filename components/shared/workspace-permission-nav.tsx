@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { useLanguage } from "@/components/language-provider";
-import { permissionRoles, permissionRoutes, type PermissionRole } from "@/lib/auth/permissions";
+import { isPermissionDisabled, permissionRoles, permissionRoutes, type PermissionRole } from "@/lib/auth/permissions";
 import languages from "@/locales/languages.json";
 
 export function WorkspacePermissionNav({
@@ -56,11 +56,21 @@ export function WorkspacePermissionNav({
   }
 
   const permissionActions = permissionRoles.map((permission) => {
+    const disabled = isPermissionDisabled(permission);
     const hasPermission = activePermissions.includes(permission);
     const requested = requestedPermissions.includes(permission);
     const requesting = requestingPermission === permission;
+    const label = disabled ? `${roleContent[permission]} (Disabled)` : roleContent[permission];
 
     if (hasPermission) {
+      if (disabled) {
+        return (
+          <span aria-disabled="true" className={getDisabledClassName(variant)} key={permission}>
+            {label}
+          </span>
+        );
+      }
+
       if (!showGrantedLinks) {
         return null;
       }
@@ -72,28 +82,30 @@ export function WorkspacePermissionNav({
           href={permissionRoutes[permission]}
           key={permission}
         >
-          {roleContent[permission]}
+          {label}
         </Link>
       );
     }
 
-    if (!canRequestMoreAccess) {
+    if (!canRequestMoreAccess && !disabled) {
       return null;
     }
 
     return (
       <button
         className={getRequestClassName(variant)}
-        disabled={requesting || requested}
+        disabled={requesting || requested || disabled}
         key={permission}
         onClick={() => handleRequestPermission(permission)}
         type="button"
       >
-        {requesting
+        {disabled
+          ? label
+          : requesting
           ? accessContent.requesting
           : requested
-            ? `${roleContent[permission]} ${accessContent.requested}`
-            : `${accessContent.request}: ${roleContent[permission]}`}
+            ? `${label} ${accessContent.requested}`
+            : `${accessContent.request}: ${label}`}
       </button>
     );
   });
@@ -135,5 +147,14 @@ function getRequestClassName(variant: "floating" | "header") {
   return [
     shape,
     "border border-[#dfe3ea] bg-[#f8f7fa] px-4 py-2 text-sm font-semibold text-[#6f6878] opacity-80 shadow-inner transition hover:border-[#ef667c] hover:bg-[#fffafb] hover:text-[#d9546d] disabled:cursor-not-allowed disabled:border-[#ece8f1] disabled:bg-[#eef1f5] disabled:text-[#7a8490]",
+  ].join(" ");
+}
+
+function getDisabledClassName(variant: "floating" | "header") {
+  const shape = variant === "floating" ? "rounded-full" : "rounded-lg";
+
+  return [
+    shape,
+    "border border-[#ece8f1] bg-[#eef1f5] px-4 py-2 text-sm font-semibold text-[#7a8490] shadow-inner",
   ].join(" ");
 }

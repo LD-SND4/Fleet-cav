@@ -1,5 +1,5 @@
 import type { PermissionRole } from "@/lib/auth/permissions";
-import { permissionRoles } from "@/lib/auth/permissions";
+import { isPermissionDisabled, permissionRoles } from "@/lib/auth/permissions";
 import languages from "@/locales/languages.json";
 
 type PermissionContent = typeof languages.en.appLogin.permissions;
@@ -23,8 +23,10 @@ export function PermissionSelector({
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         {permissionRoles.map((permission) => {
-          const selected = selectedPermissions.includes(permission);
+          const permissionDisabled = isPermissionDisabled(permission);
+          const selected = selectedPermissions.includes(permission) && !permissionDisabled;
           const roleContent = content.roles[permission];
+          const label = permissionDisabled ? `${roleContent.label} (Disabled)` : roleContent.label;
 
           return (
             <label
@@ -33,21 +35,21 @@ export function PermissionSelector({
                 selected
                   ? "border-[#ef667c] ring-2 ring-[#ffd5de]"
                   : "border-[#dfe3ea] hover:border-[#ef667c] hover:bg-[#fffafb]",
-                disabled ? "cursor-not-allowed opacity-70" : "",
+                disabled || permissionDisabled ? "cursor-not-allowed opacity-70" : "",
               ].join(" ")}
               key={permission}
             >
               <input
-                aria-label={roleContent.label}
+                aria-label={label}
                 checked={selected}
                 className="mt-1 h-4 w-4 flex-none accent-[#ef667c]"
-                disabled={disabled}
+                disabled={disabled || permissionDisabled}
                 onChange={() => onToggle(permission)}
                 type="checkbox"
               />
               <span className="min-w-0">
                 <span className="flex flex-wrap items-center gap-2">
-                  <span className="text-sm font-semibold text-[#2c2933]">{roleContent.label}</span>
+                  <span className="text-sm font-semibold text-[#2c2933]">{label}</span>
                   <span
                     className={[
                       "rounded-full px-2.5 py-1 text-[0.68rem] font-semibold uppercase",

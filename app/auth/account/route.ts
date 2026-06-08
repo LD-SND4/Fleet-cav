@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 
 import {
   getDefaultPermissionRoute,
+  isPermissionDisabled,
   normalizePermissions,
   profileRoleCookies,
   serializePermissions,
@@ -80,7 +81,9 @@ export async function POST(request: NextRequest) {
   const mode = body.mode === "register" ? "register" : "login";
   const email = body.email?.trim().toLowerCase() ?? "";
   const password = body.password ?? "";
-  const requestedPermissions = mode === "register" ? normalizePermissions(body.requestedPermissions) : [];
+  const requestedPermissions = mode === "register"
+    ? normalizePermissions(body.requestedPermissions).filter((permission) => !isPermissionDisabled(permission))
+    : [];
 
   if (!email || !password) {
     return NextResponse.json({ error: "Email and password are required." }, { status: 400 });
