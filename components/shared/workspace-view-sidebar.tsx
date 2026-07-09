@@ -30,6 +30,8 @@ export function WorkspaceViewSidebar({
   const switcherContent = languages[languageKey].roleDashboard.viewSwitcher;
   const activePermissions = workspacePermissions.length ? workspacePermissions : [activePermission];
 
+  const sidebarDisabledPermissions: PermissionRole[] = ["dispatcher", "viewer"];
+
   return (
     <aside
       className={[
@@ -50,7 +52,9 @@ export function WorkspaceViewSidebar({
       <nav aria-label={switcherContent.title} className="mt-5 grid gap-2">
         {permissionRoles.map((permission) => {
           const canOpen = activePermissions.includes(permission);
-          const disabled = isPermissionDisabled(permission);
+          const disabled =
+            permission !== activePermission &&
+            (isPermissionDisabled(permission) || sidebarDisabledPermissions.includes(permission));
           const active = permission === activePermission;
           const label = disabled ? `${roleContent[permission]} (Disabled)` : roleContent[permission];
 

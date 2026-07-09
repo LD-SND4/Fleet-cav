@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Honeycomb login component — reference implementation</title>
+<style>
+  :root {
+    --surface-1: #f4f3f0;
+    --surface-2: #ffffff;
+    --border: rgba(0,0,0,0.12);
+    --border-strong: rgba(0,0,0,0.22);
+    --text-primary: #1a1a1a;
+    --text-secondary: #5f5e5a;
+    --text-muted: #888780;
+    --fill-accent: #185fa5;
+    --on-accent: #ffffff;
+    --text-accent: #185fa5;
+    --radius: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #eceae4; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+
+  .container { display: flex; width: 100%; max-width: 1000px; min-height: 600px; position: relative; overflow: hidden; border-radius: 12px; border: 0.5px solid var(--border); }
+  .left-section { flex: 1; background: var(--surface-1); position: relative; display: flex; flex-direction: column; }
+  .content-top { padding: 3rem 2.5rem; flex: 0 0 auto; position: relative; z-index: 2; }
+  .content-top h1 { font-size: 28px; font-weight: 500; color: var(--text-primary); margin-bottom: 1rem; }
+  .content-top p { font-size: 15px; color: var(--text-secondary); line-height: 1.7; max-width: 380px; }
+
+  /* --- Honeycomb section --- */
+  .hexagon-section { flex: 1; position: relative; overflow: hidden; min-height: 260px; }
+  .hexagons {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150%;
+    height: 150%;
+    transform: translate(-50%, -50%) translate(-7%, 19%) rotate(-56deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  svg.hex-pattern { width: 100%; height: 100%; display: block; }
+  .hexcell {
+    fill: none;
+    stroke: #378ADD;
+    stroke-width: 1.5;
+    opacity: 0;
+    transition: stroke 0.3s ease, opacity 0.3s ease;
+  }
+  /* --- End honeycomb section --- */
+
+  .right-section { flex: 0 0 380px; background: var(--surface-2); padding: 3rem 2.25rem; display: flex; flex-direction: column; justify-content: center; border-left: 0.5px solid var(--border); }
+  .form-header { margin-bottom: 2rem; }
+  .form-header h2 { font-size: 22px; font-weight: 500; color: var(--text-primary); margin-bottom: 0.5rem; }
+  .form-header p { font-size: 14px; color: var(--text-secondary); }
+  .form-group { margin-bottom: 1.25rem; }
+  label.field-label { display: block; font-size: 13px; font-weight: 500; color: var(--text-primary); margin-bottom: 0.5rem; }
+  input[type="email"], input[type="password"] { width: 100%; padding: 0.65rem 0.85rem; font-size: 14px; border: 0.5px solid var(--border); border-radius: var(--radius); background: var(--surface-2); color: var(--text-primary); }
+  input::placeholder { color: var(--text-muted); }
+  .form-buttons { display: flex; gap: 10px; margin-top: 1.5rem; }
+  button { flex: 1; padding: 0.65rem 1rem; font-size: 14px; font-weight: 500; border: 0.5px solid var(--border-strong); border-radius: var(--radius); background: transparent; color: var(--text-primary); cursor: pointer; }
+  button.primary { background: var(--fill-accent); color: var(--on-accent); border-color: var(--fill-accent); }
+  .toggle-form { text-align: center; margin-top: 1.25rem; font-size: 13px; color: var(--text-secondary); }
+  .toggle-form a { color: var(--text-accent); text-decoration: none; cursor: pointer; }
+
+  @media (max-width: 700px) {
+    .container { flex-direction: column; }
+    .right-section { flex: 1; border-left: none; border-top: 0.5px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="left-section">
+    <div class="content-top">
+      <h1>Welcome back</h1>
+      <p>Access your workspace and continue where you left off.</p>
+    </div>
+    <div class="hexagon-section" id="hexSection">
+      <div class="hexagons">
+        <svg class="hex-pattern" id="hexSvg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <pattern id="hexPatternBase" x="0" y="0" width="45" height="25.98" patternUnits="userSpaceOnUse">
+              <polygon points="30,12.99 22.5,25.98 7.5,25.98 0,12.99 7.5,0 22.5,0" fill="none" stroke="#378ADD" stroke-width="1.5" opacity="0.45"/>
+              <polygon points="52.5,0 45,12.99 30,12.99 22.5,0 30,-12.99 45,-12.99" fill="none" stroke="#378ADD" stroke-width="1.5" opacity="0.45"/>
+              <polygon points="52.5,25.98 45,38.97 30,38.97 22.5,25.98 30,12.99 45,12.99" fill="none" stroke="#378ADD" stroke-width="1.5" opacity="0.45"/>
+            </pattern>
+          </defs>
+          <rect width="400" height="300" fill="url(#hexPatternBase)"/>
+          <g id="hexOverlay"></g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-section">
+    <div class="form-header">
+      <h2>Sign in</h2>
+      <p>Enter your credentials to continue</p>
+    </div>
+    <form id="loginForm">
+      <div class="form-group">
+        <label class="field-label" for="email">Email address</label>
+        <input type="email" id="email" placeholder="name@company.com">
+      </div>
+      <div class="form-group">
+        <label class="field-label" for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••">
+      </div>
+      <div class="form-buttons">
+        <button type="submit" class="primary">Sign in</button>
+      </div>
+    </form>
+    <div class="toggle-form">
+      Don't have an account? <a href="#" id="createAccountLink">Create one</a>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+});
+
+/* ---------- Honeycomb hex-grid generation + ripple hover ---------- */
+
+const svgNS = "http://www.w3.org/2000/svg";
+const svg = document.getElementById('hexSvg');
+const overlay = document.getElementById('hexOverlay');
+
+const s = 15;                          // hex "radius": center to vertex
+const colSpacing = s * 1.5;            // 22.5 — horizontal distance between column centers
+const rowSpacing = s * Math.sqrt(3);   // ~25.98 — vertical distance between rows
+const rowOffset = rowSpacing / 2;      // ~12.99 — offset applied to alternating columns
+
+function hexPoints(cx, cy) {
+  const pts = [];
+  for (let i = 0; i < 6; i++) {
+    const angle = Math.PI / 180 * (60 * i); // flat-top hex: vertices at 0,60,120,180,240,300 deg
+    pts.push(
+      (cx + s * Math.cos(angle)).toFixed(2) + "," +
+      (cy + s * Math.sin(angle)).toFixed(2)
+    );
+  }
+  return pts.join(" ");
+}
+
+// Generate an invisible overlay grid, geometrically aligned to the visible
+// <pattern> base layer, covering beyond the viewBox so the rotated/oversized
+// wrapper never exposes a corner with no hexagons.
+const cells = [];
+let col = 0;
+for (let cx = -50; cx <= 450; cx += colSpacing) {
+  const yOff = (col % 2 === 0) ? 12.99 : 0;
+  for (let cy = -50 + yOff; cy <= 350; cy += rowSpacing) {
+    const poly = document.createElementNS(svgNS, "polygon");
+    poly.setAttribute("points", hexPoints(cx, cy));
+    poly.setAttribute("class", "hexcell");
+    overlay.appendChild(poly);
+    cells.push({ el: poly, cx: cx, cy: cy });
+  }
+  col++;
+}
+
+const RIPPLE_RADIUS = 60; // in SVG local units (viewBox space, not pixels)
+
+function handleMove(evt) {
+  const pt = svg.createSVGPoint();
+  pt.x = evt.clientX;
+  pt.y = evt.clientY;
+  const ctm = svg.getScreenCTM();
+  if (!ctm) return;
+  // Convert screen coordinates into the SVG's local coordinate space.
+  // Required because .hexagons has a CSS transform (translate + rotate).
+  const local = pt.matrixTransform(ctm.inverse());
+
+  cells.forEach(function (cell) {
+    const dx = cell.cx - local.x;
+    const dy = cell.cy - local.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < RIPPLE_RADIUS) {
+      const t = 1 - (dist / RIPPLE_RADIUS);
+      cell.el.style.stroke = "#639922";
+      cell.el.style.opacity = (t * 0.9).toFixed(2);
+    } else {
+      cell.el.style.opacity = "0";
+    }
+  });
+}
+
+function handleLeave() {
+  cells.forEach(function (cell) {
+    cell.el.style.opacity = "0";
+  });
+}
+
+const hexSection = document.getElementById('hexSection');
+hexSection.addEventListener('mousemove', handleMove);
+hexSection.addEventListener('mouseleave', handleLeave);
+
+/* ---------- End honeycomb logic ---------- */
+
+document.getElementById('createAccountLink').addEventListener('click', function (e) {
+  e.preventDefault();
+});
+</script>
+
+</body>
+</html>

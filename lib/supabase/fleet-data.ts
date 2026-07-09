@@ -21,6 +21,7 @@ type ShipmentQueryRow = ShipmentRow & {
 };
 
 export type FleetOption = Pick<FleetRow, "id" | "label" | "route_name">;
+export type FleetLogEntry = FleetOption;
 export type DriverOption = Pick<DriverRow, "full_name" | "id" | "license_number" | "phone_number">;
 
 const baseShipmentSelect = `
@@ -138,6 +139,23 @@ export async function getFleetOptions(): Promise<FleetOption[]> {
 
   if (error || !data) {
     console.error("Unable to load fleets from Supabase:", error?.message);
+    return [];
+  }
+
+  return data;
+}
+
+export async function getFleetLogEntries(): Promise<FleetLogEntry[]> {
+  const supabase = createSupabaseServerClient();
+
+  if (!supabase) {
+    return [];
+  }
+
+  const { data, error } = await supabase.from("fleets").select("id, label, route_name").order("id");
+
+  if (error || !data) {
+    console.error("Unable to load fleet log entries from Supabase:", error?.message);
     return [];
   }
 

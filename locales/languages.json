@@ -182,7 +182,10 @@
           "fuelCost": "Fuel cost",
           "review": "Review",
           "approveRoute": "Approve route",
-          "rejectRoute": "Reject"
+          "rejectRoute": "Reject",
+          "addRouteLabel": "Fleet operations",
+          "addRouteTitle": "Create a new route",
+          "addRouteCta": "Agregar nueva ruta +"
         },
         "dispatcher": {
           "routeBuilder": "Route builder",
@@ -347,9 +350,19 @@
           "drivers": "Drivers",
           "shipments": "Shipments",
           "cargoPhotos": "Cargo photos"
+        },
+        "log": {
+          "title": "Fleet request log",
+          "description": "Live records of the fleets currently loaded from the backend database.",
+          "columns": {
+            "id": "Fleet ID",
+            "label": "Label",
+            "routeName": "Route name"
+          },
+          "emptyMessage": "No fleets have been retrieved from the backend."
         }
-      },
-      "emptyStates": {
+      }
+,      "emptyStates": {
         "eyebrow": "Fleet records",
         "adminNoData": {
           "title": "No fleet data yet",
@@ -623,7 +636,10 @@
           "fuelCost": "Costo de combustible",
           "review": "Revisar",
           "approveRoute": "Aprobar ruta",
-          "rejectRoute": "Rechazar"
+          "rejectRoute": "Rechazar",
+          "addRouteLabel": "Operaciones de flota",
+          "addRouteTitle": "Crear una nueva ruta",
+          "addRouteCta": "Agregar nueva ruta +"
         },
         "dispatcher": {
           "routeBuilder": "Constructor de rutas",
@@ -788,9 +804,18 @@
           "drivers": "Conductores",
           "shipments": "Envios",
           "cargoPhotos": "Fotos de carga"
+        },
+        "log": {
+          "title": "Registro de flotas",
+          "description": "Registros en vivo de las flotas cargadas actualmente desde la base de datos del backend.",
+          "columns": {
+            "id": "ID de flota",
+            "label": "Etiqueta",
+            "routeName": "Nombre de ruta"
+          },
+          "emptyMessage": "Aun no se han recuperado flotas desde el backend."
         }
-      },
-      "emptyStates": {
+      },      "emptyStates": {
         "eyebrow": "Registros de flota",
         "adminNoData": {
           "title": "Aun no hay datos de flota",

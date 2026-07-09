@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
 import { useLanguage } from "@/components/language-provider";
 import languages from "@/locales/languages.json";
@@ -16,7 +16,7 @@ import {
   upsertShipmentAction,
   upsertShipmentStopAction,
 } from "@/lib/supabase/fleet-actions";
-import type { DriverOption, FleetOption } from "@/lib/supabase/fleet-data";
+import type { DriverOption, FleetLogEntry, FleetOption } from "@/lib/supabase/fleet-data";
 import type { CargoPhoto, ShipmentCard } from "@/components/fleet-dashboard/types";
 
 function Field({
@@ -95,14 +95,96 @@ function DeleteButton({ children }: { children: ReactNode }) {
   );
 }
 
+function FleetLogTable({ fleets }: { fleets: FleetLogEntry[] }) {
+  const { languageKey } = useLanguage();
+  const content = languages[languageKey].roleDashboard.dispatcherData.log;
+
+  return (
+    <section className="rounded-lg border border-[#dfe3ea] bg-white p-5 shadow-[0_14px_32px_rgba(32,35,42,0.04)]">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h3 className="text-2xl font-semibold text-[#20232a]">{content.title}</h3>
+          <p className="mt-2 text-sm text-[#6d7685]">{content.description}</p>
+        </div>
+      </div>
+      <div className="mt-6 overflow-x-auto">
+        <table className="min-w-full text-left text-sm text-[#394150]">
+          <thead className="border-b border-[#ece8f1] text-xs uppercase tracking-[0.24em] text-[#8a8393]">
+            <tr>
+              <th className="px-3 py-3">{content.columns.id}</th>
+              <th className="px-3 py-3">{content.columns.label}</th>
+              <th className="px-3 py-3">{content.columns.routeName}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {fleets.map((fleet) => (
+              <tr key={fleet.id} className="border-b border-[#f1f1f6] last:border-b-0">
+                <td className="px-3 py-4 font-semibold text-[#20232a]">{fleet.id}</td>
+                <td className="px-3 py-4">{fleet.label}</td>
+                <td className="px-3 py-4 text-[#6d7685]">{fleet.route_name}</td>
+              </tr>
+            ))}
+            {fleets.length === 0 ? (
+              <tr>
+                <td className="px-3 py-4" colSpan={3}>
+                  {content.emptyMessage}
+                </td>
+              </tr>
+            ) : null}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
+function FleetConsoleLog({ fleets }: { fleets: FleetLogEntry[] }) {
+  useEffect(() => {
+    if (!fleets.length) {
+      console.info("Fleet DB console: no fleets were retrieved from the backend.");
+      return;
+    }
+
+    console.groupCollapsed("Fleet DB console: current backend fleet query results");
+    console.table(fleets.map((fleet) => ({
+      id: fleet.id,
+      label: fleet.label,
+      route_name: fleet.route_name,
+    })));
+    console.groupEnd();
+  }, [fleets]);
+
+  return (
+    <section className="rounded-lg border border-[#dfe3ea] bg-[#fafbff] p-5 shadow-[0_14px_32px_rgba(32,35,42,0.04)]">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h3 className="text-2xl font-semibold text-[#20232a]">Browser console log</h3>
+          <p className="mt-2 text-sm text-[#6d7685]">
+            The current fleet data pulled from the backend is also logged into the browser developer console.
+          </p>
+        </div>
+      </div>
+      <div className="mt-5 overflow-x-auto rounded-lg bg-[#111827] p-4 text-sm text-[#f8fafc]">
+        <pre className="whitespace-pre-wrap break-words text-[0.9rem] leading-6">
+          {fleets.length > 0
+            ? fleets.map((fleet) => `${fleet.id} | ${fleet.label} | ${fleet.route_name}`).join("\n")
+            : "No fleet records were retrieved from the backend. Open the browser console to inspect the request details."}
+        </pre>
+      </div>
+    </section>
+  );
+}
+
 export function DispatcherDataManager({
   cargoPhotos,
   drivers,
+  fleetLogEntries,
   fleets,
   shipments,
 }: {
   cargoPhotos: CargoPhoto[];
   drivers: DriverOption[];
+  fleetLogEntries: FleetLogEntry[];
   fleets: FleetOption[];
   shipments: ShipmentCard[];
 }) {
@@ -118,6 +200,9 @@ export function DispatcherDataManager({
           {content.intro}
         </p>
       </div>
+
+      <FleetConsoleLog fleets={fleetLogEntries} />
+      <FleetLogTable fleets={fleetLogEntries} />
 
       <div className="grid gap-4 xl:grid-cols-2">
         <form action={upsertFleetAction} className="space-y-4 rounded-lg border border-[#dfe3ea] bg-white p-5">

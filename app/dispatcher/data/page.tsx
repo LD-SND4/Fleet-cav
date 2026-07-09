@@ -1,15 +1,16 @@
 import { RoleLayoutShell } from "@/components/role-dashboard/role-layout-shell";
 import { DispatcherDataManager } from "@/components/role-dashboard/dispatcher-data-manager";
 import { requireAuthenticatedProfile } from "@/lib/auth/require-authenticated-profile";
-import { getCargoPhotos, getDriverOptions, getFleetOptions, getShipmentCards } from "@/lib/supabase/fleet-data";
+import { getCargoPhotos, getDriverOptions, getFleetLogEntries, getFleetOptions, getShipmentCards } from "@/lib/supabase/fleet-data";
 
 export const dynamic = "force-dynamic";
 
 export default async function DispatcherDataPage() {
-  const [profile, cargoPhotos, drivers, fleets, shipments] = await Promise.all([
+  const [profile, cargoPhotos, drivers, fleetLogEntries, fleets, shipments] = await Promise.all([
     requireAuthenticatedProfile("dispatcher"),
     getCargoPhotos(),
     getDriverOptions(),
+    getFleetLogEntries(),
     getFleetOptions(),
     getShipmentCards(),
   ]);
@@ -26,7 +27,13 @@ export default async function DispatcherDataPage() {
       ]}
       workspacePermissions={profile.permissions}
     >
-      <DispatcherDataManager cargoPhotos={cargoPhotos} drivers={drivers} fleets={fleets} shipments={shipments} />
+      <DispatcherDataManager
+        cargoPhotos={cargoPhotos}
+        drivers={drivers}
+        fleetLogEntries={fleetLogEntries}
+        fleets={fleets}
+        shipments={shipments}
+      />
     </RoleLayoutShell>
   );
 }

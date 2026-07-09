@@ -382,6 +382,19 @@ export function AdminOverview({ shipments }: { shipments: ShipmentCard[] }) {
 
   return (
     <section className="space-y-6">
+      <div className="flex flex-col gap-4 rounded-3xl border border-[#dfe3ea] bg-white p-6 shadow-[0_12px_32px_rgba(32,35,42,0.04)] md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#8a8393]">{overview.admin.addRouteLabel}</p>
+          <h2 className="mt-2 text-3xl font-semibold text-[#20232a]">{overview.admin.addRouteTitle}</h2>
+        </div>
+        <Link
+          href="/dispatcher/data"
+          className="inline-flex items-center justify-center rounded-full bg-[#ef667c] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(239,102,124,0.22)] transition hover:bg-[#e75970]"
+        >
+          {overview.admin.addRouteCta}
+        </Link>
+      </div>
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <ActionCard label={overview.admin.activeRoutes} value={String(shipments.length)} href={defaultTrackingHref} action={overview.admin.openTracking} />
         <ActionCard label={overview.admin.deliveries} value={String(totalDeliveries)} href="/dispatcher" action={overview.admin.openDispatch} />
