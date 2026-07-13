@@ -18,11 +18,11 @@ type AccountResponse = {
   redirectTo?: string | null;
 };
 
-type FleetLogEntry = {
-  id: string;
-  label: string;
-  route_name: string;
-};
+// type FleetLogEntry = {
+//   id: string;
+//   label: string;
+//   route_name: string;
+// };
 
 const defaultSelectedPermissions: PermissionRole[] = ["viewer"];
 const authModeFadeMs = 700;
@@ -44,9 +44,9 @@ export function LoginScreen() {
   const [message, setMessage] = useState("");
   const [password, setPassword] = useState("");
   const [selectedPermissions, setSelectedPermissions] = useState<PermissionRole[]>(defaultSelectedPermissions);
-  const [fleetLogEntries, setFleetLogEntries] = useState<FleetLogEntry[] | null>(null);
-  const [fleetLogError, setFleetLogError] = useState<string | null>(null);
-  const [loadingFleetLog, setLoadingFleetLog] = useState(false);
+  // const [fleetLogEntries, setFleetLogEntries] = useState<FleetLogEntry[] | null>(null);
+  // const [fleetLogError, setFleetLogError] = useState<string | null>(null);
+  // const [loadingFleetLog, setLoadingFleetLog] = useState(false);
   const [loadingStage, setLoadingStage] = useState<LoadingStage | null>(null);
   const [modeTransition, setModeTransition] = useState<"entering" | "exiting" | "idle">("idle");
   const [submitting, setSubmitting] = useState(false);
@@ -69,50 +69,50 @@ export function LoginScreen() {
     };
   }, []);
 
-  useEffect(() => {
-    let isCancelled = false;
-
-    async function fetchFleetLog() {
-      setLoadingFleetLog(true);
-      setFleetLogError(null);
-
-      try {
-        const response = await fetch("/api/fleet-log");
-
-        if (!response.ok) {
-          throw new Error(`Failed to load fleet log: ${response.statusText}`);
-        }
-
-        const data = (await response.json()) as FleetLogEntry[];
-
-        if (isCancelled) {
-          return;
-        }
-
-        setFleetLogEntries(data);
-        console.groupCollapsed("Fleet DB console: current backend fleet query results");
-        console.table(data);
-        console.groupEnd();
-      } catch (error) {
-        if (isCancelled) {
-          return;
-        }
-
-        setFleetLogError(error instanceof Error ? error.message : String(error));
-        console.error("Fleet DB console: failed to load fleet data:", error);
-      } finally {
-        if (!isCancelled) {
-          setLoadingFleetLog(false);
-        }
-      }
-    }
-
-    fetchFleetLog();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, []);
+  // useEffect(() => {
+  //   let isCancelled = false;
+  //
+  //   async function fetchFleetLog() {
+  //     setLoadingFleetLog(true);
+  //     setFleetLogError(null);
+  //
+  //     try {
+  //       const response = await fetch("/api/fleet-log");
+  //
+  //       if (!response.ok) {
+  //         throw new Error(`Failed to load fleet log: ${response.statusText}`);
+  //       }
+  //
+  //       const data = (await response.json()) as FleetLogEntry[];
+  //
+  //       if (isCancelled) {
+  //         return;
+  //       }
+  //
+  //       setFleetLogEntries(data);
+  //       console.groupCollapsed("Fleet DB console: current backend fleet query results");
+  //       console.table(data);
+  //       console.groupEnd();
+  //     } catch (error) {
+  //       if (isCancelled) {
+  //         return;
+  //       }
+  //
+  //       setFleetLogError(error instanceof Error ? error.message : String(error));
+  //       console.error("Fleet DB console: failed to load fleet data:", error);
+  //     } finally {
+  //       if (!isCancelled) {
+  //         setLoadingFleetLog(false);
+  //       }
+  //     }
+  //   }
+  //
+  //   fetchFleetLog();
+  //
+  //   return () => {
+  //     isCancelled = true;
+  //   };
+  // }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -391,7 +391,7 @@ export function LoginScreen() {
 
             <p className="text-sm leading-6 text-[#6f6878]">{content.authNote}</p>
           </form>
-          <section className="mt-8 rounded-3xl border border-[#ece8f1] bg-[#f9fafc] p-5 shadow-[0_14px_32px_rgba(32,35,42,0.06)]">
+          {/* <section className="mt-8 rounded-3xl border border-[#ece8f1] bg-[#f9fafc] p-5 shadow-[0_14px_32px_rgba(32,35,42,0.06)]">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8a8393]">Backend fleet log</p>
@@ -416,7 +416,7 @@ export function LoginScreen() {
                 )}
               </div>
             </div>
-          </section>
+          </section> */}
         </section>
       </div>
     </main>
